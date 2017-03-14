@@ -1,0 +1,9 @@
+td.rejected {
+    background-color: darkred !important; 
+    color: ghostwhite !important;
+}
+
+td.participant {
+    background-color: darkgreen !important;
+    color: ghostwhite !important;
+}
