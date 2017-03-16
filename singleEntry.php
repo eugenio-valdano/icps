@@ -370,6 +370,7 @@ mysqli_set_charset($mysqli, 'utf8');
         <a class="btn btn-default" href="search.php?query=&sorting=SURNAME_STRIP&cfilter=all&cfilter2=all" >Full list</a>
         <!-- go back button -->
         <button onclick="goBack()">Go Back</button>
+        
         <script>
             function goBack() {
                 window.history.back();
@@ -383,16 +384,26 @@ mysqli_set_charset($mysqli, 'utf8');
                 $temp.remove();
             }
         </script>
-        <!-- edit button-->
+
         <?php
         if ( isset($privileges) and $privileges[$VID]==0) {
+            // EDIT button
             echo '<a class="btn btn-default" href="singleEntryEditable.php?ID=' . $ID . '" >Make editable</a>';
             echo '<br><br><br>';
-            //echo 'URL for uploading abstracts: ';
+            
+            //URL for ABSTRACTS
             $urlab = 'http://www.ai-sf.it/dbicps/edit_abstract/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&email='. $row['EMAIL'];
             $urlab = str_replace(' ','%20',$urlab);
-            echo '<a id="urlab" href="' . $urlab . '">' . $urlab . '</a>';
-            echo '<br><button onclick="copyToClipboard(\'#urlab\')">Copy URL</button>';
+            echo 'edit abstract: <a id="urlab" href="' . $urlab . '">' . $urlab . '</a>';
+            echo '<button onclick="copyToClipboard(\'#urlab\')">Copy URL</button><br>';
+            
+            //URL for PAYMENT
+            $payim = ($row['LCNC']=='IM' ? 'yes' : 'no');
+            $urlpa = 'http://www.ai-sf.it/dbicps/payment_master/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&im=' . $payim;
+            $urlpa = str_replace(' ','%20',$urlpa);
+            echo 'pay by cc: <a id="urlpa" href="' . $urlpa . '">' . $urlpa . '</a>';
+            echo '<button onclick="copyToClipboard(\'#urlpa\')">Copy URL</button>';
+            
         }  
         ?>
 
