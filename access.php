@@ -1,12 +1,12 @@
 <?php
 
-//$password = 'daffe82896ec65488527d99d688eb8e2abd6496c'; // SHA-1 encryption for password
 $Lpassword = array('eugenio'=>'daffe82896ec65488527d99d688eb8e2abd6496c',
                    'michele'=>'daffe82896ec65488527d99d688eb8e2abd6496c',
                    'lorenzo'=>'091c55b129e7c784175492cc9bdae91c5ab68796',
                    'lucio'=>'091c55b129e7c784175492cc9bdae91c5ab68796',
                    'francesco'=>'89dac3db33f82d34599e0c6357363358c6637f3f',
-                   'oc_member'=>'89946a3a91f8713a489aefb96a436cec79fc6fc8'
+                   'oc_member'=>'89946a3a91f8713a489aefb96a436cec79fc6fc8',
+                   'iaps'=>'d33bf762e232b7ee44974d2a597434396bc6d8fd'
                   );
 
 session_start();

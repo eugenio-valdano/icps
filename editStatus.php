@@ -58,7 +58,12 @@ $result->close();
 // UPDATE QUERY
 $stringa = "UPDATE " . $table . " SET STATUS='" . $status . "', OPERATOR='" . $VID . "' WHERE ID=" . $ID;
 // send update query
-$result = $mysqli->query($stringa);
+
+// execute query only if privilege
+if (checkp(1,$VID)) {
+    $result = $mysqli->query($stringa);    
+}
+
 
 
 // SEND MAIL IF PROVEN
@@ -128,8 +133,8 @@ if ($entries_ex==0) {
     die('More than one ID.');
 }
 
-// update excursions
-if (isset($stringa_edit)) {
+// update excursions, only if privilege
+if (isset($stringa_edit) and checkp(1,$VID)) {
     $result = $mysqli->query($stringa_edit);   
 }
 

@@ -53,7 +53,9 @@ if ($entries_ex==0) {
 }
 
 // execute edit query
-$result = $mysqli->query($stringa_edit);
+if (checkp(1,$VID)) {
+    $result = $mysqli->query($stringa_edit);
+}
 
 $mysqli->close();
 

@@ -40,7 +40,7 @@ mysqli_set_charset($mysqli, 'utf8');
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <!--><link rel="stylesheet" type="text/css" href="style.css"/></!-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        
+
         <!-- jquery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
@@ -120,11 +120,11 @@ mysqli_set_charset($mysqli, 'utf8');
                         <td>NAME</td>
                         <td><?php echo '<b>' . $row['NAME'] . '</b>';?></td>
                     </tr>
+                    <?php if (checkp(2,$VID)): ?> <!-- RESTRICT FOLLOWING ITEM -->
                     <tr>
                         <td>REQUIRES VISA</td>
                         <?php echo '<td class="' . ($row['VISA']=='Yes'?'danger':'success') . '">' . $row['VISA'] . '</td>'; ?>
                     </tr>
-
                     <tr>
                         <?php
                         if ($row['AGE']<18) {
@@ -142,6 +142,7 @@ mysqli_set_charset($mysqli, 'utf8');
                         <td>D.O.B.</td>
                         <td <?php echo $ageflag;?>><?php echo $row['DOB'];?> (age <?php echo $row['AGE'];?>) <?php echo $agemessage;?></td>
                     </tr>
+                    <?php endif; ?>
                     <tr>
                         <td>GENDER</td>
                         <td><?php echo $row['SEX'];?></td>
@@ -163,6 +164,11 @@ mysqli_set_charset($mysqli, 'utf8');
                         <td><?php echo ($row['LCNC']=='IM' ? "Individual member" : $row['LCNC']);?></td>
                     </tr>
                     <tr>
+                        <td>EMAIL</td>
+                        <td><?php echo $row['EMAIL'];?></td>
+                    </tr>
+                    <?php if (checkp(2,$VID)): ?> <!-- RESTRICT FOLLOWING ITEMS -->
+                    <tr>
                         <td>DELEGATE</td>
                         <td><?php echo $row['DELEGATE'];?></td>
                     </tr>
@@ -173,10 +179,6 @@ mysqli_set_charset($mysqli, 'utf8');
                     <tr>
                         <td>INFO</td>
                         <td><?php echo $row['INFO'];?></td>
-                    </tr>
-                    <tr>
-                        <td>EMAIL</td>
-                        <td><?php echo $row['EMAIL'];?></td>
                     </tr>
                     <tr>
                         <td>STATUS</td>
@@ -213,10 +215,17 @@ mysqli_set_charset($mysqli, 'utf8');
 
                     </tr>
 
+                    <?php endif; ?>
+
                 </table>
             </div>
             <div class="col-md-3"></div>
         </div>
+
+        <!-- IAPS WON'T SEE BELOW THIS -->
+        <?php if(checkp(2,$VID)): ?>
+
+
         <!-- ESCURSIONE -->
         <?php
 
@@ -336,13 +345,13 @@ mysqli_set_charset($mysqli, 'utf8');
                 </div>
                 <div class="col-md-3"></div>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6"><h4>Additional details </h4></div>
                 <div class="col-md-3"></div>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
@@ -357,20 +366,19 @@ mysqli_set_charset($mysqli, 'utf8');
             </div>
 
 
-
-
-
-
         </div>
-
+        <!-- END IAPS WON'T SEE BELOW THIS -->
+        <?php endif; ?>
 
 
         <br>
         <a class="btn btn-default" href="index.php" >New search</a>
+        <?php if (checkp(2,$VID)): ?>
         <a class="btn btn-default" href="search.php?query=&sorting=SURNAME_STRIP&cfilter=all&cfilter2=all" >Full list</a>
+        <?php endif; ?>
         <!-- go back button -->
         <button onclick="goBack()">Go Back</button>
-        
+
         <script>
             function goBack() {
                 window.history.back();
@@ -386,24 +394,24 @@ mysqli_set_charset($mysqli, 'utf8');
         </script>
 
         <?php
-        if ( isset($privileges) and $privileges[$VID]==0) {
+        if ( checkp(0,$VID)) {
             // EDIT button
             echo '<a class="btn btn-default" href="singleEntryEditable.php?ID=' . $ID . '" >Make editable</a>';
             echo '<br><br><br>';
-            
+
             //URL for ABSTRACTS
             $urlab = 'http://www.ai-sf.it/dbicps/edit_abstract/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&email='. $row['EMAIL'];
             $urlab = str_replace(' ','%20',$urlab);
             echo 'edit abstract: <a id="urlab" href="' . $urlab . '">' . $urlab . '</a>';
             echo '<button onclick="copyToClipboard(\'#urlab\')">Copy URL</button><br>';
-            
+
             //URL for PAYMENT
             $payim = ($row['LCNC']=='IM' ? 'yes' : 'no');
             $urlpa = 'http://www.ai-sf.it/dbicps/payment_master/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&im=' . $payim;
             $urlpa = str_replace(' ','%20',$urlpa);
             echo 'pay by cc: <a id="urlpa" href="' . $urlpa . '">' . $urlpa . '</a>';
             echo '<button onclick="copyToClipboard(\'#urlpa\')">Copy URL</button>';
-            
+
         }  
         ?>
 

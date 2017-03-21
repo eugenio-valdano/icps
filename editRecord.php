@@ -57,7 +57,12 @@ $age = $interval->format('%y');
 
 
 $stringa = "UPDATE " . $table . " SET `NAME` = '" . $name . "', `SURNAME` = '" . $surname . "', `NAME_STRIP` = '" . $name_strip . "', `SURNAME_STRIP` = '" . $surname_strip . "', `DOB` = '" . $dob . "', `SEX` = '" . $sex . "', `NATIONALITY` = '" . $nationality . "', `COUNTRY_STUDY` = '" . $country_study . "', `DEGREE` = '" . $degree . "', `LCNC` = '" . $lcnc . "', `LCNC_BOOL` = '" . $lcnc_bool . "', `DELEGATE` = '" . $delegate . "', `INFO` = '" . $info . "', `EMAIL` = '" . $email . "', `AGE` = " . $age . " WHERE `ID` = " . $ID;
-$result = $mysqli->query($stringa);
+
+// execute the query only if you have privileges
+if (checkp(0,$VID)) {
+    $result = $mysqli->query($stringa);
+}
+
 
 //$result->free();
 $mysqli->close();  

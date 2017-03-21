@@ -20,7 +20,7 @@ require('util.php');
 
     </head>
     <body>
-
+        
         <br>
 
         <div class="row">
@@ -74,29 +74,29 @@ require('util.php');
                         <option value="SURNAME_STRIP">Surname</option>
                         <option value="NAME_STRIP">Name</option>
                         <option value="LCNC">LC/NC</option>
-                        <option value="CONTRIBUTION">Contribution</option>
-                        <option value="DELEGATE">Delegate</option>
+                        <option value="CONTRIBUTION" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >Contribution</option>
+                        <option value="DELEGATE" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >Delegate</option>
                         <option value="DOB">D.O.B.</option>
-                        <option value="STATUS">Status</option>
+                        <option value="STATUS" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >Status</option>
                     </select>
                 </div>
                 <div class="col-md-2">
                     <select name="cfilter">
                         <option value="all">all</option>
-                        <option value="visa">requiring visa</option>
-                        <option value="me">last edited by me</option>
-                        <option value="others">last edited by others</option>
+                        <option value="visa" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >requiring visa</option>
+                        <option value="me" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >last edited by me</option>
+                        <option value="others" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >last edited by others</option>
                     </select>
                 </div>
                 <div class="col-md-2">
                     <select name="cfilter2">
-                        <option value="all">all</option>
-                        <option value="accepted">accepted</option>
-                        <option value="waiting">waiting list</option>
-                        <option value="rejected">rejected</option>
-                        <option value="withdrawn">withdrawn</option>
+                        <option value="all" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >all</option>
+                        <option value="accepted" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >accepted</option>
+                        <option value="waiting" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >waiting list</option>
+                        <option value="rejected" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >rejected</option>
+                        <option value="withdrawn" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >withdrawn</option>
                         <option value="participant">participant</option>
-                        <option value="proven">proven</option>
+                        <option value="proven" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >proven</option>
                     </select>
                 </div>
                 <div  class="col-md-2"><input type="submit" value="Submit query" /></div>
@@ -104,6 +104,8 @@ require('util.php');
         </form>
 
         <br><br>
+        
+        <?php if (checkp(2,$VID)): ?>
         
         <div class="row" style="text-align:left">
             <div  class="col-md-2"></div>
@@ -135,6 +137,7 @@ require('util.php');
             <div class="col-md-8"></div>
         </div>
 
+        <?php endif; ?>
 
         <br><br>
 
@@ -148,7 +151,7 @@ require('util.php');
         <br><br>
         <?php
 
-        if ( isset($privileges) and $privileges[$VID] == 0 ) {
+        if ( checkp(0,$VID) ) {
             echo "<a href=\"monitor.php\"><small>MONITOR</small></a>";
         }
         ?>

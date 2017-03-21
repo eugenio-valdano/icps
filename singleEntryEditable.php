@@ -91,6 +91,7 @@ function format_date($date){
             <div class="col-md-4"></div>
             <div class="col-md-4">
                 <form method="GET" action="editRecord.php">
+                    <?php if (checkp(0,$VID)): ?> <!-- RESTRICT -->
                     <table class='table'>
                         <tr>
                             <th>field</th>
@@ -213,6 +214,7 @@ function format_date($date){
                         </tr>
                     </table>
                     <?php
+                    endif;
                     echo "<input type=\"hidden\" name=\"ID\" value=\"" . $ID . "\"></input>";
                     ?>
                 </form >
@@ -224,8 +226,10 @@ function format_date($date){
         <br>
         <div class="col-md-2"></div>
         <a class="btn btn-default" href="index.php" >New search</a>
+        <?php if (checkp(2,$VID)): ?> <!-- RESTRICT -->
         <a class="btn btn-default" href="search.php?query=&sorting=SURNAME_STRIP&cfilter=all&cfilter2=all" >Full list</a>
         <a class="btn btn-default" href="singleEntry.php?ID=<?php echo $ID;?>" >Go back</a>
+        <?php endif; ?>
 
     </body>
 </html>

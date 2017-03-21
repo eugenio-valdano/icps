@@ -180,7 +180,7 @@ if ($NTOT==0) {
 
         ?>
 
-
+<?php if (checkp(2,$VID)): ?>
         <nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="10">
             <ul class="nav navbar-nav">
                 <!--<li class="active"><a href="#">Basic Topnav</a></li>-->
@@ -196,6 +196,7 @@ if ($NTOT==0) {
                 ?>
             </ul>
         </nav>
+        <?php endif; ?>
 
         <div class="container-fluid" style="height:1000px">
 
@@ -210,11 +211,14 @@ if ($NTOT==0) {
                 <div class="col-md-7"><?php echo "number of matching entries: ".$entries."<br><br>"; ?></div>
                 <div class="col-md-1"><a class="btn btn-default" href="index.php" >New search</a></div>
                 <div class="col-md-1">
+                    <?php if (checkp(2,$VID)): ?>
                     <a class="btn btn-default" href="search.php?query=&sorting=SURNAME_STRIP&cfilter=all&cfilter2=all" >Full list</a>
                     <div class="col-md-1"><a class="btn btn-default" href="map.php" >Map</a></div>
+                    <?php endif; ?>
                 </div>
             </div>
 
+            <?php if( checkp(2,$VID) ): ?>
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10"><b>LEGEND</b></div>
@@ -237,6 +241,7 @@ if ($NTOT==0) {
                 </div>
                 <div class="col-md-1"></div>
             </div>
+            <?php endif; ?>
 
             <br>
 
@@ -273,13 +278,15 @@ if ($NTOT==0) {
 
                             <th><a href=<?php echo get_myurl("SURNAME_STRIP",$paseo);?> >SURNAME</a></th>
                             <th><a href=<?php echo get_myurl("NAME_STRIP",$paseo);?> >NAME</a></th>
-                            <th><a href=<?php echo get_myurl("DOB",$paseo);?> >D.O.B.</a></th>
                             <th><a href=<?php echo get_myurl("NATIONALITY",$paseo);?> >NATIONALITY</a></th>
                             <th><a href=<?php echo get_myurl("LCNC",$paseo);?> >LC/NC</a></th>
+                            <?php if(checkp(2,$VID)): ?>
+                            <th><a href=<?php echo get_myurl("DOB",$paseo);?> >D.O.B.</a></th>
                             <th><a href=<?php echo get_myurl("DELEGATE",$paseo);?> >DELEGATE</a></th>
                             <th><a href=<?php echo get_myurl("CONTRIBUTION",$paseo);?> >CONTRIBUTION</a></th>
                             <th><a href=<?php echo get_myurl("SUB_DATE",$paseo);?> >SUB TIME</a></th>
                             <th><a href=<?php echo get_myurl("STATUS",$paseo);?> >STATUS</a></th>
+                            <?php endif; ?>
                         </tr>
 
                         <?php
@@ -325,7 +332,11 @@ if ($NTOT==0) {
                             $backcolor = status_to_color($row['STATUS']);
                             $col_status = "<td class=\"" . $backcolor . "\">" . $printvid . "</td>";
 
-                            echo "<tr>" . $col_surname . $col_name . $col_dob . $col_nat . $col_lcnc . $col_deleg . $col_contr . $col_subdate . $col_status . "</tr>";
+                            echo "<tr>" . $col_surname . $col_name . $col_nat . $col_lcnc;
+                            if (checkp(2,$VID)) {
+                                echo $col_dob . $col_deleg . $col_contr . $col_subdate . $col_status . "</tr>";
+                            }
+                            
 
                         }
 
