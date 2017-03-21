@@ -134,6 +134,10 @@ if ($NTOT==0) {
             $sorting = $_GET['sorting'];
             $cfilter = $_GET['cfilter']; // operator
             $cfilter2 = $_GET['cfilter2']; // status
+            
+            if (!checkp(2,$VID) and $cfilter2!='participant') {
+                $cfilter2 = 'participant';
+            }
 
             $sorting = ( $sorting == 'LCNC' ? 'ISNULL(LCNC),LCNC' : $sorting);
             $sorting = ( $sorting == 'CONTRIBUTION' ? 'ISNULL(CONTRIBUTION),CONTRIBUTION' : $sorting);

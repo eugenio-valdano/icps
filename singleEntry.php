@@ -69,6 +69,10 @@ mysqli_set_charset($mysqli, 'utf8');
 
         // fetch data
         $row = $result->fetch_array();
+        
+        if (!checkp(2,$VID) and $row['STATUS']!='participant') {
+            die('You are not cleared to access this ID. This attempt will be reported.');
+        }
 
         $result->free();
 
@@ -193,7 +197,7 @@ mysqli_set_charset($mysqli, 'utf8');
 
                     <tr>
 
-                        <?php if ( isset($privileges) and $privileges[$VID]<=1): ?>
+                        <?php if (checkp(1,$VID)): ?>
                         <form action="editStatus.php" method="GET">
                             <td>
                                 <select name="status" style="float:left">
