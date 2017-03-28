@@ -167,6 +167,8 @@ if ($NTOT==0) {
                 $sfilter2 = "AND STATUS = 'proven'";
             } elseif ($cfilter2=='participant') {
                 $sfilter2 = "AND STATUS = 'participant'";
+            } elseif ($cfilter2=='waiting') {
+                $sfilter2 = "AND STATUS = 'waiting'";  
             } else {
                 $sfilter2 = "";
             }

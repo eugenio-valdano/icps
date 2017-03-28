@@ -6,6 +6,8 @@ $VID = $_SESSION['VID'];
 //require('sessioner.php');
 //howManyIps();
 
+require('util.php');
+
 // connect to db
 $dbinfo = explode("\n", file_get_contents('loginDB.txt'))[0];
 $dbinfo = explode(" ", $dbinfo);
@@ -43,7 +45,7 @@ $data['all'] = json_encode($result_array);
 $result->free();
 
 // filter on accepted
-$stringa = "SELECT b.NATIONALITY_ISO,a.`COUNT(NATIONALITY)` as 'COUNT' FROM (SELECT NATIONALITY,COUNT(NATIONALITY) FROM " . $table . $saccepted . " WHERE STATUS='accepted' GROUP BY NATIONALITY) a LEFT JOIN (SELECT NATIONALITY,NATIONALITY_ISO FROM nat2iso) b ON a.NATIONALITY=b.NATIONALITY";
+$stringa = "SELECT b.NATIONALITY_ISO,a.`COUNT(NATIONALITY)` as 'COUNT' FROM (SELECT NATIONALITY,COUNT(NATIONALITY) FROM " . $table . " WHERE STATUS='accepted' OR STATUS='proven' OR STATUS='participant' GROUP BY NATIONALITY) a LEFT JOIN (SELECT NATIONALITY,NATIONALITY_ISO FROM nat2iso) b ON a.NATIONALITY=b.NATIONALITY";
 $result = $mysqli->query($stringa);
 $result_array = array();
 while($row = $result->fetch_array()) {
@@ -63,7 +65,7 @@ $next_data = ( $which_data == 'all' ? 'accepted' : 'all' );
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>ICPS 2017 - DB QUERY INTERFACE</title>
+        <title>MAP</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <!--><link rel="stylesheet" type="text/css" href="style.css"/></!-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -108,7 +110,7 @@ $next_data = ( $which_data == 'all' ? 'accepted' : 'all' );
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-                <h3><?php echo ($which_data=='all' ? 'Submissions' : 'Currently accepted')?>, by nationality</h3>
+                <h3><?php echo ($which_data=='all' ? 'Submissions' : 'Currently accepted/proven/participant')?>, by nationality</h3>
             </div>
             <div class="col-md-2"></div>
         </div>
