@@ -135,9 +135,9 @@ if ($NTOT==0) {
             $cfilter = $_GET['cfilter']; // operator
             $cfilter2 = $_GET['cfilter2']; // status
             
-            if (!checkp(2,$VID) and $cfilter2!='participant') {
-                $cfilter2 = 'participant';
-            }
+            //if (!checkp(2,$VID) and $cfilter2!='participant') {
+            //    $cfilter2 = 'participant';
+            //}
 
             $sorting = ( $sorting == 'LCNC' ? 'ISNULL(LCNC),LCNC' : $sorting);
             $sorting = ( $sorting == 'CONTRIBUTION' ? 'ISNULL(CONTRIBUTION),CONTRIBUTION' : $sorting);
@@ -224,7 +224,7 @@ if ($NTOT==0) {
                 </div>
             </div>
 
-            <?php if( checkp(2,$VID) ): ?>
+            <?php if( checkp(3,$VID) ): ?>
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10"><b>LEGEND</b></div>
@@ -291,8 +291,9 @@ if ($NTOT==0) {
                             <th><a href=<?php echo get_myurl("DELEGATE",$paseo);?> >DELEGATE</a></th>
                             <th><a href=<?php echo get_myurl("CONTRIBUTION",$paseo);?> >CONTRIBUTION</a></th>
                             <th><a href=<?php echo get_myurl("SUB_DATE",$paseo);?> >SUB TIME</a></th>
-                            <th><a href=<?php echo get_myurl("STATUS",$paseo);?> >STATUS</a></th>
                             <?php endif; ?>
+                            <th><a href=<?php echo get_myurl("STATUS",$paseo);?> >STATUS</a></th>
+                            
                         </tr>
 
                         <?php
@@ -340,8 +341,9 @@ if ($NTOT==0) {
 
                             echo "<tr>" . $col_surname . $col_name . $col_nat . $col_lcnc;
                             if (checkp(2,$VID)) {
-                                echo $col_dob . $col_deleg . $col_contr . $col_subdate . $col_status . "</tr>";
+                                echo $col_dob . $col_deleg . $col_contr . $col_subdate;
                             }
+                            echo $col_status . "</tr>";
                             
 
                         }

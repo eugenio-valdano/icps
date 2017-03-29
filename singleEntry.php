@@ -70,9 +70,9 @@ mysqli_set_charset($mysqli, 'utf8');
         // fetch data
         $row = $result->fetch_array();
         
-        if (!checkp(2,$VID) and $row['STATUS']!='participant') {
-            die('You are not cleared to access this ID. This attempt will be reported.');
-        }
+        //if (!checkp(2,$VID) and $row['STATUS']!='participant') {
+        //    die('You are not cleared to access this ID. This attempt will be reported.');
+        //}
 
         $result->free();
 
@@ -170,6 +170,10 @@ mysqli_set_charset($mysqli, 'utf8');
                     <tr>
                         <td>EMAIL</td>
                         <td><?php echo $row['EMAIL'];?></td>
+                    </tr>
+                    <tr>
+                        <td>UNIVERSITY</td>
+                        <td><?php echo $row['UNIVERSITY'];?></td>
                     </tr>
                     <?php if (checkp(2,$VID)): ?> <!-- RESTRICT FOLLOWING ITEMS -->
                     <tr>

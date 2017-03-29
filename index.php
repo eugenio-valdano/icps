@@ -90,13 +90,13 @@ require('util.php');
                 </div>
                 <div class="col-md-2">
                     <select name="cfilter2">
-                        <option value="all" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >all</option>
-                        <option value="accepted" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >accepted</option>
-                        <option value="waiting" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >waiting list</option>
-                        <option value="rejected" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >rejected</option>
-                        <option value="withdrawn" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >withdrawn</option>
+                        <option value="all" <?php echo (checkp(3,$VID) ? '' : 'disabled'); ?> >all</option>
+                        <option value="accepted" <?php echo (checkp(3,$VID) ? '' : 'disabled'); ?> >accepted</option>
+                        <option value="waiting" <?php echo (checkp(3,$VID) ? '' : 'disabled'); ?> >waiting list</option>
+                        <option value="rejected" <?php echo (checkp(3,$VID) ? '' : 'disabled'); ?> >rejected</option>
+                        <option value="withdrawn" <?php echo (checkp(3,$VID) ? '' : 'disabled'); ?> >withdrawn</option>
                         <option value="participant">participant</option>
-                        <option value="proven" <?php echo (checkp(2,$VID) ? '' : 'disabled'); ?> >proven</option>
+                        <option value="proven" <?php echo (checkp(3,$VID) ? '' : 'disabled'); ?> >proven</option>
                     </select>
                 </div>
                 <div  class="col-md-2"><input type="submit" value="Submit query" /></div>
