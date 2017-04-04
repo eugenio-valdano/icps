@@ -47,6 +47,9 @@ mysqli_set_charset($mysqli, 'utf8');
 $ID = $_GET['ID'];
 $status = $_GET['status'];
 
+// choose appropriate table
+$table = choose_table($ID);
+
 // select single row, using ID
 $stringa = 'SELECT * FROM ' . $table . ' WHERE ID = ' . $ID;
 $result = $mysqli->query($stringa);

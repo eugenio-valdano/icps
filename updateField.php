@@ -18,7 +18,7 @@ $table = $dbinfo[11];
 $table_late = $dbinfo[19];
 
 // table : UNION between early and late
-$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
+//$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
 
 $mysqli = new mysqli($host, $user, $password, $db);
 
@@ -37,6 +37,9 @@ mysqli_set_charset($mysqli, 'utf8');
 $ID = $_GET['ID'];
 $field = $_GET['field'];
 $newValue = $_POST['newValue'];
+
+// choose appropriate table
+$table = choose_table($ID);
 
 // build UPDATE query (stringa)
 

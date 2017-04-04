@@ -21,9 +21,6 @@ $table = $dbinfo[11];
 $table_excursions = $dbinfo[15];
 $table_late = $dbinfo[19];
 
-// table : UNION between early and late
-$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
-
 $mysqli = new mysqli($host, $user, $password, $db);
 
 if ($mysqli->connect_errno) {
@@ -38,6 +35,9 @@ mysqli_set_charset($mysqli, 'utf8');
 // GET VARIABLES
 $ID = $_GET['ID'];
 $excursion = $_GET['excursion'];
+
+// choose appropriate table
+$table = choose_table($ID);
 
 // EXCURSION
 $stringa = "SELECT * FROM " . $table_excursions . " WHERE ID = ".$ID;

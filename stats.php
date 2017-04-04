@@ -141,16 +141,46 @@ $result_lcnc = $mysqli->query($stringa); // now table with LCNC,ALL,ACCEPTED
                 <div class="col-md-7">
                     <table class="table">
                         <?php
+                        $counter_count = array(); // record for pie
                         while($row = $result_count->fetch_array()) {
                             $colorclass = status_to_color($row['STATUS']);
                             $spu = '<td class="' . $colorclass . '">' . $row['STATUS'] . '</td><td  style="text-align:left">' . $row['C'] . '</td>';
                             echo '<tr>' . $spu . '</tr>';
+                            array_push($counter_count, array( $row['STATUS'], (int)$row['C'] ) );
                         }
                         ?>
 
                     </table>
                 </div>
-                <div class="col-md-3"></div>
+
+                <div class="row" style="text-align:center">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-7"><div id="piechart_types"></div></div>
+                    <div class="col-md-3"></div>
+                </div>
+
+                <script type="text/javascript">
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+
+                    function drawChart() {
+                        
+                        var data_raw = <?php echo json_encode($counter_count); ?>;
+                        data_raw.unshift(['Type','Count']);
+
+                        var data = google.visualization.arrayToDataTable(data_raw);
+
+                        var options = {
+                            title: 'Composition of whole database';
+                        };
+
+                        var chart = new google.visualization.PieChart(document.getElementById('piechart_types'));
+
+                        chart.draw(data, options);
+                    }
+                </script>
+
+                <!--<div class="col-md-3"></div>-->
 
 
 

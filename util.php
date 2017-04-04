@@ -7,7 +7,7 @@ function checkp($x,$vid) { // $x is the highest number with clearance. if x=1, t
     // 0: full access. 1: selectioners, when active. 2: read only. 3: limited access (IAPS)
     $privileges = array('eugenio'=>0,
                         'michele'=>0,
-                        'lorenzo'=>2, // set to 1 when you want them to be able to edit statuses
+                        'lorenzo'=>1, // set to 1 when you want them to be able to edit statuses
                         'lucio'=>2,
                         'francesco'=>2,
                         'oc_member'=>2,
@@ -17,6 +17,20 @@ function checkp($x,$vid) { // $x is the highest number with clearance. if x=1, t
 
     return (isset($privileges) and $privileges[$vid] <= $x);
 }
+
+
+// choose table
+function choose_table($ID) {
+    
+    // connect to db
+    $dbinfo = explode("\n", file_get_contents('loginDB.txt'))[0];
+    $dbinfo = explode(" ", $dbinfo);
+    $table = $dbinfo[11];
+    $table_late = $dbinfo[19];
+    
+    return ( (int)$ID > 500 ? $table_late : $table );
+}
+
 
 // functions
 function do_hlink($s,$w) {
@@ -101,11 +115,11 @@ function fcapping($x,$s) {
         $kapping = 900;
         $uarning = 900;
     } elseif ($s=='NC Italy') {
-        $kapping = 10;
-        $uarning = 8;
-    } else {
         $kapping = 20;
-        $uarning = 16;
+        $uarning = 18;
+    } else {
+        $kapping = 30;
+        $uarning = 28;
     }
 
     if ($x>$kapping) {

@@ -22,7 +22,7 @@ $table_excursions = $dbinfo[15];
 $table_late = $dbinfo[19];
 
 // table : UNION between early and late
-$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
+//$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
 
 $mysqli = new mysqli($host, $user, $password, $db);
 
@@ -59,6 +59,9 @@ mysqli_set_charset($mysqli, 'utf8');
         // ID is sent via GET method
         $ID = $_GET['ID'];
 
+        // choose appropriate table
+        $table = choose_table($ID);
+
         // select single row, using ID
         $stringa = "SELECT * FROM " . $table . " WHERE ID = ".$ID;
         $result = $mysqli->query($stringa);
@@ -73,7 +76,7 @@ mysqli_set_charset($mysqli, 'utf8');
 
         // fetch data
         $row = $result->fetch_array();
-        
+
         //if (!checkp(2,$VID) and $row['STATUS']!='participant') {
         //    die('You are not cleared to access this ID. This attempt will be reported.');
         //}

@@ -40,6 +40,9 @@ if ($ID == '' or !is_numeric($ID)) {
     $ID = 999999;
 }
 
+// choose appropriate table
+$table = choose_table($ID);
+
 
 // select single row, using ID
 $stringa = "SELECT * FROM " . $table . " WHERE ID = ".$ID;

@@ -21,7 +21,7 @@ $table = $dbinfo[11];
 $table_late = $dbinfo[19];
 
 // table : UNION between early and late
-$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
+//$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
 
 $mysqli = new mysqli($host, $user, $password, $db);
 
@@ -66,6 +66,9 @@ function format_date($date){
         <?php
         // ID is sent via GET method
         $ID = $_GET['ID'];
+
+        // choose appropriate table
+        $table = choose_table($ID);
 
         // select single row, using ID
         $stringa = "SELECT * FROM " . $table . " WHERE ID = ".$ID;

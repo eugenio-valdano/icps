@@ -36,6 +36,10 @@ mysqli_set_charset($mysqli, 'utf8');
 
 $ID = $_GET['ID'];
 
+// choose appropriate table
+$table = choose_table($ID);
+
+
 $surname = $_GET['new_SURNAME'];
 $name = $_GET['new_NAME'];
 $surname_strip = $_GET['new_SURNAME_STRIP'];
