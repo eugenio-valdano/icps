@@ -17,6 +17,10 @@ $db = $dbinfo[5];
 $host = $dbinfo[7];
 $port = $dbinfo[9];
 $table = $dbinfo[11];
+$table_late = $dbinfo[19];
+
+// table : UNION between early and late
+$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
 
 $mysqli = new mysqli($host, $user, $password, $db);
 
@@ -27,9 +31,6 @@ if ($mysqli->connect_errno) {
 
 // utf-8 encoding
 mysqli_set_charset($mysqli, 'utf8');
-
-
-
 
 //counters
 // LCNC
@@ -134,6 +135,7 @@ if ($NTOT==0) {
             $sorting = $_GET['sorting'];
             $cfilter = $_GET['cfilter']; // operator
             $cfilter2 = $_GET['cfilter2']; // status
+            $cfilter3 = $_GET['cfilter3']; // round
             
             //if (!checkp(2,$VID) and $cfilter2!='participant') {
             //    $cfilter2 = 'participant';
@@ -171,6 +173,13 @@ if ($NTOT==0) {
                 $sfilter2 = "AND STATUS = 'waiting'";  
             } else {
                 $sfilter2 = "";
+            }
+            
+            // filtering by round : add directly to $sfilter2
+            if ($cfilter3 == "early") {
+                $sfilter2 .= " AND `ID`<=500";
+            } elseif ($cfilter3 == "late") {
+                $sfilter2 .= " AND `ID`>500";
             }
 
             // query db
@@ -262,7 +271,7 @@ if ($NTOT==0) {
                             <?php
 
                             if (isset($cfilter)) {
-                                $paseo = array('cfilter'=>$cfilter, 'cfilter2'=>$cfilter2, 'query'=>$query);
+                                $paseo = array('cfilter'=>$cfilter, 'cfilter2'=>$cfilter2, 'cfilter3'=>$cfilter3, 'query'=>$query);
                             } else {
                                 $paseo = array('lcnc'=>$lcnc);
                             }
@@ -272,7 +281,7 @@ if ($NTOT==0) {
 
                                 if ( array_key_exists('cfilter',$a) ) {
                                     // normale
-                                    $ek = "\"search.php?cfilter=" . $a['cfilter'] . "&cfilter2=" . $a['cfilter2'] . "&sorting=" . $s . "&query=" . $a['query'] . "\"";
+                                    $ek = "\"search.php?cfilter=" . $a['cfilter'] . "&cfilter2=" . $a['cfilter2'] . "&cfilter3=" . $a['cfilter3'] . "&sorting=" . $s . "&query=" . $a['query'] . "\"";
                                 } else {
                                     //lcnc
                                     $ek = "\"search.php?LCNC=" . $a['lcnc'] . "&sorting=" . $s . "\"";

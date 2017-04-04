@@ -7,7 +7,7 @@ function checkp($x,$vid) { // $x is the highest number with clearance. if x=1, t
     // 0: full access. 1: selectioners, when active. 2: read only. 3: limited access (IAPS)
     $privileges = array('eugenio'=>0,
                         'michele'=>0,
-                        'lorenzo'=>1, // set to 1 when you want them to be able to edit statuses
+                        'lorenzo'=>2, // set to 1 when you want them to be able to edit statuses
                         'lucio'=>2,
                         'francesco'=>2,
                         'oc_member'=>2,
@@ -53,6 +53,8 @@ function status_to_color($s) {
         return 'danger';
     } elseif ($s == 'proven') {
         return 'success';
+    } elseif ($s == 'late') {
+        return 'late';
     } else {
         die('UNKNOWN STATUS');
     }

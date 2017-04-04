@@ -56,16 +56,17 @@ require('util.php');
         <form action="search.php" method="GET">
 
             <div class="row" style="text-align:left">
-                <div  class="col-md-2"></div>
+                <div  class="col-md-1"></div>
                 <div  class="col-md-2"><b>Search by name, surname</b></div>
                 <div class="col-md-2"><b>Sort results by</b></div>
                 <div class="col-md-2"><b>Filter on visa or operator</b></div>
                 <div class="col-md-2"><b>Filter on status</b></div>
-                <div  class="col-md-2"></div>
+                 <div class="col-md-2"><b>Filter on round</b></div>
+                <div  class="col-md-1"></div>
             </div>
 
             <div class="row" style="text-align:left">
-                <div  class="col-md-2"></div>
+                <div  class="col-md-1"></div>
                 <div  class="col-md-2">
                     <input type="text" name="query" placeholder="leave blank for all" />
                 </div>
@@ -99,7 +100,14 @@ require('util.php');
                         <option value="proven" <?php echo (checkp(3,$VID) ? '' : 'disabled'); ?> >proven</option>
                     </select>
                 </div>
-                <div  class="col-md-2"><input type="submit" value="Submit query" /></div>
+                <div class="col-md-2">
+                    <select name="cfilter3">
+                        <option value="all" <?php echo (checkp(3,$VID) ? '' : 'disabled'); ?> >all</option>
+                        <option value="early" <?php echo (checkp(3,$VID) ? '' : 'disabled'); ?> >early bird</option>
+                        <option value="late" <?php echo (checkp(3,$VID) ? '' : 'disabled'); ?> >late</option>
+                    </select>
+                </div>
+                <div  class="col-md-1" style="text-align:left"><input type="submit" value="Submit query" /></div>
             </div>
         </form>
 

@@ -19,6 +19,10 @@ $host = $dbinfo[7];
 $port = $dbinfo[9];
 $table = $dbinfo[11];
 $table_excursions = $dbinfo[15];
+$table_late = $dbinfo[19];
+
+// table : UNION between early and late
+$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
 
 $mysqli = new mysqli($host, $user, $password, $db);
 

@@ -7,3 +7,8 @@ td.participant {
     background-color: darkgreen !important;
     color: ghostwhite !important;
 }
+
+td.late {
+    background-color: beige !important;
+    color: black !important;
+}
