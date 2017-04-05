@@ -22,7 +22,7 @@ $table_excursions = $dbinfo[15];
 $table_late = $dbinfo[19];
 
 // table : UNION between early and late
-$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
+//$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
 
 $mysqli = new mysqli($host, $user, $password, $db);
 
@@ -34,11 +34,33 @@ if ($mysqli->connect_errno) {
 // utf-8 encoding
 mysqli_set_charset($mysqli, 'utf8');
 
-
 // COUNT PER STATUS
-$stringa = "SELECT `STATUS`,COUNT(`STATUS`) as `C` FROM " . $table . " GROUP BY `STATUS` ORDER BY `STATUS`";
-$result_count = $mysqli->query($stringa);
 
+$stringa = "SELECT `a`.`STATUS`,`a`.`C` as `EARLY`,IFNULL(`b`.`C`,0) AS `LATE`,`a`.`C`+IFNULL(`b`.`C`,0) AS `TOT` FROM ( SELECT `STATUS`,COUNT(`STATUS`) as `C` FROM " . $table . " GROUP BY `STATUS` ORDER BY `STATUS` ) `a` LEFT JOIN ( SELECT `STATUS`,COUNT(`STATUS`) as `C` FROM " . $table_late . " GROUP BY `STATUS` ORDER BY `STATUS` ) `b` ON `a`.`STATUS`=`b`.`STATUS` ORDER BY FIELD(`a`.`STATUS`,'rejected','withdrawn','waiting','accepted','proven','participant') ";
+$result_count = $mysqli->query($stringa);
+// this returns a table with columns STATUS,EARLY,LATE,TOT
+
+// JUST ACCEPTED, FOR CHART
+$stringa = "SELECT `a`.`STATUS`,`a`.`C` as `EARLY`,IFNULL(`b`.`C`,0) AS `LATE` FROM ( SELECT `STATUS`,COUNT(`STATUS`) as `C` FROM `earlybird` GROUP BY `STATUS` ORDER BY `STATUS` ) `a` LEFT JOIN ( SELECT `STATUS`,COUNT(`STATUS`) as `C` FROM `late` GROUP BY `STATUS` ORDER BY `STATUS` ) `b` ON `a`.`STATUS`=`b`.`STATUS` WHERE `a`.`STATUS` = 'accepted' OR `a`.`STATUS` = 'proven' OR `a`.`STATUS` = 'participant' ORDER BY FIELD(`a`.`STATUS`,'accepted','proven','participant')";
+$result_count_chart = $mysqli->query($stringa);
+//var_dump($result_count_chart);
+// table with columns STATUS,EARLY,LATE and only the accepted stati
+$count_chart = array(['EARLY','LATE']);
+while( $row = $result_count_chart->fetch_array() ) {
+    $count_chart[] = array((int)$row['EARLY'], (int)$row['LATE']);
+}
+// transpose
+function transpose($array) {
+    $out = array();
+    foreach ($array as  $rowkey => $row) {
+        foreach($row as $colkey => $col){
+            $out[$colkey][$rowkey]=$col;
+        }
+    }
+    return $out;
+}
+$count_chart = transpose($count_chart);  // rows: early,late . columns: accepted,proven,participant
+var_dump($count_chart);
 
 // QUERY GLOBAL STATS
 
@@ -140,13 +162,16 @@ $result_lcnc = $mysqli->query($stringa); // now table with LCNC,ALL,ACCEPTED
                 <div class="col-md-2"></div>
                 <div class="col-md-7">
                     <table class="table">
+                        <tr>
+                        <th>status</th><th>early</th><th>late</th><th>total</th>
+                        </tr>
                         <?php
-                        $counter_count = array(); // record for pie
+                        //$counter_count = array(); // record for pie
                         while($row = $result_count->fetch_array()) {
                             $colorclass = status_to_color($row['STATUS']);
-                            $spu = '<td class="' . $colorclass . '">' . $row['STATUS'] . '</td><td  style="text-align:left">' . $row['C'] . '</td>';
+                            $spu = '<td class="' . $colorclass . '">' . $row['STATUS'] . '</td><td  style="text-align:left">' . $row['EARLY'] . '</td><td  style="text-align:left">' . $row['LATE'] . '</td><td  style="text-align:left">' . $row['TOT'] . '</td>';
                             echo '<tr>' . $spu . '</tr>';
-                            array_push($counter_count, array( $row['STATUS'], (int)$row['C'] ) );
+                            //array_push($counter_count, array( $row['STATUS'], (int)$row['C'] ) );
                         }
                         ?>
 
@@ -155,29 +180,43 @@ $result_lcnc = $mysqli->query($stringa); // now table with LCNC,ALL,ACCEPTED
 
                 <div class="row" style="text-align:center">
                     <div class="col-md-2"></div>
-                    <div class="col-md-7"><div id="piechart_types"></div></div>
+                    <div class="col-md-7"><div id="stackbar"></div></div>
                     <div class="col-md-3"></div>
                 </div>
+                
+                <?php
+                
+                ?>
 
                 <script type="text/javascript">
-                    google.charts.load('current', {'packages':['corechart']});
-                    google.charts.setOnLoadCallback(drawChart);
 
-                    function drawChart() {
+                    google.charts.load('current', {packages: ['corechart', 'bar']});
+                    google.charts.setOnLoadCallback(drawBarColors);
+
+                    function drawBarColors() {
                         
-                        var data_raw = <?php echo json_encode($counter_count); ?>;
-                        data_raw.unshift(['Type','Count']);
-
+                        var data_raw = <?php echo json_encode($count_chart); ?>;
+                        data_raw.unshift(['Round','Accepted','Proven','Participant']);
+                        
                         var data = google.visualization.arrayToDataTable(data_raw);
 
                         var options = {
-                            title: 'Composition of whole database';
+                            title: 'Accepted, by status and round',
+                            chartArea: {width: '50%'},
+                            colors: ['#b0120a', '#ffab91'],
+                            hAxis: {
+                                title: 'Count',
+                                minValue: 0
+                            },
+                            vAxis: {
+                                title: 'Round'
+                            },
+                            isStacked: true
                         };
-
-                        var chart = new google.visualization.PieChart(document.getElementById('piechart_types'));
-
+                        var chart = new google.visualization.BarChart(document.getElementById('stackbar'));
                         chart.draw(data, options);
                     }
+
                 </script>
 
                 <!--<div class="col-md-3"></div>-->
