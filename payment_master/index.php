@@ -275,6 +275,9 @@ $APIlive = $dbinfo[3];
                         </div>
                     </noscript>
                     <?php
+
+                    $round = $_GET['round'];
+
                     require 'lib/Stripe.php';
 
                     $error = '';
@@ -282,8 +285,6 @@ $APIlive = $dbinfo[3];
 
                     if ($_POST) {
                         Stripe::setApiKey($APIlive);
-
-                        $round = $_GET['round'];
 
                         // ******************** if NOT LATE registration ---> EARLY
                         if ($round!='late'){
@@ -517,7 +518,6 @@ $APIlive = $dbinfo[3];
                                         ";
                             }                 
                             echo "</table>
-                                    </div>
                                     </div>";
                         } 
                         // ****************** if LATE
@@ -683,7 +683,8 @@ $APIlive = $dbinfo[3];
                                                      "HU","IS","IE","IT","LV","LI","LT","LU","MT","NL","NO","PL","PT","PM","RO","SM","SK",
                                                      "SI","ES","SE","CH","GB"];
                                     //$('#quota').html(country);
-                                    if ($round!='late'){
+                                    var round = "<?php echo $round; ?>";
+                                    if (round!='late'){
                                         if (countries.indexOf(country)>-1){
                                             $('#paese').val('EU');
                                             var im = "<?php echo $im; ?>";
@@ -793,14 +794,18 @@ $APIlive = $dbinfo[3];
                                             <td align="right">
                                                 <span style="font-size: 12pt">
                                                     <?php
-                                                    if ($im=='yes'){
-                                                        echo "
-                                                    210.00€
-                                                ";
+                                                    if ($round!='late'){
+                                                        if ($im=='yes'){
+                                                            echo "210.00€";
+                                                        } else {
+                                                            echo "200.00€";
+                                                        }
                                                     } else {
-                                                        echo "
-                                                    200.00€
-                                                ";
+                                                        if ($im=='yes'){
+                                                            echo "240.00€";
+                                                        } else {
+                                                            echo "230.00€";
+                                                        }
                                                     }
                                                     ?>
                                                 </span>
