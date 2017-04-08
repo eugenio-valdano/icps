@@ -423,6 +423,9 @@ mysqli_set_charset($mysqli, 'utf8');
             //URL for PAYMENT
             $payim = ($row['LCNC']=='IM' ? 'yes' : 'no');
             $urlpa = 'http://www.ai-sf.it/dbicps/payment_master/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&im=' . $payim;
+            if ((int)$ID>500){
+                $urlpa .= '&round=late';
+            } 
             $urlpa = str_replace(' ','%20',$urlpa);
             echo 'pay by cc: <a id="urlpa" href="' . $urlpa . '">' . $urlpa . '</a>';
             echo '<button onclick="copyToClipboard(\'#urlpa\')">Copy URL</button>';

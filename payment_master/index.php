@@ -260,7 +260,7 @@ $APIlive = $dbinfo[3];
                 <div class="col-md-4" style="text-align:center">
                     <div class="small_skip">
                         <a  href="https://www.icps2017.it/"><img style="width:135px;height:202px;" src="LOGO.jpg" alt="ICPS_logo" hspace="50"></a>
-                       <!-- <a  href="https://stripe.com/"><img style="width:114;height:41px;" src="stripe_logo.png" alt="stripe_logo"></a>-->
+                        <!-- <a  href="https://stripe.com/"><img style="width:114;height:41px;" src="stripe_logo.png" alt="stripe_logo"></a>-->
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -283,62 +283,127 @@ $APIlive = $dbinfo[3];
                     if ($_POST) {
                         Stripe::setApiKey($APIlive);
 
-                        try {
-                            if (empty($_POST['street']) || empty($_POST['city']) || empty($_POST['zip']))
-                                throw new Exception("Fill out all required fields.");
-                            if (!isset($_POST['stripeToken']))
-                                throw new Exception("The Stripe Token was not generated correctly");
-                            if ($_POST['paese']=='NEU'){
-                                if ($_POST['individual_membership']=='yes'){
-                                    Stripe_Charge::create(array("amount" => 21656,
-                                                                "currency" => "eur",
-                                                                "card" => $_POST['stripeToken'],
-                                                                "description" => $_POST['uid']." ".$_POST['email'],
-                                                                "receipt_email" => $_POST['email']));
-                                    $success = '<div class="alert alert-success">
+                        $round = $_GET['round'];
+
+                        // ******************** if NOT LATE registration ---> EARLY
+                        if ($round!='late'){
+                            try {
+                                if (empty($_POST['street']) || empty($_POST['city']) || empty($_POST['zip']))
+                                    throw new Exception("Fill out all required fields.");
+                                if (!isset($_POST['stripeToken']))
+                                    throw new Exception("The Stripe Token was not generated correctly");
+                                if ($_POST['paese']=='NEU'){
+                                    if ($_POST['individual_membership']=='yes'){
+                                        Stripe_Charge::create(array("amount" => 21656,
+                                                                    "currency" => "eur",
+                                                                    "card" => $_POST['stripeToken'],
+                                                                    "description" => $_POST['uid']." ".$_POST['email'],
+                                                                    "receipt_email" => $_POST['email']));
+                                        $success = '<div class="alert alert-success">
                                                 <strong>Success!</strong> Your payment was successful.
 				                                </div>';
-                                } elseif ($_POST['individual_membership']=='no'){
-                                    Stripe_Charge::create(array("amount" => 20625,
-                                                                "currency" => "eur",
-                                                                "card" => $_POST['stripeToken'],
-                                                                "description" => $_POST['uid']." ".$_POST['email'],
-                                                                "receipt_email" => $_POST['email']));
-                                    $success = '<div class="alert alert-success">
+                                    } elseif ($_POST['individual_membership']=='no'){
+                                        Stripe_Charge::create(array("amount" => 20625,
+                                                                    "currency" => "eur",
+                                                                    "card" => $_POST['stripeToken'],
+                                                                    "description" => $_POST['uid']." ".$_POST['email'],
+                                                                    "receipt_email" => $_POST['email']));
+                                        $success = '<div class="alert alert-success">
                                                 <strong>Success!</strong> Your payment was successful.
 				                                </div>';
-                                }
-                            } else  if ($_POST['paese']=='EU') {
-                                if ($_POST['individual_membership']=='yes'){
-                                    Stripe_Charge::create(array("amount" => 21326,
-                                                                "currency" => "eur",
-                                                                "card" => $_POST['stripeToken'],
-                                                                "description" => $_POST['uid']." ".$_POST['email'],
-                                                                "receipt_email" => $_POST['email']));
-                                    $success = '<div class="alert alert-success">
+                                    }
+                                } else  if ($_POST['paese']=='EU') {
+                                    if ($_POST['individual_membership']=='yes'){
+                                        Stripe_Charge::create(array("amount" => 21326,
+                                                                    "currency" => "eur",
+                                                                    "card" => $_POST['stripeToken'],
+                                                                    "description" => $_POST['uid']." ".$_POST['email'],
+                                                                    "receipt_email" => $_POST['email']));
+                                        $success = '<div class="alert alert-success">
                                                 <strong>Success!</strong> Your payment was successful.
 				                                </div>';
-                                } elseif ($_POST['individual_membership']=='no'){
-                                    Stripe_Charge::create(array("amount" => 20311,
-                                                                "currency" => "eur",
-                                                                "card" => $_POST['stripeToken'],
-                                                                "description" => $_POST['uid']." ".$_POST['email'],
-                                                                "receipt_email" => $_POST['email']));
-                                    $success = '<div class="alert alert-success">
+                                    } elseif ($_POST['individual_membership']=='no'){
+                                        Stripe_Charge::create(array("amount" => 20311,
+                                                                    "currency" => "eur",
+                                                                    "card" => $_POST['stripeToken'],
+                                                                    "description" => $_POST['uid']." ".$_POST['email'],
+                                                                    "receipt_email" => $_POST['email']));
+                                        $success = '<div class="alert alert-success">
                                                 <strong>Success!</strong> Your payment was successful. 
                                                 An email has been sent to your address with the Stripe payment receipt.
 				                                </div>';
-                                }
-                            } else {
-                                $success = '<div class="alert alert-danger">
+                                    }
+                                } else {
+                                    $success = '<div class="alert alert-danger">
                 <strong>FAILURE!</strong> Something went wrong.
 				</div>';
+                                }
                             }
-                        }
-                        catch (Exception $e) {
-                            $error = '<div class="alert alert-danger">
+                            catch (Exception $e) {
+                                $error = '<div class="alert alert-danger">
 			  <strong>Error!</strong> '.$e->getMessage().'
 			  </div>';
+                            }
+                        } 
+                        // ******************* if LATE registration
+                        else {
+                            try {
+                                if (empty($_POST['street']) || empty($_POST['city']) || empty($_POST['zip']))
+                                    throw new Exception("Fill out all required fields.");
+                                if (!isset($_POST['stripeToken']))
+                                    throw new Exception("The Stripe Token was not generated correctly");
+                                if ($_POST['paese']=='NEU'){
+                                    if ($_POST['individual_membership']=='yes'){
+                                        Stripe_Charge::create(array("amount" => 24743,
+                                                                    "currency" => "eur",
+                                                                    "card" => $_POST['stripeToken'],
+                                                                    "description" => $_POST['uid']." ".$_POST['email'],
+                                                                    "receipt_email" => $_POST['email']));
+                                        $success = '<div class="alert alert-success">
+                                                <strong>Success!</strong> Your payment was successful.
+				                                </div>';
+                                    } elseif ($_POST['individual_membership']=='no'){
+                                        Stripe_Charge::create(array("amount" => 23713,
+                                                                    "currency" => "eur",
+                                                                    "card" => $_POST['stripeToken'],
+                                                                    "description" => $_POST['uid']." ".$_POST['email'],
+                                                                    "receipt_email" => $_POST['email']));
+                                        $success = '<div class="alert alert-success">
+                                                <strong>Success!</strong> Your payment was successful.
+				                                </div>';
+                                    }
+                                } else  if ($_POST['paese']=='EU') {
+                                    if ($_POST['individual_membership']=='yes'){
+                                        Stripe_Charge::create(array("amount" => 24367,
+                                                                    "currency" => "eur",
+                                                                    "card" => $_POST['stripeToken'],
+                                                                    "description" => $_POST['uid']." ".$_POST['email'],
+                                                                    "receipt_email" => $_POST['email']));
+                                        $success = '<div class="alert alert-success">
+                                                <strong>Success!</strong> Your payment was successful.
+				                                </div>';
+                                    } elseif ($_POST['individual_membership']=='no'){
+                                        Stripe_Charge::create(array("amount" => 23352,
+                                                                    "currency" => "eur",
+                                                                    "card" => $_POST['stripeToken'],
+                                                                    "description" => $_POST['uid']." ".$_POST['email'],
+                                                                    "receipt_email" => $_POST['email']));
+                                        $success = '<div class="alert alert-success">
+                                                <strong>Success!</strong> Your payment was successful. 
+                                                An email has been sent to your address with the Stripe payment receipt.
+				                                </div>';
+                                    }
+                                } else {
+                                    $success = '<div class="alert alert-danger">
+                <strong>FAILURE!</strong> Something went wrong.
+				</div>';
+                                }
+                            }
+                            catch (Exception $e) {
+                                $error = '<div class="alert alert-danger">
+			  <strong>Error!</strong> '.$e->getMessage().'
+			  </div>';
+                            }
                         }
                     }
 
@@ -379,36 +444,36 @@ $APIlive = $dbinfo[3];
 
                             <?php
     $im = $_GET['im'];
-                            ?>
-                            <div class="col-sm-8">
-                                <table>
-                                    <tr>
-                                        <td width="20">
-                                            <input type="radio" name="base" value="base" checked> 
-                                        </td>
-                                        <td align="right">
-                                            <b>190.00€</b>
-                                        </td>
-                                        <td>&nbsp;&nbsp;</td>
-                                        <td width="300" align="left">
-                                            Early Bird fee
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="20">
-                                            <input type="radio" name="exc" value="exec" checked> 
-                                        </td>
-                                        <td align="right">
-                                            <b>10.00€</b>
-                                        </td>
-                                        <td></td>
-                                        <td width="300">
-                                            Excursion fee
-                                        </td>
-                                    </tr>
-                                    <?php
-                                    if ($im=='yes') {
-                                        echo "
+                        // ********************* if NOT LATE
+                        if ($round!='late'){
+                            echo "<div class=\"col-sm-8\">
+                                        <table>
+                                            <tr>
+                                                <td width=\"20\">
+                                                    <input type=\"radio\" name=\"base\" value=\"base\" checked> 
+                                                </td>
+                                                <td align=\"right\">
+                                                    <b>190.00€</b>
+                                                </td>
+                                                <td>&nbsp;&nbsp;</td>
+                                                <td width=\"300\" align=\"left\">
+                                                    Early Bird fee
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width=\"20\">
+                                                    <input type=\"radio\" name=\"exc\" value=\"exec\" checked> 
+                                                </td>
+                                                <td align=\"right\">
+                                                    <b>10.00€</b>
+                                                </td>
+                                                <td></td>
+                                                <td width=\"300\">
+                                                    Excursion fee
+                                                </td>
+                                            </tr>";
+                            if ($im=='yes') {
+                                echo "
                                         <tr>
                                         <td width=\"30\">
                                             <input type=\"radio\" name=\"iaps\" value=\"iaps\" checked> 
@@ -434,9 +499,9 @@ $APIlive = $dbinfo[3];
                                         <td width=\"300\">Net total</td>
                                         </tr>
                                         ";
-                                    } else 
-                                    {
-                                        echo "
+                            } else 
+                            {
+                                echo "
                                         <tr class=\"blank_row\" style=\"border-bottom: 1px solid #000;\">
                                         <td colspan=\"4\"></td>
                                         </tr>
@@ -450,12 +515,88 @@ $APIlive = $dbinfo[3];
                                         <td width=\"300\">Net total</td>
                                         </tr>
                                         ";
-                                    }
-                                    ?>                    
-                                </table>
-                            </div>
+                            }                 
+                            echo "</table>
+                                    </div>
+                                    </div>";
+                        } 
+                        // ****************** if LATE
+                        else {
+                            echo "<div class=\"col-sm-8\">
+                                        <table>
+                                            <tr>
+                                                <td width=\"20\">
+                                                    <input type=\"radio\" name=\"base\" value=\"base\" checked> 
+                                                </td>
+                                                <td align=\"right\">
+                                                    <b>220.00€</b>
+                                                </td>
+                                                <td>&nbsp;&nbsp;</td>
+                                                <td width=\"300\" align=\"left\">
+                                                    Late registration fee
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width=\"20\">
+                                                    <input type=\"radio\" name=\"exc\" value=\"exec\" checked> 
+                                                </td>
+                                                <td align=\"right\">
+                                                    <b>10.00€</b>
+                                                </td>
+                                                <td></td>
+                                                <td width=\"300\">
+                                                    Excursion fee
+                                                </td>
+                                            </tr>";
+                            if ($im=='yes') {
+                                echo "
+                                        <tr>
+                                        <td width=\"30\">
+                                            <input type=\"radio\" name=\"iaps\" value=\"iaps\" checked> 
+                                        </td>
+                                        <td align=\"right\">
+                                        <b>10.00€</b>
+                                        </td>
+                                        <td></td>
+                                        <td width=\"300\">
+                                            IAPS membership fee
+                                        </td>
+                                        </tr>
+                                        <tr class=\"blank_row\" style=\"border-bottom: 1px solid #000;\">
+                                        <td colspan=\"4\"></td>
+                                        </tr>
+                                        <tr class=\"blank_row\">
+                                        <td colspan=\"4\"></td>
+                                        </tr>
+                                        <tr>
+                                        <td></td>
+                                        <td align=\"right\"><b>240.00€</b></td> 
+                                        <td></td>
+                                        <td width=\"300\">Net total</td>
+                                        </tr>
+                                        ";
+                            } else 
+                            {
+                                echo "
+                                        <tr class=\"blank_row\" style=\"border-bottom: 1px solid #000;\">
+                                        <td colspan=\"4\"></td>
+                                        </tr>
+                                        <tr class=\"blank_row\">
+                                        <td colspan=\"4\"></td>
+                                        </tr>
+                                        <tr>
+                                        <td></td>
+                                        <td align=\"right\"><b>230.00€</b></td> 
+                                        <td></td>
+                                        <td width=\"300\">Net total</td>
+                                        </tr>
+                                        ";
+                            }                 
+                            echo "</table>
+                                    </div>";
+                        } 
+                            ?>
                         </div>
-
                         <legend>Billing Details</legend>
 
                         <!-- Street -->
@@ -542,27 +683,53 @@ $APIlive = $dbinfo[3];
                                                      "HU","IS","IE","IT","LV","LI","LT","LU","MT","NL","NO","PL","PT","PM","RO","SM","SK",
                                                      "SI","ES","SE","CH","GB"];
                                     //$('#quota').html(country);
-                                    if (countries.indexOf(country)>-1){
-                                        $('#paese').val('EU');
-                                        var im = "<?php echo $im; ?>";
-                                        //$('#fee').html(im);
-                                        if (im=='yes'){
-                                            $('#fee').html('3.26€');
-                                            $('#total').html('213.26€');
-                                        } else {
-                                            $('#fee').html('3.11€');
-                                            $('#total').html('203.11€');
+                                    if ($round!='late'){
+                                        if (countries.indexOf(country)>-1){
+                                            $('#paese').val('EU');
+                                            var im = "<?php echo $im; ?>";
+                                            //$('#fee').html(im);
+                                            if (im=='yes'){
+                                                $('#fee').html('3.26€');
+                                                $('#total').html('213.26€');
+                                            } else {
+                                                $('#fee').html('3.11€');
+                                                $('#total').html('203.11€');
+                                            }
+                                        } else{
+                                            $('#paese').val('NEU');
+                                            var im = "<?php echo $im; ?>";
+                                            //$('#fee').html(im);
+                                            if (im=='yes'){
+                                                $('#fee').html('6.56€');
+                                                $('#total').html('216.56€');
+                                            } else {
+                                                $('#fee').html('6.25€');
+                                                $('#total').html('206.25€');
+                                            }
                                         }
-                                    } else{
-                                        $('#paese').val('NEU');
-                                        var im = "<?php echo $im; ?>";
-                                        //$('#fee').html(im);
-                                        if (im=='yes'){
-                                            $('#fee').html('6.56€');
-                                            $('#total').html('216.56€');
-                                        } else {
-                                            $('#fee').html('6.25€');
-                                            $('#total').html('206.25€');
+                                    } else {
+                                        if (countries.indexOf(country)>-1){
+                                            $('#paese').val('EU');
+                                            var im = "<?php echo $im; ?>";
+                                            //$('#fee').html(im);
+                                            if (im=='yes'){
+                                                $('#fee').html('3.67€');
+                                                $('#total').html('243.67€');
+                                            } else {
+                                                $('#fee').html('3.52€');
+                                                $('#total').html('233.52€');
+                                            }
+                                        } else{
+                                            $('#paese').val('NEU');
+                                            var im = "<?php echo $im; ?>";
+                                            //$('#fee').html(im);
+                                            if (im=='yes'){
+                                                $('#fee').html('7.43€');
+                                                $('#total').html('247.43€');
+                                            } else {
+                                                $('#fee').html('7.13€');
+                                                $('#total').html('237.13€');
+                                            }
                                         }
                                     }
                                     //$("#payment-form").append("<input type='hidden' name='country' value='US' />");
@@ -714,9 +881,9 @@ XXXXXXX </p>
                     </fieldset>
                 </div>
                 <!--<div class="col-md-4" style="text-align:left">
-                    <div class="small_skip"></div>
-                    <a  href="https://www.icps2017.it/"><img style="width:135px;height:202px;" src="LOGO.jpg" alt="ICPS_logo"></a>
-                </div>-->
+<div class="small_skip"></div>
+<a  href="https://www.icps2017.it/"><img style="width:135px;height:202px;" src="LOGO.jpg" alt="ICPS_logo"></a>
+</div>-->
             </div>
         </form>
     </body>
