@@ -56,8 +56,12 @@
         $contribution = $_POST['type'];
         $id = substr($uid, -3, 3);
         //echo $id;
-
-        $stringa = "SELECT * FROM " . $table . " WHERE ID=".$id;
+        
+        if ($id<=500){
+            $stringa = "SELECT * FROM " . $table . " WHERE ID=".$id;
+        } else {
+            $stringa = "SELECT * FROM late WHERE ID=".$id;
+        }
         $result = $mysqli->query($stringa);
         $entries = $result->num_rows;
 
