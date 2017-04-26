@@ -41,7 +41,7 @@ $result_count = $mysqli->query($stringa);
 // this returns a table with columns STATUS,EARLY,LATE,TOT
 
 // JUST ACCEPTED, FOR CHART
-$stringa = "SELECT `a`.`STATUS`,`a`.`C` as `EARLY`,IFNULL(`b`.`C`,0) AS `LATE` FROM ( SELECT `STATUS`,COUNT(`STATUS`) as `C` FROM `earlybird` GROUP BY `STATUS` ORDER BY `STATUS` ) `a` LEFT JOIN ( SELECT `STATUS`,COUNT(`STATUS`) as `C` FROM `late` GROUP BY `STATUS` ORDER BY `STATUS` ) `b` ON `a`.`STATUS`=`b`.`STATUS` WHERE `a`.`STATUS` = 'accepted' OR `a`.`STATUS` = 'proven' OR `a`.`STATUS` = 'participant' ORDER BY FIELD(`a`.`STATUS`,'accepted','proven','participant')";
+$stringa = "SELECT `a`.`STATUS`,`a`.`C` as `EARLY`,IFNULL(`b`.`C`,0) AS `LATE` FROM ( SELECT `STATUS`,COUNT(`STATUS`) as `C` FROM `earlybird` GROUP BY `STATUS` ORDER BY `STATUS` ) `a` LEFT JOIN ( SELECT `STATUS`,COUNT(`STATUS`) as `C` FROM `late` GROUP BY `STATUS` ORDER BY `STATUS` ) `b` ON `a`.`STATUS`=`b`.`STATUS` WHERE `a`.`STATUS` = 'accepted' OR `a`.`STATUS` = 'proven' OR `a`.`STATUS` = 'participant' ORDER BY FIELD(`a`.`STATUS`,'participant','proven','accepted')";
 $result_count_chart = $mysqli->query($stringa);
 //var_dump($result_count_chart);
 // table with columns STATUS,EARLY,LATE and only the accepted stati
@@ -60,9 +60,12 @@ function transpose($array) {
     return $out;
 }
 $count_chart = transpose($count_chart);  // rows: early,late . columns: accepted,proven,participant
-var_dump($count_chart);
+//var_dump($count_chart);
 
 // QUERY GLOBAL STATS
+
+// now table is a UNION between early and late
+$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
 
 $listo = array(" WHERE STATUS='accepted' OR STATUS='proven' OR STATUS='participant'","");
 $listo_output = array(); // $listo_output[0=solo accettati, 1=tutti][<nome variabile>]
@@ -163,7 +166,7 @@ $result_lcnc = $mysqli->query($stringa); // now table with LCNC,ALL,ACCEPTED
                 <div class="col-md-7">
                     <table class="table">
                         <tr>
-                        <th>status</th><th>early</th><th>late</th><th>total</th>
+                            <th>status</th><th>early</th><th>late</th><th>total</th>
                         </tr>
                         <?php
                         //$counter_count = array(); // record for pie
@@ -177,159 +180,162 @@ $result_lcnc = $mysqli->query($stringa); // now table with LCNC,ALL,ACCEPTED
 
                     </table>
                 </div>
-
-                <div class="row" style="text-align:center">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-7"><div id="stackbar"></div></div>
-                    <div class="col-md-3"></div>
-                </div>
-                
-                <?php
-                
-                ?>
-
-                <script type="text/javascript">
-
-                    google.charts.load('current', {packages: ['corechart', 'bar']});
-                    google.charts.setOnLoadCallback(drawBarColors);
-
-                    function drawBarColors() {
-                        
-                        var data_raw = <?php echo json_encode($count_chart); ?>;
-                        data_raw.unshift(['Round','Accepted','Proven','Participant']);
-                        
-                        var data = google.visualization.arrayToDataTable(data_raw);
-
-                        var options = {
-                            title: 'Accepted, by status and round',
-                            chartArea: {width: '50%'},
-                            colors: ['#b0120a', '#ffab91'],
-                            hAxis: {
-                                title: 'Count',
-                                minValue: 0
-                            },
-                            vAxis: {
-                                title: 'Round'
-                            },
-                            isStacked: true
-                        };
-                        var chart = new google.visualization.BarChart(document.getElementById('stackbar'));
-                        chart.draw(data, options);
-                    }
-
-                </script>
-
-                <!--<div class="col-md-3"></div>-->
-
-
-
-                <div class="row" style="text-align:center">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4"><h1>SOME STATS</h1></div>
-                    <div class="col-md-4"></div>
-                </div>
-
-                <br>
-
-
-
-
-                <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-7">
-
-                        <table class='table'>
-                            <tr>
-                                <th>ITEM</th>
-                                <th>ALL SUBMISSIONS</th>
-                                <th>ACCEPTED</th>
-                            </tr>
-
-                            <tr>
-                                <td>COUNT</td>
-                                <td><?php echo $listo_output[1]['NTOT'];?></td>
-                                <?php
-                                echo '<td ' . fcapping_tot($listo_output[0]['NTOT']) . '>' . $listo_output[0]['NTOT'] . '</td>';
-                                ?>
-                            </tr>
-
-                            <tr>
-                                <td>GIRLS</td>
-                                <td><?php echo $listo_output[1]['FEMALE_R'];?></td>
-                                <td><?php echo $listo_output[0]['FEMALE_R'];?></td>
-                            </tr>
-
-                            <tr>
-                                <td>BOYS</td>
-                                <td><?php echo $listo_output[1]['MALE_R'];?></td>
-                                <td><?php echo $listo_output[0]['MALE_R'];?></td>
-                            </tr>
-
-                            <tr>
-                                <td>BSc</td>
-                                <td><?php echo $listo_output[1]['Bachelor_R'];?></td>
-                                <td><?php echo $listo_output[0]['Bachelor_R'];?></td>
-                            </tr>
-
-                            <tr>
-                                <td>MSc</td>
-                                <td><?php echo $listo_output[1]['Master_R'];?></td>
-                                <td><?php echo $listo_output[0]['Master_R'];?></td>
-                            </tr>
-
-                            <tr>
-                                <td>PhD</td>
-                                <td><?php echo $listo_output[1]['PhD_R'];?></td>
-                                <td><?php echo $listo_output[0]['PhD_R'];?></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-
-                            <?php
-
-                            while($row = $result_lcnc->fetch_array()) {
-                                echo '<tr>';
-                                echo '<td>' . $row['LCNC'] . '</td>';
-                                echo '<td>' . $row['ALL']. '</td>';
-                                echo '<td ' . fcapping($row['ACCEPTED'],$row['LCNC']) . '>' . $row['ACCEPTED']. '</td>';
-                                echo '</tr>';
-                            }
-
-                            ?>
-                        </table>
-                    </div>
-                    <div class="col-md-3"></div>
-                </div>
-
-                <br><br>
-
-                <div class="row" style="text-align:center">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-7"><div id="chart_excursions"></div></div>
-                    <div class="col-md-3"></div>
-                </div>
-
-                <br>
-
-                <div class="row" style="text-align:center">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-7">
-                        <table class="table">
-                            <?php
-                            foreach ($dexcursions as $key => $value) {
-                                $spu = '<td>' . $key . '</td><td  style="text-align:left">' . $value . '</td>';
-                                echo '<tr>' . $spu . '</tr>';
-                            }
-                            ?>
-                        </table>
-                    </div>
-                    <div class="col-md-3"></div>
-                </div>
-
+                <div class="col-md-3"></div>
             </div>
+
+            <div class="row" style="text-align:center">
+                <div class="col-md-2"></div>
+                <div class="col-md-7"><div id="stackbar"></div></div>
+                <div class="col-md-3"></div>
+            </div>
+
+            <?php
+
+            ?>
+
+            <script type="text/javascript">
+
+                google.charts.load('current', {packages: ['corechart', 'bar']});
+                google.charts.setOnLoadCallback(drawBarColors);
+
+                function drawBarColors() {
+
+                    var data_raw = <?php echo json_encode($count_chart); ?>;
+                    data_raw.unshift(['Round','Accepted','Proven','Participant']);
+
+                    var data = google.visualization.arrayToDataTable(data_raw);
+
+                    var options = {
+                        title: 'Accepted, by status and round',
+                        chartArea: {width: '50%'},
+                        colors: ['#376407','#e3f0d7','#deecf7'],
+                        backgroundColor: '#ffdb99',
+                        hAxis: {
+                            title: 'Count',
+                            minValue: 0
+                        },
+                        vAxis: {
+                            title: 'Round'
+                        },
+                        isStacked: true
+                    };
+                    var chart = new google.visualization.BarChart(document.getElementById('stackbar'));
+                    chart.draw(data, options);
+                }
+
+            </script>
+
+            <!--<div class="col-md-3"></div>-->
+
+
+
+            <div class="row" style="text-align:center">
+                <div class="col-md-4"></div>
+                <div class="col-md-4"><h2>Statistics (early + late)</h2></div>
+                <div class="col-md-4"></div>
+            </div>
+
+            <br>
+
+
+
+
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-7">
+
+                    <table class='table'>
+                        <tr>
+                            <th>ITEM</th>
+                            <th>ALL SUBMISSIONS</th>
+                            <th>ACCEPTED</th>
+                        </tr>
+
+                        <tr>
+                            <td>COUNT</td>
+                            <td><?php echo $listo_output[1]['NTOT'];?></td>
+                            <?php
+                            echo '<td ' . fcapping_tot($listo_output[0]['NTOT']) . '>' . $listo_output[0]['NTOT'] . '</td>';
+                            ?>
+                        </tr>
+
+                        <tr>
+                            <td>GIRLS</td>
+                            <td><?php echo $listo_output[1]['FEMALE_R'];?></td>
+                            <td><?php echo $listo_output[0]['FEMALE_R'];?></td>
+                        </tr>
+
+                        <tr>
+                            <td>BOYS</td>
+                            <td><?php echo $listo_output[1]['MALE_R'];?></td>
+                            <td><?php echo $listo_output[0]['MALE_R'];?></td>
+                        </tr>
+
+                        <tr>
+                            <td>BSc</td>
+                            <td><?php echo $listo_output[1]['Bachelor_R'];?></td>
+                            <td><?php echo $listo_output[0]['Bachelor_R'];?></td>
+                        </tr>
+
+                        <tr>
+                            <td>MSc</td>
+                            <td><?php echo $listo_output[1]['Master_R'];?></td>
+                            <td><?php echo $listo_output[0]['Master_R'];?></td>
+                        </tr>
+
+                        <tr>
+                            <td>PhD</td>
+                            <td><?php echo $listo_output[1]['PhD_R'];?></td>
+                            <td><?php echo $listo_output[0]['PhD_R'];?></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        <?php
+
+                        while($row = $result_lcnc->fetch_array()) {
+                            echo '<tr>';
+                            echo '<td>' . $row['LCNC'] . '</td>';
+                            echo '<td>' . $row['ALL']. '</td>';
+                            echo '<td ' . fcapping($row['ACCEPTED'],$row['LCNC']) . '>' . $row['ACCEPTED']. '</td>';
+                            echo '</tr>';
+                        }
+
+                        ?>
+                    </table>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+
+            <br><br>
+
+            <div class="row" style="text-align:center">
+                <div class="col-md-2"></div>
+                <div class="col-md-7"><div id="chart_excursions"></div></div>
+                <div class="col-md-3"></div>
+            </div>
+
+            <br>
+
+            <div class="row" style="text-align:center">
+                <div class="col-md-2"></div>
+                <div class="col-md-7">
+                    <table class="table">
+                        <?php
+                        foreach ($dexcursions as $key => $value) {
+                            $spu = '<td>' . $key . '</td><td  style="text-align:left">' . $value . '</td>';
+                            echo '<tr>' . $spu . '</tr>';
+                        }
+                        ?>
+                    </table>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+
+
 
 
 

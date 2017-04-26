@@ -134,9 +134,9 @@ function fcapping($x,$s) {
 
 function fcapping_tot($x) {
 
-    if ($x>250) {
+    if ($x>415) {
         return "style=\"background-color:red;color:white\"";
-    } elseif ($x>240) {
+    } elseif ($x>414) {
         return "style=\"background-color:#e5c100;color:white\"";
     } else {
         return "style=\"background-color:green;color:white\"";   
@@ -144,6 +144,20 @@ function fcapping_tot($x) {
 
 }
 
+
+// color coding early and late
+function coloring_earlylate($x,$short) { // give ID as argument x. short is bool 
+    
+    $stello = ($x>500 ? 'font-weight:bold;color:#F26419' : 'font-weight:bold;color:#0990BA');
+    
+    if ($short==True) {
+        $round = ($x>500 ? 'L' : 'E');
+    } else {
+        $round = ($x>500 ? 'LATE' : 'EARLY BIRD');
+    }
+    
+    return array('string'=>$round, 'style'=>$stello);
+}
 
 
 ?>

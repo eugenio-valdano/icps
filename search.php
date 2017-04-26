@@ -136,7 +136,7 @@ if ($NTOT==0) {
             $cfilter = $_GET['cfilter']; // operator
             $cfilter2 = $_GET['cfilter2']; // status
             $cfilter3 = $_GET['cfilter3']; // round
-            
+
             //if (!checkp(2,$VID) and $cfilter2!='participant') {
             //    $cfilter2 = 'participant';
             //}
@@ -174,7 +174,7 @@ if ($NTOT==0) {
             } else {
                 $sfilter2 = "";
             }
-            
+
             // filtering by round : add directly to $sfilter2
             if ($cfilter3 == "early") {
                 $sfilter2 .= " AND `ID`<=500";
@@ -195,7 +195,7 @@ if ($NTOT==0) {
 
         ?>
 
-<?php if (checkp(2,$VID)): ?>
+        <?php if (checkp(2,$VID)): ?>
         <nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="10">
             <ul class="nav navbar-nav">
                 <!--<li class="active"><a href="#">Basic Topnav</a></li>-->
@@ -262,7 +262,7 @@ if ($NTOT==0) {
 
             <div class="row">
                 <div class="col-md-1"></div>
-                <div class="col-md-10">
+                <div class="col-md-11">
 
                     <table class='table'>
                         <tr>
@@ -290,7 +290,7 @@ if ($NTOT==0) {
                                 return $ek;
                             }
                             ?>
-
+                            <th></th>
                             <th><a href=<?php echo get_myurl("SURNAME_STRIP",$paseo);?> >SURNAME</a></th>
                             <th><a href=<?php echo get_myurl("NAME_STRIP",$paseo);?> >NAME</a></th>
                             <th><a href=<?php echo get_myurl("NATIONALITY",$paseo);?> >NATIONALITY</a></th>
@@ -302,7 +302,7 @@ if ($NTOT==0) {
                             <th><a href=<?php echo get_myurl("SUB_DATE",$paseo);?> >SUB TIME</a></th>
                             <?php endif; ?>
                             <th><a href=<?php echo get_myurl("STATUS",$paseo);?> >STATUS</a></th>
-                            
+
                         </tr>
 
                         <?php
@@ -312,6 +312,9 @@ if ($NTOT==0) {
                         while($row = $result->fetch_array())
                         {
                             $linkto = "singleEntry.php?ID=" . $row['ID'];
+                            
+                            $earlylate = coloring_earlylate($row['ID'], true);
+                            $col_earlylate = '<td style="' . $earlylate['style'] . '">' .  $earlylate['string'] . '</td>';
 
                             // various columns
                             $col_surname = "<td><a href=\"".$linkto."\">".$row['SURNAME']."</a></td>";
@@ -348,12 +351,12 @@ if ($NTOT==0) {
                             $backcolor = status_to_color($row['STATUS']);
                             $col_status = "<td class=\"" . $backcolor . "\">" . $printvid . "</td>";
 
-                            echo "<tr>" . $col_surname . $col_name . $col_nat . $col_lcnc;
+                            echo "<tr>" . $col_earlylate . $col_surname . $col_name . $col_nat . $col_lcnc;
                             if (checkp(2,$VID)) {
                                 echo $col_dob . $col_deleg . $col_contr . $col_subdate;
                             }
                             echo $col_status . "</tr>";
-                            
+
 
                         }
 
@@ -367,7 +370,7 @@ if ($NTOT==0) {
                     </table>
 
                 </div>
-                <div class="col-md-1"></div>
+                <!-- <div class="col-md-1"></div> -->
             </div>
 
 

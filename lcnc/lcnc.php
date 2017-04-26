@@ -6,8 +6,10 @@ $LCNC = $_SESSION['LCNC'];
 $NATION = $_SESSION['NATION'];
 
 // store activity in log
-require('../sessioner.php');
-howManyIps();
+//require('../sessioner.php');
+//howManyIps();
+
+require('../util.php');
 
 // connect to db
 $dbinfo = explode("\n", file_get_contents('../loginDB.txt'))[0];
@@ -18,6 +20,10 @@ $db = $dbinfo[5];
 $host = $dbinfo[7];
 $port = $dbinfo[9];
 $table = $dbinfo[11];
+$table_late = $dbinfo[19];
+
+// table : UNION between early and late
+$table = "( (SELECT * FROM `" . $table . "`) UNION ALL (SELECT * FROM `" . $table_late . "`) ) as `everybody`";
 
 $mysqli = new mysqli($host, $user, $password, $db);
 
@@ -31,11 +37,11 @@ mysqli_set_charset($mysqli, 'utf8');
 
 
 // QUERIES
-$stringa = "SELECT * FROM " . $table . " WHERE LCNC='" . $LCNC . "' AND STATUS='accepted' ORDER BY SURNAME;";
+$stringa = "SELECT * FROM " . $table . " WHERE LCNC='" . $LCNC . "' AND ( STATUS='accepted' OR STATUS='proven' OR STATUS='participant' ) ORDER BY SURNAME;";
 $result = $mysqli->query($stringa);
 $entries = $result->num_rows;
 
-$stringa = "SELECT * FROM " . $table . " WHERE LCNC='IM' AND '". $NATION . "' LIKE CONCAT('%',`COUNTRY_STUDY`,'%') AND STATUS='accepted' ORDER BY SURNAME;";
+$stringa = "SELECT * FROM " . $table . " WHERE LCNC='IM' AND '". $NATION . "' LIKE CONCAT('%',`COUNTRY_STUDY`,'%') AND ( STATUS='accepted' OR STATUS='proven' OR STATUS='participant' ) ORDER BY SURNAME;";
 $result_IM = $mysqli->query($stringa);
 $entries_IM = $result_IM->num_rows;
 
@@ -84,6 +90,7 @@ $mysqli->close();
             <div class="col-md-6">
                 <table class="table">
                     <tr>
+                        <th>earlybird/late</th>
                         <th>Surname</th>
                         <th>Name</th>
                         <th>D.O.B.</th>
@@ -96,6 +103,9 @@ $mysqli->close();
                     <?php
                     while($row = $result->fetch_array()) {
                         echo "<tr>";
+                        $earlylate = coloring_earlylate($row['ID'], true);
+                        $col_earlylate = '<td style="' . $earlylate['style'] . '">' .  $earlylate['string'] . '</td>';
+                        echo $col_earlylate;
                         echo "<td>" . $row['SURNAME'] . "</td>";
                         echo "<td>" . $row['NAME'] . "</td>";
                         echo "<td>" . $row['DOB'] . "</td>";
@@ -129,6 +139,7 @@ $mysqli->close();
             <div class="col-md-6">
                 <table class="table">
                     <tr>
+                        <th>earlybird/late</th>
                         <th>Surname</th>
                         <th>Name</th>
                         <th>D.O.B.</th>
@@ -139,6 +150,9 @@ $mysqli->close();
                     <?php
                     while($row = $result_IM->fetch_array()) {
                         echo "<tr>";
+                        $earlylate = coloring_earlylate($row['ID'], true);
+                        $col_earlylate = '<td style="' . $earlylate['style'] . '">' .  $earlylate['string'] . '</td>';
+                        echo $col_earlylate;
                         echo "<td>" . $row['SURNAME'] . "</td>";
                         echo "<td>" . $row['NAME'] . "</td>";
                         echo "<td>" . $row['DOB'] . "</td>";

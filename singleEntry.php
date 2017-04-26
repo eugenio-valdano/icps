@@ -124,6 +124,13 @@ mysqli_set_charset($mysqli, 'utf8');
                         <td style="color:gray"><?php echo $uid;?></td>
                     </tr>
                     <tr>
+                        <td style="color:gray">ROUND</td>
+                        <?php 
+                        $earlylate = coloring_earlylate($row['ID'], false);
+                        echo '<td style="' . $earlylate['style'] . '">' .  $earlylate['string'] . '</td>';
+                        ?>
+                    </tr>
+                    <tr>
                         <td>SURNAME</td>
                         <td><?php echo '<b>' . $row['SURNAME'] . '</b>';?></td>
                     </tr>
@@ -422,6 +429,8 @@ mysqli_set_charset($mysqli, 'utf8');
 
             //URL for PAYMENT
             $payim = ($row['LCNC']=='IM' ? 'yes' : 'no');
+	  //$lello = ($row['ID']>500 ? '&round=late' : '');
+	  //$urlpa = 'http://www.ai-sf.it/dbicps/payment_master/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&im=' . $payim . $lello;
             $urlpa = 'http://www.ai-sf.it/dbicps/payment_master/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&im=' . $payim;
             if ((int)$ID>500){
                 $urlpa .= '&round=late';
