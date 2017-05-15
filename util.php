@@ -161,7 +161,13 @@ function coloring_earlylate($x,$short) { // give ID as argument x. short is bool
 
 
 // number of single rooms
-$N_SINGLE_ROOMS = 10;
+function single_room_available($x, $ID) {
+    if ($x >= 10 or $ID==60) { // SET HERE NUMBER OF SINGLE ROOMS
+        return false;
+    } else {
+        return true;
+    }
+}
 
 
 ?>

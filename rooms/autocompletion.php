@@ -9,7 +9,7 @@
 require('../util.php');
 
 // connect to db
-$dbinfo = explode("\n", file_get_contents('loginDB.txt'))[0];
+$dbinfo = explode("\n", file_get_contents('../loginDB.txt'))[0];
 $dbinfo = explode(" ", $dbinfo);
 $user = $dbinfo[1];
 $password = $dbinfo[3];
@@ -33,12 +33,13 @@ mysqli_set_charset($mysqli, 'utf8');
 if (isset($_GET['term'])){
     
     $search_condition = "`SURNAME_STRIP` LIKE '%" . $_GET['term'] . "%' OR `NAME_STRIP` LIKE '%" . $_GET['term'] . "%' OR `SURNAME` LIKE '%" . $_GET['term'] . "%' OR `NAME` LIKE '%" . $_GET['term'] . "%'";
-    $stringa = "SELECT * FROM " . $table_total . " WHERE " . $search_condition;
+    $stringa = "SELECT * FROM " . $table_total . " WHERE (" . $search_condition;
+    //$stringa = "SELECT * FROM " . $table_total;
     $result = $mysqli->query($stringa);
 
     $return_arr = array();
     while($row = $result->fetch_array()) {
-        $return_arr[] =  $row['SURNAME'] . ' ' . $row['NAME'];
+        $return_arr[] =  $row['SURNAME_STRIP'] . ' ' . $row['NAME_STRIP'];
     }
 
     echo json_encode($return_arr);
