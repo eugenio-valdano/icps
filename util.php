@@ -160,6 +160,10 @@ function coloring_earlylate($x,$short) { // give ID as argument x. short is bool
 }
 
 
+// number of single rooms
+$N_SINGLE_ROOMS = 10;
+
+
 ?>
 
 
