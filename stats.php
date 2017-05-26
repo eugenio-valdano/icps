@@ -201,7 +201,7 @@ $result_lcnc = $mysqli->query($stringa); // now table with LCNC,ALL,ACCEPTED
                 function drawBarColors() {
 
                     var data_raw = <?php echo json_encode($count_chart); ?>;
-                    data_raw.unshift(['Round','Accepted','Proven','Participant']);
+                    data_raw.unshift(['Round','Participant','Proven','Accepted']);
 
                     var data = google.visualization.arrayToDataTable(data_raw);
 
