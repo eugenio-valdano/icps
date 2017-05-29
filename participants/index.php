@@ -43,12 +43,11 @@ $VID = $_SESSION['VID'];
 
         <br>
 
-        <div class="row" style="text-align:center">
-            <div class="col-md-2"></div>
-            <div class="col-md-8"><h3>Logged in with VID =
-                <font color="green"><?php echo $VID;?>    </font>
-                <small><a href="logout.php" ><b>LOG OUT</b></a></small>
-                </h3></div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-9"><h4>Logged in as <font color="green"><?php echo $VID;?></font></h4>
+                <a href="logout.php" class="btn btn-info">log out</a>
+                </div>
             <div class="col-md-2"></div>
         </div>
 

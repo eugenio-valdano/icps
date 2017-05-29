@@ -125,7 +125,7 @@ mysqli_set_charset($mysqli, 'utf8');
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="SURNAME_STRIP"/>
-                                    <input type="submit" value="SURNAME" class="btn btn-primary" />
+                                    <input type="submit" value="SURNAME" class="btn btn-link" />
                                 </form>
                             </th>
                             <th>
@@ -134,7 +134,7 @@ mysqli_set_charset($mysqli, 'utf8');
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="NAME_STRIP"/>
-                                    <input type="submit" value="NAME" class="btn btn-primary" />
+                                    <input type="submit" value="NAME" class="btn btn-link" />
                                 </form>
                             </th>
                             <th>
@@ -143,7 +143,7 @@ mysqli_set_charset($mysqli, 'utf8');
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="NATIONALITY"/>
-                                    <input type="submit" value="NATIONALITY" class="btn btn-primary" />
+                                    <input type="submit" value="NATIONALITY" class="btn btn-link" />
                                 </form>
                             </th>
                             <th>
@@ -152,7 +152,7 @@ mysqli_set_charset($mysqli, 'utf8');
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="LCNC"/>
-                                    <input type="submit" value="LC/NC" class="btn btn-primary" />
+                                    <input type="submit" value="LC/NC" class="btn btn-link" />
                                 </form>
                             </th>
                             <th>
@@ -161,7 +161,7 @@ mysqli_set_charset($mysqli, 'utf8');
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="DOB"/>
-                                    <input type="submit" value="D.O.B." class="btn btn-primary" />
+                                    <input type="submit" value="D.O.B." class="btn btn-link" />
                                 </form>
                             </th>
                             <th>
@@ -170,7 +170,7 @@ mysqli_set_charset($mysqli, 'utf8');
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="DELEGATE"/>
-                                    <input type="submit" value="DELEGATE" class="btn btn-primary" />
+                                    <input type="submit" value="DELEGATE" class="btn btn-link" />
                                 </form>
                             </th>
                             <th>
@@ -179,7 +179,7 @@ mysqli_set_charset($mysqli, 'utf8');
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="CONTRIBUTION"/>
-                                    <input type="submit" value="CONTRIBUTION" class="btn btn-primary" />
+                                    <input type="submit" value="CONTRIBUTION" class="btn btn-link" />
                                 </form>
                             </th>
                             <th>
@@ -188,7 +188,7 @@ mysqli_set_charset($mysqli, 'utf8');
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="ID"/>
-                                    <input type="submit" value="ID" class="btn btn-primary" />
+                                    <input type="submit" value="ID" class="btn btn-link" />
                                 </form>
                             </th>
                             <th>
@@ -197,7 +197,7 @@ mysqli_set_charset($mysqli, 'utf8');
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="PREFERENCE"/>
-                                    <input type="submit" value="ROOM PREF" class="btn btn-primary" />
+                                    <input type="submit" value="ROOM PREF" class="btn btn-link" />
                                 </form>
                             </th>
                         </tr>
