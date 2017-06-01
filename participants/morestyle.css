@@ -5,3 +5,13 @@ body {
   -o-background-size: cover;
   background-size: cover;
 }
+
+.titolo {
+    color: #053C5E;
+    text-align: center;
+    font-weight: 900;
+}
+
+.auto {
+    font-size: large;
+}

@@ -41,6 +41,7 @@ $result_check = $mysqli->query($stringa);
 $entries_check = $result_check->num_rows;
 if ($entries_check == 0) {
     header('Location: ' . 'acher.php');
+    exit;
 }
 $result_check->free();
 

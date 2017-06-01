@@ -91,9 +91,19 @@ mysqli_set_charset($mysqli, 'utf8');
             $queryLcnc = "";
             $sorting = "SURNAME_STRIP";
         }
+        
+        $queryName = explode(" ", $queryName);
+        //var_dump($queryName);
+        //var_dump(count($queryName));
+        if (count($queryName)==1) {
+            $queryName = array($queryName[0],$queryName[0]);
+        }
+        //var_dump($queryName);
 
         // QUERY DB
-        $condition = "NAME LIKE '%" . $queryName . "%' OR SURNAME LIKE '%" . $queryName . "%' OR NAME_STRIP LIKE '%" . $queryName . "%' OR SURNAME_STRIP LIKE '%" . $queryName . "%'";
+        $condition1 = "NAME LIKE '%" . $queryName[1] . "%' OR SURNAME LIKE '%" . $queryName[0] . "%' OR NAME_STRIP LIKE '%" . $queryName[1] . "%' OR SURNAME_STRIP LIKE '%" . $queryName[0] . "%'";
+        $condition2 = "NAME LIKE '%" . $queryName[0] . "%' OR SURNAME LIKE '%" . $queryName[1] . "%' OR NAME_STRIP LIKE '%" . $queryName[0] . "%' OR SURNAME_STRIP LIKE '%" . $queryName[1] . "%'";
+        $condition = "( " . $condition1 . ") OR ( " . $condition2 . " ) "; 
         $condition = "(" . $condition . ") AND NATIONALITY LIKE '%" . $queryNationality . "%' AND LCNC LIKE '%" . $queryLcnc . "%'";
         $stringa = "SELECT * FROM " . $table . " WHERE (" . $condition . ") ORDER BY " . $sorting;
 
@@ -208,10 +218,8 @@ mysqli_set_charset($mysqli, 'utf8');
 
                         while($row = $result->fetch_array())
                         {
-                            $linkto = "singleEntry.php?ID=" . $row['ID'];
-
-                            //$earlylate = coloring_earlylate($row['ID'], true);
-                            //$col_earlylate = '<td style="' . $earlylate['style'] . '">' .  $earlylate['string'] . '</td>';
+                            // link to single entry
+                            $linkto = "singleEntry.php?ID=" . $row['ID'] . "&IDC=" . $row['ID_CHECK'];
 
                             // various columns
                             $col_surname = "<td><a href=\"".$linkto."\">".$row['SURNAME']."</a></td>";
@@ -251,7 +259,7 @@ mysqli_set_charset($mysqli, 'utf8');
                                 $stronga = "SELECT `SURNAME`, `ID` FROM `" . $table . "` WHERE `ID`=" . $preference;
                                 $rosico = $mysqli->query($stronga);
                                 $ronco = $rosico->fetch_array();
-                                $linktoronco = "singleEntry.php?ID=" . $row['ID'];
+                                $linktoronco = "singleEntry.php?ID=" . $row['ID'] . '&IDC=' . $row['ID_CHECK'];
                                 $col_roompref = "<a href=\"" . $linktoronco . "\">" . $ronco['SURNAME'] . " (" . $ronco['ID'] . ")</a>";
                                 
                             }

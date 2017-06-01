@@ -17,7 +17,7 @@ $VID = $_SESSION['VID'];
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <!--><link rel="stylesheet" type="text/css" href="style.css"/></!-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="morestyle.css">
+        <link rel="stylesheet" type="text/css" href="morestyle.css">
 
         <!-- jquery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -36,7 +36,7 @@ $VID = $_SESSION['VID'];
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-                <h1 style="text-align:center">ICPS2017 Central database</h1>
+                <h1 class="titolo">ICPS2017 Central database</h1>
             </div>
             <div class="col-md-2"></div>
         </div>
@@ -45,7 +45,7 @@ $VID = $_SESSION['VID'];
 
         <div class="row">
             <div class="col-md-1"></div>
-            <div class="col-md-9"><h4>Logged in as <font color="green"><?php echo $VID;?></font></h4>
+            <div class="col-md-9"><h4>Logged in as <span class="titolo"><?php echo $VID;?></span></h4>
                 <a href="logout.php" class="btn btn-info">log out</a>
                 </div>
             <div class="col-md-2"></div>
@@ -59,39 +59,37 @@ $VID = $_SESSION['VID'];
             <input type="hidden" name="sorting" value="SURNAME_STRIP" />
 
             <div class="row" style="text-align:left">
-                <div class="col-md-3"></div>
                 <div class="col-md-2"></div>
-                <div class="col-md-2"><h4>Filters</h4></div>
+                <div class="col-md-8"><h2 class="titolo" style="text-align:left">Query matching conditions</h2></div>
                 <div class="col-md-2"></div>
-                <div class="col-md-3"></div>
             </div>
             
             <br>
             
             <div class="row" style="text-align:left">
-                <div class="col-md-3"></div>
+                <div class="col-md-2"></div>
                 <div class="col-md-2"><b>name or surname</b></div>
                 <div class="col-md-2"><b>nationality</b></div>
                 <div class="col-md-2"><b>LC/NC/IM</b></div>
-                <div class="col-md-3"></div>
+                <div class="col-md-4"></div>
             </div>
 
             <div class="row" style="text-align:left">
-                <div class="col-md-3"></div>
+                <div class="col-md-2"></div>
                 <div class="col-md-2"><input id="queryName" type="text" name="name" placeholder="leave blank for all" class="auto" value="" /></div>
                 <div class="col-md-2"><input id="queryNationality" type="text" name="nationality" placeholder="leave blank for all" class="auto" value="" /></div>
                 <div class="col-md-2"><input id="queryLcnc" type="text" name="lcnc" placeholder="leave blank for all"  class="auto" value="" /></div>
-                <div class="col-md-3"></div>
+                <div class="col-md-4"></div>
             </div>
 
             <br>
 
             <div class="row" style="text-align:left">
-                <div class="col-md-3"></div>
+                <div class="col-md-2"></div>
                 <div class="col-md-2"><input type="submit" value="Submit query" class="btn btn-primary" /></div>
                 <div class="col-md-2"></div>
                 <div class="col-md-2"></div>
-                <div class="col-md-3"></div>
+                <div class="col-md-4"></div>
             </div>
 
         </form>
@@ -99,12 +97,25 @@ $VID = $_SESSION['VID'];
 
         <br><br><br><br><br>
         
-        <form action="jumpToID.php" method="GET">
+        <form action="jumpToID.php" method="POST">
+            
             <div class="row" style="text-align:left">
-                <div  class="col-md-3"></div>
-                <div  class="col-md-2" style="text-align:right"><b>Jump to ID</b></div>
-                <div  class="col-md-2"><input type="text" name="ID" placeholder="ID" /></div>
-                <div  class="col-md-5"><input type="submit" value="Go" class="btn btn-primary" /></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-8"><h2 class="titolo" style="text-align:left">Go to ID</h2></div>
+                <div class="col-md-2"></div>
+            </div>
+
+            
+            <div class="row" style="text-align:left">
+                <div  class="col-md-2"></div>
+                <div  class="col-md-1"><input type="text" id="ID" name="ID" placeholder="ID" class="auto" /></div>
+                <div  class="col-md-9"></div>
+            </div>
+            <br>
+            <div class="row" style="text-align:left">
+                <div  class="col-md-2"></div>
+                <div  class="col-md-1"><input type="submit" value="Go" class="btn btn-primary" /></div>
+                <div  class="col-md-9"></div>
             </div>
         </form>
 
