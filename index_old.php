@@ -1,8 +1,5 @@
 <?php
 
-header("Location: participants/index.php");
-exit();
-
 require('access.php');
 $VID = $_SESSION['VID'];
 // store activity in log

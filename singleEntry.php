@@ -394,7 +394,7 @@ mysqli_set_charset($mysqli, 'utf8');
 
 
         <br>
-        <a class="btn btn-default" href="index.php" >New search</a>
+        <a class="btn btn-default" href="index_old.php" >New search</a>
         <?php if (checkp(2,$VID)): ?>
         <a class="btn btn-default" href="search.php?query=&sorting=SURNAME_STRIP&cfilter=all&cfilter2=all" >Full list</a>
         <?php endif; ?>

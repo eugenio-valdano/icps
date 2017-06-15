@@ -221,6 +221,8 @@ mysqli_set_charset($mysqli, 'utf8');
             <div class="col-md-6"><div class="tiny_skip"></div></div>
             <div class="col-md-3"><div class="tiny_skip"></div></div>
         </div>
+        
+        
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6"><h4>Excursion</h4></div>
@@ -267,7 +269,7 @@ mysqli_set_charset($mysqli, 'utf8');
                             <input type="hidden" name="ID_CHECK" value=<?php echo '"' . $ID_CHECK . '"' ?> />
                             <td>
 
-                                <input type="submit" value="Change excursion"  style="float:left" />
+                                <input type="submit" class="btn btn-danger" value="Change excursion"  style="float:left" <?php echo ( checkp(0,$VID) ? '' : 'disabled'); ?> />
                             </td>
                         </form>
 
@@ -387,7 +389,9 @@ mysqli_set_charset($mysqli, 'utf8');
         $mysqli->close();
 
         // EDIT button
-        echo '<a class="btn btn-danger" href="singleEntryEditable.php?ID=' . $ID . '&IDC=' . $ID_CHECK . '" >Make editable</a>';
+        if ( checkp(0,$VID) ) {
+            echo '<a class="btn btn-danger" href="singleEntryEditable.php?ID=' . $ID . '&IDC=' . $ID_CHECK . '" >Make editable</a>';   
+        }
         echo '<br><br>';
 
         //URL for ABSTRACTS

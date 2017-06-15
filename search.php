@@ -224,7 +224,7 @@ if ($NTOT==0) {
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-7"><?php echo "number of matching entries: ".$entries."<br><br>"; ?></div>
-                <div class="col-md-1"><a class="btn btn-default" href="index.php" >New search</a></div>
+                <div class="col-md-1"><a class="btn btn-default" href="index_old.php" >New search</a></div>
                 <div class="col-md-1">
                     <?php if (checkp(2,$VID)): ?>
                     <a class="btn btn-default" href="search.php?query=&sorting=SURNAME_STRIP&cfilter=all&cfilter2=all" >Full list</a>
@@ -377,7 +377,7 @@ if ($NTOT==0) {
             <br>
             <div class="row">
                 <div class="col-md-1"></div>
-                <div class="col-md-10"><a class="btn btn-default" href="index.php" >New search</a></div>
+                <div class="col-md-10"><a class="btn btn-default" href="index_old.php" >New search</a></div>
                 <div class="col-md-1"></div>
             </div>
             <br><br>

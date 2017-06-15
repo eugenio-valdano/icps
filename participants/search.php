@@ -80,25 +80,22 @@ mysqli_set_charset($mysqli, 'utf8');
 
         // GET POST VARIABLES
         if (isset($_POST['name'])) {
-            $queryName = $_POST['name'];
+            $queryName0 = $_POST['name'];
             $queryNationality = $_POST['nationality'];
             $queryLcnc = $_POST['lcnc'];
             $sorting = $_POST['sorting'];
 
         } else {
-            $queryName = "";
+            $queryName0 = "";
             $queryNationality = "";
             $queryLcnc = "";
             $sorting = "SURNAME_STRIP";
         }
         
-        $queryName = explode(" ", $queryName);
-        //var_dump($queryName);
-        //var_dump(count($queryName));
+        $queryName = explode(" ", $queryName0);
         if (count($queryName)==1) {
             $queryName = array($queryName[0],$queryName[0]);
         }
-        //var_dump($queryName);
 
         // QUERY DB
         $condition1 = "NAME LIKE '%" . $queryName[1] . "%' OR SURNAME LIKE '%" . $queryName[0] . "%' OR NAME_STRIP LIKE '%" . $queryName[1] . "%' OR SURNAME_STRIP LIKE '%" . $queryName[0] . "%'";
@@ -131,7 +128,7 @@ mysqli_set_charset($mysqli, 'utf8');
                         <tr>
                             <th>
                                 <form action="search.php" method="POST">
-                                    <input type="hidden" name="name" value="<?php echo $queryName;?>"/>
+                                    <input type="hidden" name="name" value="<?php echo $queryName0;?>"/>
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="SURNAME_STRIP"/>
@@ -140,7 +137,7 @@ mysqli_set_charset($mysqli, 'utf8');
                             </th>
                             <th>
                                 <form action="search.php" method="POST">
-                                    <input type="hidden" name="name" value="<?php echo $queryName;?>"/>
+                                    <input type="hidden" name="name" value="<?php echo $queryName0;?>"/>
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="NAME_STRIP"/>
@@ -149,7 +146,7 @@ mysqli_set_charset($mysqli, 'utf8');
                             </th>
                             <th>
                                 <form action="search.php" method="POST">
-                                    <input type="hidden" name="name" value="<?php echo $queryName;?>"/>
+                                    <input type="hidden" name="name" value="<?php echo $queryName0;?>"/>
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="NATIONALITY"/>
@@ -158,7 +155,7 @@ mysqli_set_charset($mysqli, 'utf8');
                             </th>
                             <th>
                                 <form action="search.php" method="POST">
-                                    <input type="hidden" name="name" value="<?php echo $queryName;?>"/>
+                                    <input type="hidden" name="name" value="<?php echo $queryName0;?>"/>
                                     <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="LCNC"/>
@@ -167,49 +164,51 @@ mysqli_set_charset($mysqli, 'utf8');
                             </th>
                             <th>
                                 <form action="search.php" method="POST">
-                                    <input type="hidden" name="name" value="<?php echo $queryName;?>"/>
-                                    <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
-                                    <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
-                                    <input type="hidden" name="sorting" value="DOB"/>
+                                    <input type="hidden" id="name" name="name" value="<?php echo $queryName0;?>"/>
+                                    <input type="hidden" id="nationality"  name="nationality" value="<?php echo $queryNationality;?>"/>
+                                    <input type="hidden" id="lcnc" name="lcnc" value="<?php echo $queryLcnc;?>"/>
+                                    <input type="hidden" id="sorting" name="sorting" value="DOB"/>
                                     <input type="submit" value="D.O.B." class="btn btn-link" />
                                 </form>
                             </th>
                             <th>
                                 <form action="search.php" method="POST">
-                                    <input type="hidden" name="name" value="<?php echo $queryName;?>"/>
-                                    <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
-                                    <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
+                                    <input type="hidden" id="name" name="name" value="<?php echo $queryName0;?>"/>
+                                    <input type="hidden" id="nationality"  name="nationality" value="<?php echo $queryNationality;?>"/>
+                                    <input type="hidden" id="lcnc" name="lcnc" value="<?php echo $queryLcnc;?>"/>
                                     <input type="hidden" name="sorting" value="DELEGATE"/>
                                     <input type="submit" value="DELEGATE" class="btn btn-link" />
                                 </form>
                             </th>
+                            <?php if ( checkp(3,$VID) ):?>
                             <th>
                                 <form action="search.php" method="POST">
-                                    <input type="hidden" name="name" value="<?php echo $queryName;?>"/>
-                                    <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
-                                    <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
-                                    <input type="hidden" name="sorting" value="CONTRIBUTION"/>
+                                    <input type="hidden" id="name" name="name" value="<?php echo $queryName0;?>"/>
+                                    <input type="hidden" id="nationality"  name="nationality" value="<?php echo $queryNationality;?>"/>
+                                    <input type="hidden" id="lcnc" name="lcnc" value="<?php echo $queryLcnc;?>"/>
+                                    <input type="hidden" id="sorting" name="sorting" value="CONTRIBUTION"/>
                                     <input type="submit" value="CONTRIBUTION" class="btn btn-link" />
                                 </form>
                             </th>
                             <th>
                                 <form action="search.php" method="POST">
-                                    <input type="hidden" name="name" value="<?php echo $queryName;?>"/>
-                                    <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
-                                    <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
-                                    <input type="hidden" name="sorting" value="ID"/>
+                                    <input type="hidden" id="name" name="name" value="<?php echo $queryName0;?>"/>
+                                    <input type="hidden" id="nationality"  name="nationality" value="<?php echo $queryNationality;?>"/>
+                                    <input type="hidden" id="lcnc" name="lcnc" value="<?php echo $queryLcnc;?>"/>
+                                    <input type="hidden" id="sorting" name="sorting" value="ID"/>
                                     <input type="submit" value="ID" class="btn btn-link" />
                                 </form>
                             </th>
                             <th>
                                 <form action="search.php" method="POST">
-                                    <input type="hidden" name="name" value="<?php echo $queryName;?>"/>
-                                    <input type="hidden" name="nationality" value="<?php echo $queryNationality;?>"/>
-                                    <input type="hidden" name="lcnc" value="<?php echo $queryLcnc;?>"/>
-                                    <input type="hidden" name="sorting" value="PREFERENCE"/>
+                                    <input type="hidden" id="name" name="name" value="<?php echo $queryName0;?>"/>
+                                    <input type="hidden" id="nationality"  name="nationality" value="<?php echo $queryNationality;?>"/>
+                                    <input type="hidden" id="lcnc" name="lcnc" value="<?php echo $queryLcnc;?>"/>
+                                    <input type="hidden" id="sorting" name="sorting" value="PREFERENCE"/>
                                     <input type="submit" value="ROOM PREF" class="btn btn-link" />
                                 </form>
                             </th>
+                            <?php endif;?>
                         </tr>
 
                         <?php
@@ -222,7 +221,13 @@ mysqli_set_charset($mysqli, 'utf8');
                             $linkto = "singleEntry.php?ID=" . $row['ID'] . "&IDC=" . $row['ID_CHECK'];
 
                             // various columns
-                            $col_surname = "<td><a href=\"".$linkto."\">".$row['SURNAME']."</a></td>";
+                            if ( checkp(3,$VID) ) {
+                                $col_surname = "<td><a href=\"".$linkto."\">".$row['SURNAME']."</a></td>";
+                            } else {
+                                $col_surname = "<td>".$row['SURNAME']."</td>";
+                            }
+                            
+                            
 
                             $col_name = "<td>".$row['NAME']."</td>";
 
@@ -268,7 +273,10 @@ mysqli_set_charset($mysqli, 'utf8');
                             // id
                             $col_id = "<td>" . $row['ID'] . "</td>";
 
-                            echo "<tr>" . $col_surname . $col_name . $col_nat . $col_lcnc . $col_dob . $col_deleg . $col_contr . $col_id . $col_roompref;
+                            echo "<tr>" . $col_surname . $col_name . $col_nat . $col_lcnc . $col_dob . $col_deleg;
+                            if ( checkp(3,$VID) ) {
+                                echo $col_contr . $col_id . $col_roompref;
+                            }
                             echo "</tr>";
 
 
@@ -284,14 +292,7 @@ mysqli_set_charset($mysqli, 'utf8');
                 <!-- <div class="col-md-1"></div> -->
             </div>
 
-
             <br>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10"><a class="btn btn-default" href="index.php" >New search</a></div>
-                <div class="col-md-1"></div>
-            </div>
-            <br><br>
 
         </div>
 

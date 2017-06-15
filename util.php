@@ -4,14 +4,14 @@
 
 function checkp($x,$vid) { // $x is the highest number with clearance. if x=1, then for 0 and 1 it's true
 
-    // 0: full access. 1: selectioners, when active. 2: read only. 3: limited access (IAPS)
+    // 0: full access. 1: some modifications. 2: some (fewer) modifications. 3: see all, no edit. 4: limited access (IAPS)
     $privileges = array('eugenio'=>0,
                         'michele'=>0,
-                        'lorenzo'=>1, // set to 1 when you want them to be able to edit statuses
-                        'lucio'=>2,
-                        'francesco'=>2,
-                        'oc_member'=>2,
-                        'iaps'=>3
+                        'lorenzo'=>3, // set to 1 when you want them to be able to edit statuses
+                        'lucio'=>3,
+                        'francesco'=>3,
+                        'oc_member'=>3,
+                        'iaps'=>4
                        );
 
 

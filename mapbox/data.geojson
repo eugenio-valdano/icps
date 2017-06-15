@@ -1,0 +1,10 @@
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [7.6, 45.5]
+    },
+    "properties": {
+        "name": "SUCA"
+    }
+}

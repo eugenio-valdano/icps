@@ -6,6 +6,12 @@ $VID = $_SESSION['VID'];
 // load functions
 require('../util.php');
 
+
+// PREVENT HACKING
+if (!checkp(0,$VID)) {
+    die('Not allowed to edit entries.');
+}
+
 // connect to db
 $dbinfo = explode("\n", file_get_contents('../loginDB.txt'))[0];
 $dbinfo = explode(" ", $dbinfo);
