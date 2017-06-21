@@ -18,7 +18,7 @@ $db = $dbinfo[5];
 $host = $dbinfo[7];
 $port = $dbinfo[9];
 $table = $dbinfo[11];
-$table_excursions = $dbinfo[15];
+#$table_excursions = $dbinfo[15];
 $table_late = $dbinfo[19];
 $table_total = $dbinfo[21];
 
@@ -91,6 +91,10 @@ mysqli_set_charset($mysqli, 'utf8');
         $result->free();
 
         // EXCURSION
+        $excursion = $row_ex['ASSIGNED'];
+        $excursion_autom = $row_ex['EXCURSIONS'][0];
+
+        /*
         $stringa = "SELECT * FROM " . $table_excursions . " WHERE ID = ".$ID;
         $result_ex = $mysqli->query($stringa);
         $entries_ex = $result_ex->num_rows;
@@ -105,6 +109,7 @@ mysqli_set_charset($mysqli, 'utf8');
             $excursion_autom = $row_ex['EXCURSION_ASSIGNED_AUTOMATIC'];
         }
         $result_ex->free();
+        */
 
         ?>
 
@@ -207,217 +212,161 @@ mysqli_set_charset($mysqli, 'utf8');
                         <td><?php echo $col_roompref;?></td>
                     </tr>
 
+                    <tr>
+                        <td>EXCURSION</td>
+                        <td><?php echo $row['ASSIGNED'];?></td>
+                    </tr>
+
+                    <tr>
+                        <td>EXCURSION RANKING</td>
+                        <td><?php echo $row['EXCURSIONS'];?></td>
+                    </tr>
+
 
 
                 </table>
             </div>
             <div class="col-md-3"></div>
         </div>
+        <div class="col-md-3"></div>
 
-        <!-- ESCURSIONE -->
+        <!-- ADDRESS AND STUFF FOR VISA -->
 
         <div class="row">
             <div class="col-md-3"><div class="tiny_skip"></div></div>
             <div class="col-md-6"><div class="tiny_skip"></div></div>
             <div class="col-md-3"><div class="tiny_skip"></div></div>
         </div>
-        
-        
+
         <div class="row">
             <div class="col-md-3"></div>
-            <div class="col-md-6"><h4>Excursion</h4></div>
+            <div class="col-md-6"><h4>Additional details </h4></div>
             <div class="col-md-3"></div>
         </div>
-        <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6"><b><?php echo $excursion; ?>:</b> <?php echo $dexcursions[$excursion]; ?></div>
-            <div class="col-md-3"></div>
-        </div>
-        <div class="row">
-            <div class="col-md-3"><div class="tiny_skip"></div></div>
-            <div class="col-md-6"><div class="tiny_skip"></div></div>
-            <div class="col-md-3"><div class="tiny_skip"></div></div>
-        </div>
+
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
-
                 <table class='table'>
                     <tr>
-                        <td>RANKING</td>
-                        <td><?php echo $row['EXCURSIONS'];?></td>
+                        <td>INFO</td>
+                        <td><?php echo $row['INFO'];?></td>
                     </tr>
                     <tr>
-                        <td>AUTOMATICALLY ASSIGNED</td>
-                        <?php $classex = ($excursion != $excursion_autom ? "class=\"danger\"" : ""); ?>
-                        <td <?php echo $classex . '>' . $excursion_autom; ?></td>
+                        <td>REQUIRES VISA</td>
+                        <td><?php echo '<b>' . $row['VISA'] . '</b>';?></td>
                     </tr>
                     <tr>
-
-                        <form action="editExcursion.php" method="POST">
-                            <td>
-                                <select name="excursion" style="float:left">
-
-                                    <?php
-                                    foreach ($dexcursions as $key => $value) {
-                                        echo "<option value=\"" . $key . "\" " . ($key==$excursion ? 'disabled' : '') . " >" . $key . ": " . $value . "</option>";
-                                    }
-                                    ?>
-                                </select>
-                            </td>
-                            <input type="hidden" name="ID" value=<?php echo '"' . $ID . '"' ?> />
-                            <input type="hidden" name="ID_CHECK" value=<?php echo '"' . $ID_CHECK . '"' ?> />
-                            <td>
-
-                                <input type="submit" class="btn btn-danger" value="Change excursion"  style="float:left" <?php echo ( checkp(0,$VID) ? '' : 'disabled'); ?> />
-                            </td>
-                        </form>
-
+                        <td>PASSPORT No</td>
+                        <td><?php echo $row['PASSPORT'];?></td>
                     </tr>
-
-                    <!-- FINE ESCURSIONE -->
-
+                    <tr>
+                        <td>DIETARY REQUIREMENTS</td>
+                        <td><?php echo $row['DIET'];?></td>
+                    </tr>
+                    <tr>
+                        <td>ALLERGIES</td>
+                        <td><?php echo $row['ALLERGIES'];?></td>
+                    </tr>
                 </table>
             </div>
             <div class="col-md-3"></div>
+        </div>
 
-            <!-- ADDRESS AND STUFF FOR VISA -->
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6"><h4>Address </h4></div>
+            <div class="col-md-3"></div>
+        </div>
 
-            <div class="row">
-                <div class="col-md-3"><div class="tiny_skip"></div></div>
-                <div class="col-md-6"><div class="tiny_skip"></div></div>
-                <div class="col-md-3"><div class="tiny_skip"></div></div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <table class='table'>
+                    <tr>
+                        <td>STREET</td>
+                        <td><?php echo $row['ADDRESS_1'] . ($row['ADDRESS_2']==''?'':'<br>'.$row['ADDRESS_2']);?></td>
+                    </tr>
+                    <tr>
+                        <td>CITY</td>
+                        <td><?php echo $row['CITY'];?></td>
+                    </tr>
+                    <tr>
+                        <td>PROVINCE</td>
+                        <td><?php echo $row['PROV'];?></td>
+                    </tr>
+                    <tr>
+                        <td>ZIP CODE</td>
+                        <td><?php echo $row['ZIP'];?></td>
+                    </tr>
+                    <tr>
+                        <td>COUNTRY</td>
+                        <td><?php echo $row['COUNTRY'];?></td>
+                    </tr>
+                </table>
             </div>
-
-            <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6"><h4>Additional details </h4></div>
-                <div class="col-md-3"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6">
-                    <table class='table'>
-                        <tr>
-                            <td>INFO</td>
-                            <td><?php echo $row['INFO'];?></td>
-                        </tr>
-                        <tr>
-                            <td>REQUIRES VISA</td>
-                            <td><?php echo '<b>' . $row['VISA'] . '</b>';?></td>
-                        </tr>
-                        <tr>
-                            <td>PASSPORT No</td>
-                            <td><?php echo $row['PASSPORT'];?></td>
-                        </tr>
-                        <tr>
-                            <td>DIETARY REQUIREMENTS</td>
-                            <td><?php echo $row['DIET'];?></td>
-                        </tr>
-                        <tr>
-                            <td>ALLERGIES</td>
-                            <td><?php echo $row['ALLERGIES'];?></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="col-md-3"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6"><h4>Address </h4></div>
-                <div class="col-md-3"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6">
-                    <table class='table'>
-                        <tr>
-                            <td>STREET</td>
-                            <td><?php echo $row['ADDRESS_1'] . ($row['ADDRESS_2']==''?'':'<br>'.$row['ADDRESS_2']);?></td>
-                        </tr>
-                        <tr>
-                            <td>CITY</td>
-                            <td><?php echo $row['CITY'];?></td>
-                        </tr>
-                        <tr>
-                            <td>PROVINCE</td>
-                            <td><?php echo $row['PROV'];?></td>
-                        </tr>
-                        <tr>
-                            <td>ZIP CODE</td>
-                            <td><?php echo $row['ZIP'];?></td>
-                        </tr>
-                        <tr>
-                            <td>COUNTRY</td>
-                            <td><?php echo $row['COUNTRY'];?></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="col-md-3"></div>
-            </div>
+            <div class="col-md-3"></div>
+        </div>
 
 
         </div>
 
 
-        <br>
-        <a class="btn btn-info" href="index.php" >New search</a>
-        <a class="btn btn-info" href="search.php" >Full list</a>
-        <!-- go back button -->
-        <button onclick="goBack()" class="btn btn-info">Go Back</button>
+    <br>
+    <a class="btn btn-info" href="index.php" >New search</a>
+    <a class="btn btn-info" href="search.php" >Full list</a>
+    <!-- go back button -->
+    <button onclick="goBack()" class="btn btn-info">Go Back</button>
 
-        <script>
-            function goBack() {
-                window.history.back();
-            }
-
-            function copyToClipboard(element) {
-                var $temp = $("<input>");
-                $("body").append($temp);
-                $temp.val($(element).text()).select();
-                document.execCommand("copy");
-                $temp.remove();
-            }
-        </script>
-
-        <?php
-
-        // close sql
-        $mysqli->close();
-
-        // EDIT button
-        if ( checkp(0,$VID) ) {
-            echo '<a class="btn btn-danger" href="singleEntryEditable.php?ID=' . $ID . '&IDC=' . $ID_CHECK . '" >Make editable</a>';   
+    <script>
+        function goBack() {
+            window.history.back();
         }
-        echo '<br><br>';
 
-        //URL for ABSTRACTS
-        $urlab = 'http://www.ai-sf.it/dbicps/edit_abstract/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&email='. $row['EMAIL'];
-        $urlab = str_replace(' ','%20',$urlab);
-        
+        function copyToClipboard(element) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val($(element).text()).select();
+            document.execCommand("copy");
+            $temp.remove();
+        }
+    </script>
 
-        //URL for PAYMENT
-        $payim = ($row['LCNC']=='IM' ? 'yes' : 'no');
-        //$lello = ($row['ID']>500 ? '&round=late' : '');
-        //$urlpa = 'http://www.ai-sf.it/dbicps/payment_master/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&im=' . $payim . $lello;
-        $urlpa = 'http://www.ai-sf.it/dbicps/payment_master/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&im=' . $payim;
-        if ((int)$ID>500){
-            $urlpa .= '&round=late';
-        } 
-        $urlpa = str_replace(' ','%20',$urlpa);
-        
-        // echoes
-        echo 'edit abstract: <a id="urlab" href="' . $urlab . '" style="font-size:8pt;">' . $urlab . '</a><br>';
-        echo 'pay by cc: <a id="urlpa" href="' . $urlpa . '" style="font-size:8pt;">' . $urlpa . '</a><br>';
-        echo '<button class="btn btn-warning" onclick="copyToClipboard(\'#urlab\')">edit abstract: copy URL</button> ';
-        echo '<button class="btn btn-warning" onclick="copyToClipboard(\'#urlpa\')">pay by cc: copy URL</button>';
+    <?php
 
-        ?>
+    // close sql
+    $mysqli->close();
 
-        <br><br><br>
+    // EDIT button
+    if ( checkp(0,$VID) ) {
+        echo '<a class="btn btn-danger" href="singleEntryEditable.php?ID=' . $ID . '&IDC=' . $ID_CHECK . '" >Make editable</a>';   
+    }
+    echo '<br><br>';
+
+    //URL for ABSTRACTS
+    $urlab = 'http://www.ai-sf.it/dbicps/edit_abstract/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&email='. $row['EMAIL'];
+    $urlab = str_replace(' ','%20',$urlab);
+
+
+    //URL for PAYMENT
+    $payim = ($row['LCNC']=='IM' ? 'yes' : 'no');
+    //$lello = ($row['ID']>500 ? '&round=late' : '');
+    //$urlpa = 'http://www.ai-sf.it/dbicps/payment_master/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&im=' . $payim . $lello;
+    $urlpa = 'http://www.ai-sf.it/dbicps/payment_master/?name='. $row['NAME_STRIP'] . '&surname=' . $row['SURNAME'] . '&uid='. $uid . '&im=' . $payim;
+    if ((int)$ID>500){
+        $urlpa .= '&round=late';
+    } 
+    $urlpa = str_replace(' ','%20',$urlpa);
+
+    // echoes
+    echo 'edit abstract: <a id="urlab" href="' . $urlab . '" style="font-size:8pt;">' . $urlab . '</a><br>';
+    echo 'pay by cc: <a id="urlpa" href="' . $urlpa . '" style="font-size:8pt;">' . $urlpa . '</a><br>';
+    echo '<button class="btn btn-warning" onclick="copyToClipboard(\'#urlab\')">edit abstract: copy URL</button> ';
+    echo '<button class="btn btn-warning" onclick="copyToClipboard(\'#urlpa\')">pay by cc: copy URL</button>';
+
+    ?>
+
+    <br><br><br>
 
     </body>
 </html>
