@@ -170,7 +170,7 @@ function single_room_available($x, $ID) {
 }
 
 function double_room_available($x, $ID) {
-    if ($x >= 63) { // SET HERE NUMBER OF DOUBLE ROOMS
+    if ($x >= 61) { // SET HERE NUMBER OF DOUBLE ROOMS
         return false;
     } else {
         return true;
