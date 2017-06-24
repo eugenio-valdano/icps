@@ -1,0 +1,6 @@
+Sub-M_{Ch} white dwarfs as SN Ia progenitors
+
+Supernovae are the main contributers of iron in our galaxy and influence the galactic chemical evolution. The moving mesh code AREPO [1] allows a parallel treatement of the occuring hydrodynamics and a nuclear network. It is used to simulate the double detonation of a sub-Chandrasekhar mass white dwarf as a possile progenitor of a Type Ia supernova. Different initial models are analysed for their evolution and final abundances in one and three dimensional simulations. An explosion in a double detonation scenario can lead to spectra and light curves that are in agreement with observations [2] and thereby it can give an insight into the origin of the elements in our galaxy.
+
+[1] V. Springel. E pur si muove: Galilean-invariant cosmological hydrodynamical simulations on a moving mesh. MNRAS, 401:791–851, January 2010b.
+[2] M. Kromer, S. A. Sim, M. Fink, F. K. Röpke, I. R. Seitenzahl, and W. Hillebrandt. Double-detonation Sub-Chandrasekhar Supernovae: Synthetic Observables for Minimum Helium Shell Mass Models. ApJ, 719:1067–1082, August 2010.

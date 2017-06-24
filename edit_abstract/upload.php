@@ -56,7 +56,7 @@
         $contribution = $_POST['type'];
         $id = substr($uid, -3, 3);
         //echo $id;
-        
+
         if ($id<=500){
             $stringa = "SELECT * FROM " . $table . " WHERE ID=".$id;
         } else {
@@ -89,8 +89,7 @@
         } else {
 
             $row = $result->fetch_assoc();
-
-
+        
 
             //UPLOAD FILE
             if(isset($_FILES['abstract'])){
@@ -130,6 +129,7 @@
 
             $url = "http://www.ai-sf.it/dbicps/edit_abstract/uploads/".$new_file_name;
 
+            
             $mail = new PHPMailer;
 
             #$mail->isSMTP();                                      // Set mailer to use SMTP
@@ -158,26 +158,47 @@
         You can find it at the link ".$url."<br>You will be able to upload a new version of your abstract, using the same form, until the 20th of April.</p><p></p><p>The ICPS2017 Organizing Committee</p>";
             $mail->send();
 
-
             $result->free();
-            if ($_POST['type']=='poster'){
-                $stringa1 = "UPDATE " . $table . " SET URL_POSTER='".$url."' WHERE ID=".$id;
-                if ($row['CONTRIBUTION']=='talk'){
-                    $stringa2 = "UPDATE " . $table . " SET CONTRIBUTION='both' WHERE ID=".$id;
-                } else{
-                    $stringa2 = "UPDATE " . $table . " SET CONTRIBUTION='poster' WHERE ID=".$id;
+
+            if ($id<=500){
+                if ($_POST['type']=='poster'){
+                    $stringa1 = "UPDATE " . $table . " SET URL_POSTER='".$url."' WHERE ID=".$id;
+                    if ($row['CONTRIBUTION']=='talk'){
+                        $stringa2 = "UPDATE " . $table . " SET CONTRIBUTION='both' WHERE ID=".$id;
+                    } else{
+                        $stringa2 = "UPDATE " . $table . " SET CONTRIBUTION='poster' WHERE ID=".$id;
+                    }
+                } elseif ($_POST['type']=='talk'){
+                    $stringa1 = "UPDATE " . $table . " SET URL_TALK='".$url."' WHERE ID=".$id;
+                    if ($row['CONTRIBUTION']=='poster'){
+                        $stringa2 = "UPDATE " . $table . " SET CONTRIBUTION='both' WHERE ID=".$id;
+                    } else{
+                        $stringa2 = "UPDATE " . $table . " SET CONTRIBUTION='talk' WHERE ID=".$id;
+                    }
                 }
-            } elseif ($_POST['type']=='talk'){
-                $stringa1 = "UPDATE " . $table . " SET URL_TALK='".$url."' WHERE ID=".$id;
-                if ($row['CONTRIBUTION']=='poster'){
-                    $stringa2 = "UPDATE " . $table . " SET CONTRIBUTION='both' WHERE ID=".$id;
-                } else{
-                    $stringa2 = "UPDATE " . $table . " SET CONTRIBUTION='talk' WHERE ID=".$id;
+                $result = $mysqli->query($stringa1);
+                $result = $mysqli->query($stringa2);
+                $mysqli->close();
+            } else {
+                if ($_POST['type']=='poster'){
+                    $stringa1 = "UPDATE late SET URL_POSTER='".$url."' WHERE ID=".$id;
+                    if ($row['CONTRIBUTION']=='talk'){
+                        $stringa2 = "UPDATE late SET CONTRIBUTION='both' WHERE ID=".$id;
+                    } else{
+                        $stringa2 = "UPDATE late SET CONTRIBUTION='poster' WHERE ID=".$id;
+                    }
+                } elseif ($_POST['type']=='talk'){
+                    $stringa1 = "UPDATE late SET URL_TALK='".$url."' WHERE ID=".$id;
+                    if ($row['CONTRIBUTION']=='poster'){
+                        $stringa2 = "UPDATE late SET CONTRIBUTION='both' WHERE ID=".$id;
+                    } else{
+                        $stringa2 = "UPDATE late SET CONTRIBUTION='talk' WHERE ID=".$id;
+                    }
                 }
+                $result = $mysqli->query($stringa1);
+                $result = $mysqli->query($stringa2);
+                $mysqli->close();
             }
-            $result = $mysqli->query($stringa1);
-            $result = $mysqli->query($stringa2);
-            $mysqli->close();
 
         }
         ?>

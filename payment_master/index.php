@@ -95,7 +95,7 @@ $APIlive = $dbinfo[3];
                                 }
                             }
                         },
-                        zip: {
+                       /* zip: {
                             validators: {
                                 notEmpty: {
                                     message: 'The zip is required and cannot be empty'
@@ -106,7 +106,7 @@ $APIlive = $dbinfo[3];
                                     message: 'The zip must be more than 3 and less than 9 characters long'
                                 }
                             }
-                        },
+                        },*/
                         email: {
                             validators: {
                                 notEmpty: {
@@ -627,7 +627,7 @@ $APIlive = $dbinfo[3];
                         <div class="form-group">
                             <label class="col-sm-4 control-label" for="textinput">Postal Code</label>
                             <div class="col-sm-6">
-                                <input type="text" name="zip" maxlength="9" placeholder="Postal Code" class="zip form-control">
+                                <input type="text" name="zip" maxlength="9" placeholder="Postal Code" class="address form-control">
                             </div>
                         </div>
 
