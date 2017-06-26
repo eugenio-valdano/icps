@@ -191,7 +191,7 @@ mysqli_set_charset($mysqli, 'utf8');
                         <td><?php echo format_contribution($row);?></td>
                     </tr>
 
-                    <!-- ROOM -->
+                    <!-- ROOM PREFERENCE -->
                     <?php
                     $preference = (int)$row['PREFERENCE'];
                     if ($preference==0) {
@@ -199,10 +199,10 @@ mysqli_set_charset($mysqli, 'utf8');
                     } elseif($preference==-1) {
                         $col_roompref = "<span style=\"font-style:italic;\">single</span>";
                     } else {
-                        $stronga = "SELECT `SURNAME`, `ID` FROM `" . $table . "` WHERE `ID`=" . $preference;
+                        $stronga = "SELECT `SURNAME`, `ID`, `ID_CHECK` FROM `" . $table . "` WHERE `ID`=" . $preference;
                         $rosico = $mysqli->query($stronga);
                         $ronco = $rosico->fetch_array();
-                        $linktoronco = "singleEntry.php?ID=" . $row['ID'] . '&IDC=' . $row['ID_CHECK'];
+                        $linktoronco = "singleEntry.php?ID=" . $ronco['ID'] . '&IDC=' . $ronco['ID_CHECK'];
                         $col_roompref = "<a href=\"" . $linktoronco . "\">" . $ronco['SURNAME'] . " (" . $ronco['ID'] . ")</a>";
 
                     }
@@ -211,6 +211,27 @@ mysqli_set_charset($mysqli, 'utf8');
                         <td>ROOM PREFERENCE</td>
                         <td><?php echo $col_roompref;?></td>
                     </tr>
+                    
+                    <!-- ROOM ASSIGNMENT -->
+                    <?php
+                    $preference = (int)$row['ROOM_DEF'];
+                    if ($preference==0) {
+                        $col_roompref = "-";
+                    } elseif($preference==-1) {
+                        $col_roompref = "<span style=\"font-style:italic;\">single</span>";
+                    } else {
+                        $stronga = "SELECT `SURNAME`, `ID`, `ID_CHECK` FROM `" . $table . "` WHERE `ID`=" . $preference;
+                        $rosico = $mysqli->query($stronga);
+                        $ronco = $rosico->fetch_array();
+                        $linktoronco = "singleEntry.php?ID=" . $ronco['ID'] . '&IDC=' . $ronco['ID_CHECK'];
+                        $col_roompref = "<a href=\"" . $linktoronco . "\">" . $ronco['SURNAME'] . " (" . $ronco['ID'] . ")</a>";
+                    }
+                    ?>
+                    <tr>
+                        <td>ROOM ASSIGMENT</td>
+                        <td><?php echo $col_roompref;?></td>
+                    </tr>
+                    
 
                     <tr>
                         <td>EXCURSION</td>

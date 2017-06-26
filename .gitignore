@@ -5,3 +5,6 @@ LOGO.jpg
 connected.log
 *.pdf
 prova/*
+*.txt
+*.doc
+*.docx

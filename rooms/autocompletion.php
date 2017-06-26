@@ -33,7 +33,7 @@ mysqli_set_charset($mysqli, 'utf8');
 if (isset($_GET['term'])){
     
     $search_condition = "`SURNAME_STRIP` LIKE '%" . $_GET['term'] . "%' OR `NAME_STRIP` LIKE '%" . $_GET['term'] . "%' OR `SURNAME` LIKE '%" . $_GET['term'] . "%' OR `NAME` LIKE '%" . $_GET['term'] . "%'";
-    $stringa = "SELECT * FROM " . $table_total . " WHERE (" . $search_condition;
+    $stringa = "SELECT * FROM " . $table_total . " WHERE (" . $search_condition . ")";
     //$stringa = "SELECT * FROM " . $table_total;
     $result = $mysqli->query($stringa);
 

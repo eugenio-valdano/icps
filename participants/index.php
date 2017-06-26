@@ -47,7 +47,7 @@ $VID = $_SESSION['VID'];
             <div class="col-md-1"></div>
             <div class="col-md-9"><h4>Logged in as <span class="titolo"><?php echo $VID;?></span></h4>
                 <a href="logout.php" class="btn btn-info">log out</a>
-                </div>
+            </div>
             <div class="col-md-2"></div>
         </div>
 
@@ -55,17 +55,17 @@ $VID = $_SESSION['VID'];
 
 
         <form action="search.php" method="POST">
-            
+
             <input type="hidden" name="sorting" value="SURNAME_STRIP" />
 
             <div class="row" style="text-align:left">
                 <div class="col-md-2"></div>
-                <div class="col-md-8"><h2 class="titolo" style="text-align:left">Query matching conditions</h2></div>
+                <div class="col-md-8"><h2 class="titolo" style="text-align:left">Option 1: Query matching conditions</h2></div>
                 <div class="col-md-2"></div>
             </div>
-            
+
             <br>
-            
+
             <div class="row" style="text-align:left">
                 <div class="col-md-2"></div>
                 <div class="col-md-2"><b>name or surname</b></div>
@@ -95,17 +95,17 @@ $VID = $_SESSION['VID'];
         </form>
 
 
-        <br><br><br><br><br>
-        
+        <br><br><br><br>
+
         <form action="jumpToID.php" method="POST">
-            
+
             <div class="row" style="text-align:left">
                 <div class="col-md-2"></div>
-                <div class="col-md-8"><h2 class="titolo" style="text-align:left">Go to ID</h2></div>
+                <div class="col-md-8"><h2 class="titolo" style="text-align:left">Option 2: Go to ID</h2></div>
                 <div class="col-md-2"></div>
             </div>
 
-            
+
             <div class="row" style="text-align:left">
                 <div  class="col-md-2"></div>
                 <div  class="col-md-1"><input type="text" id="ID" name="ID" placeholder="ID" class="auto" /></div>
@@ -118,6 +118,20 @@ $VID = $_SESSION['VID'];
                 <div  class="col-md-9"></div>
             </div>
         </form>
+
+        <br><br><br><br>
+
+        <div class="row" style="text-align:left">
+            <div class="col-md-2"></div>
+            <div class="col-md-8"><h2 class="titolo" style="text-align:left">Option 3: Download customized CSV</h2></div>
+            <div class="col-md-2"></div>
+        </div>
+
+        <div class="row" style="text-align:left">
+            <div  class="col-md-2"></div>
+            <div  class="col-md-1"><a href="custom/custom.php" class="btn btn-primary">Go to download page</a></div>
+            <div  class="col-md-9"></div>
+        </div>
 
         <br>
 
@@ -148,7 +162,7 @@ $VID = $_SESSION['VID'];
                     minLength: 2
                 });                
             });
-            
+
             // LCNC
             $(function() {
                 //autocomplete
@@ -158,7 +172,7 @@ $VID = $_SESSION['VID'];
                 });                
             });
 
-            
+
         </script>
 
 

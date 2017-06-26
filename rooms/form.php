@@ -52,6 +52,12 @@ $result_sr = $mysqli->query($stringa);
 $single_rooms_allocated = $result_sr->num_rows;
 $result_sr->free();
 
+//COUNT DOUBLE ROOMS
+$stringa = "SELECT `ID` FROM " . $table_total . " WHERE `ROOM_DEF`>0";
+$result_sr = $mysqli->query($stringa);
+$double_rooms_allocated = $result_sr->num_rows / 2;
+$result_sr->free();
+
 // data about the person
 $stringa = "SELECT * FROM " . $table_total . " WHERE `ID`=". $ID;
 $result_personal = $mysqli->query($stringa);
@@ -123,7 +129,7 @@ $entries = $result->num_rows;
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-                <p>We have only single and double rooms. We're assigning single rooms on a first come first served basis, so if you see none left, it means we've already assigned all of them. You can either choose a single room, or a person to share the double room with. If someone has already chosen you to be their roommate, you will see their name, and have the chance to select them back, thus confirming your match. Otherwise, you can select a person among the participants. Start typing their name or surname, and see if they come up in the suggestions. If they do, select them. If they don't, it means they have already either selected a single room, or chosen someone else (sorry mate), so don't bother selecting them.</p>
+                <p>We have only <b>single</b> (many) and <b>double</b> rooms (few). We're assigning them on a first come first served basis, so if you can't select some, it means they're already taken. You can either choose a single room, or a person to share the double room with. If someone has already chosen you to be their roommate, you will see their name, and have the chance to select them back, thus confirming your match. Otherwise, you can select a person among the participants. Start typing their name or surname, you will see suggestions.</p>
                 <p>If you select a person and they select you back, you'll very likely end up together. If they don't make any selection, you'll be assigned randomly to a room. If they select someone who's not you, you'll be notified of their lack of love, and asked to make another choice. But don't lose faith in humanity just yet, ICPS will be full of people and full of love!</p>
             </div>
             <div class="col-md-2"></div>
@@ -146,16 +152,27 @@ $entries = $result->num_rows;
         echo '<input type="radio" id="singleRoom" value="-1" name="ID_CHOICE" ' . ( $flag_single ? '' : 'disabled' ) . '> '. $string_single;
         echo '</div><div class="col-md-3"></div></div><br>';
 
-        // pre-matches
-        while($row = $result->fetch_array()) {
-            echo '<div class="row"><div class="col-md-3"></div><div class="col-md-6">';
-            echo '<input type="radio" id="preChoice" value="' . $row['ID']. '" name="ID_CHOICE"> ' . '<span style="font-weight:bold; font-size:14pt">' . $row['SURNAME'] . ' ' . $row['NAME'] . '</span>';
-            echo '</div><div class="col-md-3"></div></div><br>';
+        $flag_double = double_room_available($double_rooms_allocated, $ID);
+
+        if ($flag_double) {
+            // pre-matches
+            while($row = $result->fetch_array()) {
+                echo '<div class="row"><div class="col-md-3"></div><div class="col-md-6">';
+                echo '<input type="radio" id="preChoice" value="' . $row['ID']. '" name="ID_CHOICE"> ' . '<span style="font-weight:bold; font-size:14pt">' . $row['SURNAME'] . ' ' . $row['NAME'] . '</span>';
+                echo '</div><div class="col-md-3"></div></div><br>';
+            }
         }
 
         // free choice
         echo '<div class="row"><div class="col-md-3"></div><div class="col-md-6">';
-        echo '<input type="radio" id="freeChoice" name="ID_CHOICE" value=""> <input type="text" id="freeChoiceText" name="NAME_CHOICE" value="" class="auto" placeholder="Type name or surname"/><br>';
+        echo '<input type="radio" id="freeChoice" name="ID_CHOICE" value="" ' . ( $flag_double ? '' : 'disabled' ) . '>';
+        if ($flag_double) {
+            echo '<input type="text" id="freeChoiceText" name="NAME_CHOICE" value="" class="auto" placeholder="Type name or surname"' . ( $flag_double ? '' : 'disabled' ) . '/><br>';
+        } else {
+            $string_double = '<span style="font-size:14pt; font-style:italic; color:gray"> double room  (no longer available)</span><br>';
+            echo $string_double;
+        }
+        
         echo '</div><div class="col-md-3"></div></div><br>';
 
         //submit

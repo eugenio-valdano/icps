@@ -41,112 +41,145 @@ mysqli_set_charset($mysqli, 'utf8');
 $ID = (int) $_POST['ID']; // ID of the person
 $ID_CHECK = $_POST['ID_CHECK']; // ID_CHECK of the person
 
+if (! (isset($_POST['NAME_CHOICE']) or isset($_POST['ID_CHOICE'])) ) {
+    $FLAG_STATUS = 4; // no selection made
+} else {
 
-if ( strlen($_POST['NAME_CHOICE'])==0 ) { // find through ID
+    if ( strlen($_POST['NAME_CHOICE'])==0 ) { // find through ID
 
-    // receiving the ID
-    $ID_CHOICE = (int) $_POST['ID_CHOICE']; // ID of whom she has chosen
+        // receiving the ID
+        $ID_CHOICE = (int) $_POST['ID_CHOICE']; // ID of whom she has chosen
 
-    if ($ID_CHOICE==-1) { // single room
-        $SURNAME_CHOICE = 'N/A';
-        $NAME_CHOICE = 'N/A';
-    } else { // person
-        $stringa = "SELECT `SURNAME`,`NAME` FROM " . $table_total . " WHERE `ID`=" . $ID_CHOICE;
+        if ($ID_CHOICE==-1) { // single room
+            $SURNAME_CHOICE = 'N/A';
+            $NAME_CHOICE = 'N/A';
+        } else { // person
+            $stringa = "SELECT `SURNAME`,`NAME` FROM " . $table_total . " WHERE `ID`=" . $ID_CHOICE;
+            $result_namesur = $mysqli->query($stringa);
+            $n_namesur = $result_namesur->num_rows;
+            //if ($n_namesur == 0) {
+            //    die('ID not found');
+            //}
+            $result_namesur = $result_namesur->fetch_array();
+            $SURNAME_CHOICE = $result_namesur['SURNAME'];
+            $NAME_CHOICE = $result_namesur['NAME'];
+        }
+    } else { // find through NAME
+
+        // receiving the surname and name, and finding ID
+        $surname_name = explode(" ", $_POST['NAME_CHOICE']);
+        $stringa = "SELECT `SURNAME`,`NAME`,`ID` FROM " . $table_total . " WHERE `SURNAME_STRIP` LIKE '%" . $surname_name[0] . "%' AND `NAME_STRIP` LIKE '%" . $surname_name[1] . "%'";
         $result_namesur = $mysqli->query($stringa);
         $n_namesur = $result_namesur->num_rows;
-        if ($n_namesur == 0) {
-            die('ID not found');
+        if ($n_namesur != 1) {
+            $FLAG_STATUS = 1;
+        } else {
+            $result_namesur = $result_namesur->fetch_array();
+            $ID_CHOICE = (int) $result_namesur['ID'];
+            $SURNAME_CHOICE = $result_namesur['SURNAME'];
+            $NAME_CHOICE = $result_namesur['NAME'];
         }
-        $result_namesur = $result_namesur->fetch_array();
-        $SURNAME_CHOICE = $result_namesur['SURNAME'];
-        $NAME_CHOICE = $result_namesur['NAME'];
-    }
-} else { // find through NAME
 
-    // receiving the surname and name, and finding ID
-    $surname_name = explode(" ", $_POST['NAME_CHOICE']);
-    $stringa = "SELECT `SURNAME`,`NAME`,`ID` FROM " . $table_total . " WHERE `SURNAME_STRIP` LIKE '%" . $surname_name[0] . "%' AND `NAME_STRIP` LIKE '%" . $surname_name[1] . "%'";
-    $result_namesur = $mysqli->query($stringa);
-    $n_namesur = $result_namesur->num_rows;
-    if ($n_namesur != 1) {
-        $FLAG_STATUS = 1;
-    } else {
-        $result_namesur = $result_namesur->fetch_array();
-        $ID_CHOICE = (int) $result_namesur['ID'];
-        $SURNAME_CHOICE = $result_namesur['SURNAME'];
-        $NAME_CHOICE = $result_namesur['NAME'];
     }
 
-}
-
-//
-//** avoid self-selection
-//
-if ($ID==$ID_CHOICE) {
-    $FLAG_STATUS = 3; // mark as invalid selection
-}
-
-
-//
-//** check that the choice is allowed
-//
-// NOT allowed if any of these: 1)ID_CHOICE has chosen single room 2)ID_CHOICE has chosen someone else
-if ($FLAG_STATUS==0) {
-
-    $stringa = "SELECT `PREFERENCE` FROM " . $table_total . " WHERE `ID`=" . $ID_CHOICE;
-    $result_allowed_coso = $mysqli->query($stringa);
-    $result_allowed = $result_allowed_coso->fetch_array();
-    if ( (int)$result_allowed['PREFERENCE'] != 0 and (int)$result_allowed['PREFERENCE'] != $ID) {
-        $FLAG_STATUS = 2; // mark as invalid selection
+    //
+    //** avoid self-selection
+    //
+    if ($ID==$ID_CHOICE) {
+        $FLAG_STATUS = 3; // mark as invalid selection
     }
-}
-
-//
-//** perform
-//
-if ($FLAG_STATUS == 0) {
-
-    // UPDATE query
-    $stringa = "UPDATE " . $table_total . " SET `PREFERENCE`=" . $ID_CHOICE . " WHERE ID=" . $ID; 
-    $result = $mysqli->query($stringa);
 
 
-    //+++ drop previous links, if necessary (links pointing from a person to ID, if ID_CHOICE != that person)
-    // select people who chose her
-    $stringa = "SELECT * FROM " . $table_total . " WHERE `PREFERENCE`=" . $ID . ' AND `ID`!= '.$ID_CHOICE;
-    $result_reset = $mysqli->query($stringa);
-    while($row = $result_reset->fetch_array()) {
+    //
+    //** check that the choice is allowed
+    //
+    // NOT allowed if any of these: 1)ID_CHOICE has chosen single room 2)ID_CHOICE has chosen someone else
+    if ($FLAG_STATUS==0) {
 
-        // remove the link
-        $stringa = "UPDATE " . $table_total . " SET `PREFERENCE`=0 WHERE ID=" . $row['ID'];
-        $result_reset_update = $mysqli->query($stringa);
+        $stringa = "SELECT `PREFERENCE` FROM " . $table_total . " WHERE `ID`=" . $ID_CHOICE;
+        $result_allowed_coso = $mysqli->query($stringa);
+        $result_allowed = $result_allowed_coso->fetch_array();
+        if ( (int)$result_allowed['PREFERENCE'] != 0 and (int)$result_allowed['PREFERENCE'] != $ID) {
+            $FLAG_STATUS = 2; // mark as invalid selection
+        }
+    }
 
-        // send mail to $row['ID']
-        $mail = new PHPMailer;
-        #$mail->isSMTP();                                      // Set mailer to use SMTP
-        $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = 'icps2017registration@ai-sf.it';                 // SMTP username
-        $mail->Password = $mail_registration_password;                           // SMTP password
-        $mail->SMTPSecure = 'ssl';    // Enable encryption, 'ssl' also accepted
-        $mail->Port = 587;
-        $mail->From = 'icps2017registration@ai-sf.it';
-        $mail->FromName = 'ICPS2017 Organizing Committee';
-        // MAIL ADDRESS
-        //$mail->addAddress($row['EMAIL']);     // Add a recipient
-        $mail->addAddress('eugenio.valdano@ai-sf.it');     // Add a recipient TEST
-        $mail->addReplyTo('icps2017registration@ai-sf.it', '');
-        $mail->isHTML(true);                                  // Set email format to HTML
-        $mail->Subject = 'ICPS2017: You need to choose your room partner again.';
-        $mail->Body    = "Dear " . $row['NAME'] .",<br><p>Unfortunately, the person you chose to be your roommate has picked someone else.</p><p>Please make another choice at https://www.ai-sf.it/dbicps/rooms/form.php?ID=" . $row['ID'] . "&IDC=" . $row['ID_CHECK'] . "</p><p>You can contact us at icps2017registration@ai-sf.it.<br>
+    //
+    //** perform
+    //
+    if ($FLAG_STATUS == 0) {
+
+        // UPDATE query
+        $stringa = "UPDATE " . $table_total . " SET `PREFERENCE`=" . $ID_CHOICE . " WHERE ID=" . $ID; 
+        $result = $mysqli->query($stringa);
+        if ($ID_CHOICE==-1) {
+            $stringa = "UPDATE " . $table_total . " SET `ROOM_DEF`=" . $ID_CHOICE . " WHERE ID=" . $ID; 
+            $result = $mysqli->query($stringa);    
+        }
+
+
+        //+++ find mutual choice, and lock room
+        // select people who chose her
+        $stringa = "SELECT * FROM " . $table_total . " WHERE `PREFERENCE`=" . $ID . ' AND `ID`= '.$ID_CHOICE;
+        $result_lock = $mysqli->query($stringa);
+        $n_lock = $result_lock->num_rows;
+        if ($n_lock==1) {
+            // lock the room
+            $lock = $result_lock->fetch_array();
+
+            // update both in ROOM_DEF
+            $stringa = "UPDATE " . $table_total . " SET `ROOM_DEF`=" . $ID_CHOICE . " WHERE ID=" . $ID; 
+            $result = $mysqli->query($stringa);
+            $stringa = "UPDATE " . $table_total . " SET `ROOM_DEF`=" . $ID . " WHERE ID=" . $ID_CHOICE; 
+            $result = $mysqli->query($stringa);
+
+        }
+
+
+
+
+        //+++ drop previous links, if necessary (links pointing from a person to ID, if ID_CHOICE != that person)
+        // select people who chose her
+        $stringa = "SELECT * FROM " . $table_total . " WHERE `PREFERENCE`=" . $ID . ' AND `ID`!= '.$ID_CHOICE;
+        $result_reset = $mysqli->query($stringa);
+        while($row = $result_reset->fetch_array()) {
+
+            // remove the link
+            $stringa = "UPDATE " . $table_total . " SET `PREFERENCE`=0 WHERE ID=" . $row['ID'];
+            $result_reset_update = $mysqli->query($stringa);
+
+            // send mail to $row['ID']
+            $mail = new PHPMailer;
+            #$mail->isSMTP();                                      // Set mailer to use SMTP
+            $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+            $mail->SMTPAuth = true;                               // Enable SMTP authentication
+            $mail->Username = 'icps2017registration@ai-sf.it';                 // SMTP username
+            $mail->Password = $mail_registration_password;                           // SMTP password
+            $mail->SMTPSecure = 'ssl';    // Enable encryption, 'ssl' also accepted
+            $mail->Port = 587;
+            $mail->From = 'icps2017registration@ai-sf.it';
+            $mail->FromName = 'ICPS2017 Organizing Committee';
+            // MAIL ADDRESS
+            $mail->addAddress($row['EMAIL']);     // Add a recipient
+            $mail->addAddress('eugenio.valdano@ai-sf.it');     // Add a recipient TEST
+            $mail->addReplyTo('eugenio.valdano@ai-sf.it', '');
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = 'ICPS2017: You need to choose your room partner again.';
+            $mail->Body    = "Dear " . $row['NAME'] .",<br><p>Unfortunately, the person you chose to be your roommate has picked someone else.</p><p>Please make another choice at https://www.ai-sf.it/dbicps/rooms/form.php?ID=" . $row['ID'] . "&IDC=" . $row['ID_CHECK'] . "</p><p>You can contact us at eugenio.valdano@ai-sf.it.<br>
         Best regards,</p>
         <br><br><p>The ICPS2017 Organizing Committee</p>";
-        $mail->send();
-        // end mail
-    } 
-    $result_reset->free();
+            $mail->send();
+            // end mail
+        } 
+        $result_reset->free();
 
-} // end perform
+    } // end perform
+
+
+}
+
+
+
 
 $mysqli->close();
 ?>
@@ -223,8 +256,10 @@ $mysqli->close();
                     echo 'We could not find the person you have chosen among the participants. If you input surname and name yourself, please try again sticking to the autocomplete suggestions.';
                 } elseif ($FLAG_STATUS==2) {
                     echo 'It seems the person you selected has already chose either a single room, or another roommate. Please select another person.';
-                } else {
+                } elseif ($FLAG_STATUS==3) {
                     echo 'Nice try ;) You can\'t pick yourself.';
+                } else {
+                    echo 'Invalid selection.';
                 }
 
                 $url_button = "https://www.ai-sf.it/dbicps/rooms/form.php?ID=" . $ID . "&IDC=" . $ID_CHECK;
