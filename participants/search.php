@@ -115,6 +115,7 @@ mysqli_set_charset($mysqli, 'utf8');
                 <li class="active"><a href="logout.php">VID: <?php echo $VID;?> (logout)</a></li>
                 <li class="active"><a href="index.php">New search</a></li>
                 <li class="active"><a href="search.php">Full list</a></li>
+                <li class="active"><a href="excursions_stat.php">Excursions</a></li>
             </ul>
         </nav>
 
@@ -204,8 +205,8 @@ mysqli_set_charset($mysqli, 'utf8');
                                     <input type="hidden" id="name" name="name" value="<?php echo $queryName0;?>"/>
                                     <input type="hidden" id="nationality"  name="nationality" value="<?php echo $queryNationality;?>"/>
                                     <input type="hidden" id="lcnc" name="lcnc" value="<?php echo $queryLcnc;?>"/>
-                                    <input type="hidden" id="sorting" name="sorting" value="PREFERENCE"/>
-                                    <input type="submit" value="ROOM PREF" class="btn btn-link" />
+                                    <input type="hidden" id="sorting" name="sorting" value="ROOM"/>
+                                    <input type="submit" value="ROOM" class="btn btn-link" />
                                 </form>
                             </th>
                             <?php endif;?>
@@ -251,23 +252,29 @@ mysqli_set_charset($mysqli, 'utf8');
                                 $col_contr = '<td>' . $col_contr . '</td>';   
                             }
 
-                            $col_deleg = "<td>" . ( $row['DELEGATE']=="No" ? "" : "yes" ) . "</td>";
+                            $col_deleg = "<td>" . ( is_null($row['DELEGATE']) ? "no" : "yes" ) . "</td>";
 
                             
-                            // room preference
-                            $preference = (int)$row['PREFERENCE'];
+                            // room
+                            if ( is_null($row['ROOM']) ) {
+                                $col_roompref = '<i>no room</i>';
+                            } else {
+                                $col_roompref = '<b>' . substr($row['RESIDENCE'],0,1) . '</b> - ' . $row['ROOM'] ;
+                            }
+                            /*
                             if ($preference==0) {
                                 $col_roompref = "-";
                             } elseif($preference==-1) {
                                 $col_roompref = "<span style=\"font-style:italic;\">single</span>";
                             } else {
-                                $stronga = "SELECT `SURNAME`, `ID` FROM `" . $table . "` WHERE `ID`=" . $preference;
+                                $stronga = "SELECT `SURNAME`, `ID`, `ID_CHECK` FROM `" . $table . "` WHERE `ID`=" . $preference;
                                 $rosico = $mysqli->query($stronga);
                                 $ronco = $rosico->fetch_array();
-                                $linktoronco = "singleEntry.php?ID=" . $row['ID'] . '&IDC=' . $row['ID_CHECK'];
+                                $linktoronco = "singleEntry.php?ID=" . $ronco['ID'] . '&IDC=' . $ronco['ID_CHECK'];
                                 $col_roompref = "<a href=\"" . $linktoronco . "\">" . $ronco['SURNAME'] . " (" . $ronco['ID'] . ")</a>";
                                 
                             }
+                            */
                             $col_roompref = "<td>" . $col_roompref . "</td>";
                             
                             // id

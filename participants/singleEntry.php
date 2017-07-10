@@ -182,65 +182,57 @@ mysqli_set_charset($mysqli, 'utf8');
                         <td>UNIVERSITY</td>
                         <td><?php echo $row['UNIVERSITY'];?></td>
                     </tr>
+
+                    <?php
+                    // delegate
+                    $delegate_string = (is_null($row['DELEGATE']) ? 'no' : 'yes (' . $row['DELEGATE_DETAIL'] . ')');
+                    ?>
+
                     <tr>
                         <td>DELEGATE</td>
-                        <td><?php echo $row['DELEGATE'];?></td>
+                        <td><?php echo $delegate_string;?></td>
                     </tr>
                     <tr>
                         <td>CONTRIBUTION</td>
                         <td><?php echo format_contribution($row);?></td>
                     </tr>
 
-                    <!-- ROOM PREFERENCE -->
-                    <?php
-                    $preference = (int)$row['PREFERENCE'];
-                    if ($preference==0) {
-                        $col_roompref = "-";
-                    } elseif($preference==-1) {
-                        $col_roompref = "<span style=\"font-style:italic;\">single</span>";
-                    } else {
-                        $stronga = "SELECT `SURNAME`, `ID`, `ID_CHECK` FROM `" . $table . "` WHERE `ID`=" . $preference;
-                        $rosico = $mysqli->query($stronga);
-                        $ronco = $rosico->fetch_array();
-                        $linktoronco = "singleEntry.php?ID=" . $ronco['ID'] . '&IDC=' . $ronco['ID_CHECK'];
-                        $col_roompref = "<a href=\"" . $linktoronco . "\">" . $ronco['SURNAME'] . " (" . $ronco['ID'] . ")</a>";
-
-                    }
-                    ?>
-                    <tr>
-                        <td>ROOM PREFERENCE</td>
-                        <td><?php echo $col_roompref;?></td>
-                    </tr>
-                    
                     <!-- ROOM ASSIGNMENT -->
                     <?php
-                    $preference = (int)$row['ROOM_DEF'];
-                    if ($preference==0) {
-                        $col_roompref = "-";
-                    } elseif($preference==-1) {
-                        $col_roompref = "<span style=\"font-style:italic;\">single</span>";
+                    if ( is_null($row['ROOM']) ) {
+                        $col_roompref = '<i>no room</i>';
                     } else {
-                        $stronga = "SELECT `SURNAME`, `ID`, `ID_CHECK` FROM `" . $table . "` WHERE `ID`=" . $preference;
+                        $col_roompref = '<b>' . substr($row['RESIDENCE'],0,1) . '</b> - ' . $row['ROOM'] ;
+                    }
+
+                    $pairing = (int)$row['ROOM_PAIRING'];
+                    if ($pairing>0) {
+                        $stronga = "SELECT `SURNAME`, `ID`, `ID_CHECK` FROM `" . $table . "` WHERE `ID`=" . $pairing;
                         $rosico = $mysqli->query($stronga);
                         $ronco = $rosico->fetch_array();
                         $linktoronco = "singleEntry.php?ID=" . $ronco['ID'] . '&IDC=' . $ronco['ID_CHECK'];
-                        $col_roompref = "<a href=\"" . $linktoronco . "\">" . $ronco['SURNAME'] . " (" . $ronco['ID'] . ")</a>";
+                        $col_roompref .= "  --- sleeping with <a href=\"" . $linktoronco . "\">" . $ronco['SURNAME'] . " (" . $ronco['ID'] . ")</a>";
                     }
+                    
                     ?>
                     <tr>
-                        <td>ROOM ASSIGMENT</td>
+                        <td>ROOM</td>
                         <td><?php echo $col_roompref;?></td>
                     </tr>
-                    
 
                     <tr>
-                        <td>EXCURSION</td>
-                        <td><?php echo $row['ASSIGNED'];?></td>
+                        <td><a href="excursions_stat.php">EXCURSION</a></td>
+                        <td><?php echo $row['ASSIGNED'] . ': ' . $dexcursions[$row['ASSIGNED']];?>  <br> <i>(ranking <?php echo $row['EXCURSIONS'];?>)</i></td>
                     </tr>
 
                     <tr>
-                        <td>EXCURSION RANKING</td>
-                        <td><?php echo $row['EXCURSIONS'];?></td>
+                        <td>CITY RALLY</td>
+                        <td><?php echo $row['CITYRALLY'];?></td>
+                    </tr>
+
+                    <tr>
+                        <td>MAGO'S GROUP</td>
+                        <td><?php echo $row['MAGO'];?></td>
                     </tr>
 
 
@@ -275,7 +267,7 @@ mysqli_set_charset($mysqli, 'utf8');
                     </tr>
                     <tr>
                         <td>REQUIRES VISA</td>
-                        <td><?php echo '<b>' . $row['VISA'] . '</b>';?></td>
+                        <td><?php echo '<b>' . ($row['VISA']=='yes' ? 'yes' : 'no') . '</b>';?></td>
                     </tr>
                     <tr>
                         <td>PASSPORT No</td>

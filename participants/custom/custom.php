@@ -72,7 +72,7 @@ mysqli_set_charset($mysqli, 'utf8');
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-9"><h4>Logged in as <span class="titolo"><?php echo $VID;?></span></h4>
-                <a href="logout.php" class="btn btn-info">log out</a>
+                <a href="../logout.php" class="btn btn-info">log out</a>
             </div>
             <div class="col-md-1"></div>
         </div>
@@ -82,8 +82,8 @@ mysqli_set_charset($mysqli, 'utf8');
         <div class="row" style="text-align:left">
             <div class="col-md-2"></div>
             <div class="col-md-6">
-            <p>
-                Mandatory fields are fields participants were required to fill. Optional fields could be left blank. If you select one mandatory field, you will see only people with something in that field. If you select more than one mandatory field, you see people with something in at least one of those fields.
+                <p>
+                    Mandatory fields are fields participants were required to fill. Optional fields could be left blank. If you select one mandatory field, you will see only people with something in that field. If you select more than one mandatory field, you see people with something in at least one of those fields.
                 </p>
             </div>
             <div class="col-md-4"></div>
@@ -111,8 +111,12 @@ mysqli_set_charset($mysqli, 'utf8');
                     <input type="checkbox" name="DEGREE" value=""> Currently enrolled in (degree)<br>
                     <input type="checkbox" name="COUNTRY_STUDY" value=""> Country of study<br>
                     <input type="checkbox" name="UNIVERSITY" value=""> University<br>
+                    <input type="checkbox" name="EMAIL" value=""> Email address<br>
                     <input type="checkbox" name="PASSPORT" value=""> Passport<br>
                     <input type="checkbox" name="LCNC" value=""> LC / NC / IM<br>
+                    <input type="checkbox" name="ASSIGNED" value=""> Excursion <a href="../excursions_stat.php">(A-H)</a><br>
+                    <input type="checkbox" name="CITYRALLY" value=""> City rally (1,2)<br>
+                    <input type="checkbox" name="MAGO" value=""> Mago's group (0-9)<br>
                 </div>
                 <div class="col-md-2"></div>
             </div>
@@ -129,9 +133,35 @@ mysqli_set_charset($mysqli, 'utf8');
                     <input type="checkbox" name="DIET" value="opt"> Dietary requirements<br>
                     <input type="checkbox" name="ALLERGIES" value="opt"> Allergies<br>
                     <input type="checkbox" name="INFO" value="opt"> Info<br>
+                    <input type="checkbox" name="DELEGATE" value="opt" id="DELEGATE" > Delegate (filter on who's a delegate)<br>
+                    <input type="checkbox" name="DELEGATE_DETAIL" value="opt" id="DELEGATE_DETAIL"> Delegate detail (type of delegate)<br>
+                    <input type="checkbox" name="VISA" value="opt"> Requires visa<br>
                 </div>
                 <div class="col-md-2"></div>
             </div>
+
+            <script>
+                // bind DELEGATE and DELEGATE_DETAIL checkboxes
+                $('#DELEGATE').change(function () {
+                    if ($(this).prop('checked')) {
+                        $('#DELEGATE_DETAIL').prop('checked', true);
+                    } else {
+                        $('#DELEGATE_DETAIL').prop('checked', false);
+                    }
+                });
+                $('#DELEGATE').trigger('change');
+
+                $('#DELEGATE_DETAIL').change(function () {
+                    if ($(this).prop('checked')) {
+                        $('#DELEGATE').prop('checked', true);
+                    } else {
+                        $('#DELEGATE').prop('checked', false);
+                    }
+                });
+                $('#DELEGATE_DETAIL').trigger('change');
+
+
+            </script>
 
             <div class="row" style="text-align:left">
                 <div class="col-md-2"></div>

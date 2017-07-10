@@ -199,14 +199,16 @@ function format_date($date){
                                 ?>
                             </td>
                         </tr>
+                        <!--
                         <tr>
                             <td>DELEGATE</td>
                             <td>
                                 <?php 
-                                echo "<textarea name=\"new_DELEGATE\" rows=\"1\" cols=\"40\">". $row['DELEGATE'] ."</textarea>";
+                                //echo "<textarea name=\"new_DELEGATE\" rows=\"1\" cols=\"40\">". $row['DELEGATE'] ."</textarea>";
                                 ?>
                             </td>
                         </tr>
+                        -->
                         <tr>
                             <td>INFO</td>
                             <td>

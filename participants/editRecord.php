@@ -50,7 +50,7 @@ $nationality = $_POST['new_NATIONALITY'];
 $country_study = $_POST['new_COUNTRY_STUDY']; 
 $degree = $_POST['new_DEGREE'];
 $lcnc = $_POST['new_LCNC'];
-$delegate = $_POST['new_DELEGATE'];
+//$delegate = $_POST['new_DELEGATE'];
 $info = $_POST['new_INFO']; 
 $email = $_POST['new_EMAIL'];
 $university = $_POST['new_UNIVERSITY'];
@@ -65,7 +65,7 @@ $interval = $datetime1->diff($datetime2);
 $age = $interval->format('%y');
 
 
-$stringa = "UPDATE `" . $table . "` SET `NAME` = \"" . $name . "\", `SURNAME` = \"" . $surname . "\", `NAME_STRIP` = \"" . $name_strip . "\", `SURNAME_STRIP` = \"" . $surname_strip . "\", `DOB` = \"" . $dob . "\", `SEX` = \"" . $sex . "\", `NATIONALITY` = \"" . $nationality . "\", `COUNTRY_STUDY` = \"" . $country_study . "\", `DEGREE` = \"" . $degree . "\", `LCNC` = \"" . $lcnc . "\", `LCNC_BOOL` = \"" . $lcnc_bool . "\", `DELEGATE` = \"" . $delegate . "\", `INFO` = \"" . $info . "\", `EMAIL` = \"" . $email . "\", `AGE` = " . $age . ", `UNIVERSITY` = \"" . $university . "\" WHERE `ID` = " . $ID;
+$stringa = "UPDATE `" . $table . "` SET `NAME` = \"" . $name . "\", `SURNAME` = \"" . $surname . "\", `NAME_STRIP` = \"" . $name_strip . "\", `SURNAME_STRIP` = \"" . $surname_strip . "\", `DOB` = \"" . $dob . "\", `SEX` = \"" . $sex . "\", `NATIONALITY` = \"" . $nationality . "\", `COUNTRY_STUDY` = \"" . $country_study . "\", `DEGREE` = \"" . $degree . "\", `LCNC` = \"" . $lcnc . "\", `LCNC_BOOL` = \"" . $lcnc_bool . "\", `INFO` = \"" . $info . "\", `EMAIL` = \"" . $email . "\", `AGE` = " . $age . ", `UNIVERSITY` = \"" . $university . "\" WHERE `ID` = " . $ID;
 
 //var_dump($stringa);
 //exit;
