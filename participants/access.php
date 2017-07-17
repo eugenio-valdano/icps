@@ -1,21 +1,44 @@
 <?php
 
-$Lpassword = array('eugenio'=>'daffe82896ec65488527d99d688eb8e2abd6496c',
-                   'michele'=>'daffe82896ec65488527d99d688eb8e2abd6496c',
-                   'lorenzo'=>'091c55b129e7c784175492cc9bdae91c5ab68796',
-                   'lucio'=>'091c55b129e7c784175492cc9bdae91c5ab68796',
-                   'francesco'=>'89dac3db33f82d34599e0c6357363358c6637f3f',
-                   'oc_member'=>'89946a3a91f8713a489aefb96a436cec79fc6fc8',
-                   'iaps'=>'d33bf762e232b7ee44974d2a597434396bc6d8fd'
-                  );
+if (!isset($Lpassword)) {
+    
+    $Lpassword = array('eugenio'=>'daffe82896ec65488527d99d688eb8e2abd6496c',
+                       'michele'=>'daffe82896ec65488527d99d688eb8e2abd6496c',
+                       'lorenzo'=>'091c55b129e7c784175492cc9bdae91c5ab68796',
+                       'lucio'=>'091c55b129e7c784175492cc9bdae91c5ab68796',
+                       'francesco'=>'89dac3db33f82d34599e0c6357363358c6637f3f',
+                       'oc_member'=>'89946a3a91f8713a489aefb96a436cec79fc6fc8',
+                       'iaps'=>'d33bf762e232b7ee44974d2a597434396bc6d8fd'
+                      );
+
+    //++ read VOL passwords
+    $dbinfo = explode("\n", file_get_contents('../loginDB.txt'))[0];
+    $dbinfo = explode(" ", $dbinfo);
+    $user = $dbinfo[1];
+    $password = $dbinfo[3];
+    $db = $dbinfo[5];
+    $host = $dbinfo[7];
+    $port = $dbinfo[9];
+    $table_volunteers = $dbinfo[23];
+
+    $mysqli = new mysqli($host, $user, $password, $db);
+    if ($mysqli->connect_errno) {
+        printf("Connect failed: %s\n", $mysqli->connect_error);
+        exit();
+    }
+    mysqli_set_charset($mysqli, 'utf8');
+    $stringa = 'SELECT * FROM `' . $table_volunteers . '`';
+    $result = $mysqli->query($stringa);
+    while($row = $result->fetch_array()) {
+        $Lpassword[$row['USER']] = $row['SHA1'];
+    }
+    $result->free();
+    $mysqli->close();
+    //--
+    
+}
 
 session_start();
-
-// db variables
-//if ( !isset($_SESSION['dbconnect']) ) {
-//$_SESSION['dbconnect'] = array("user"=>"root", "password"=>"root", "host"=>"localhost", "port"=>"3306", "db"=>"aisf", "table"=>"test");
-//}
-
 
 // if loggedIn is not set, set it to false
 if ( !isset($_SESSION['passwordOk']) )

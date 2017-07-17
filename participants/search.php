@@ -122,11 +122,13 @@ mysqli_set_charset($mysqli, 'utf8');
         <div class="container-fluid" style="height:1000px">
 
             <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-11">
+                <!--<div class="col-md-1"></div>-->
+                <div class="col-md-12">
 
                     <table class='table'>
                         <tr>
+                            <th style="vertical-align: center">
+                            </th>
                             <th>
                                 <form action="search.php" method="POST">
                                     <input type="hidden" name="name" value="<?php echo $queryName0;?>"/>
@@ -218,6 +220,23 @@ mysqli_set_charset($mysqli, 'utf8');
 
                         while($row = $result->fetch_array())
                         {
+                            if ($row['REGISTRATION']=='no') {
+                                $str_descr = 'not present';
+                                $col_descr = 'warning';
+                            } elseif ($row['REGISTRATION']=='yes') {
+                                $str_descr = 'present';
+                                $col_descr = 'success';
+                            } else {
+                                $str_descr = 'gone';
+                                $col_descr = 'info';
+                            }
+                            
+                            // registration
+                            $linkto = "registration.php?ID=" . $row['ID'] . "&IDC=" . $row['ID_CHECK'];
+                            $col_reg = "<td><a href=\"".$linkto."\" class=\"btn btn-" . $col_descr . "\">". $str_descr ."</a></td>";
+                            
+                            
+                            
                             // link to single entry
                             $linkto = "singleEntry.php?ID=" . $row['ID'] . "&IDC=" . $row['ID_CHECK'];
 
@@ -280,7 +299,7 @@ mysqli_set_charset($mysqli, 'utf8');
                             // id
                             $col_id = "<td>" . $row['ID'] . "</td>";
 
-                            echo "<tr>" . $col_surname . $col_name . $col_nat . $col_lcnc . $col_dob . $col_deleg;
+                            echo "<tr>" . $col_reg . $col_surname . $col_name . $col_nat . $col_lcnc . $col_dob . $col_deleg;
                             if ( checkp(3,$VID) ) {
                                 echo $col_contr . $col_id . $col_roompref;
                             }
