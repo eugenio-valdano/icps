@@ -216,10 +216,37 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
             </div>
             <div class="col-md-3"></div>
         </div>
-        <div class="col-md-3"></div>
 
 
-        <br>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6"><h4>Internal notes<br><small>Use no single or double quotes.</small></h4></div>
+            <div class="col-md-3"></div>
+        </div>
+
+
+        <form method="POST" action="editNotes.php">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <?php
+                    echo "<input type=\"hidden\" name=\"ID\" value=\"" . $ID . "\"></input>";
+                    echo "<input type=\"hidden\" name=\"ID_CHECK\" value=\"" . $ID_CHECK . "\"></input>";
+                    echo "<textarea name=\"new_NOTES\" rows=\"5\" cols=\"50\">" . $row['NOTES'] . "</textarea>";
+                    ?>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6"><input type="submit" value="Edit notes" class="btn btn-primary" onclick="return confirm('Do you wish to edit the note?')"/></div>
+            <div class="col-md-3"></div>
+        </div>
+        </form>
+
+
+
+        <br><br>
         <?php $lonko = "singleEntry.php?ID=" . $ID . '&IDC=' . $ID_CHECK; ?>
         <a class="btn btn-success" href="<?php echo $lonko; ?>" >Go to personal page</a>
         <a class="btn btn-info" href="index.php" >New search</a>

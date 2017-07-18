@@ -167,6 +167,7 @@ mysqli_set_charset($mysqli, 'utf8');
                         <input type="checkbox" name="DELEGATE" value="opt" id="DELEGATE" > Delegate (filter on who's a delegate)<br>
                         <input type="checkbox" name="DELEGATE_DETAIL" value="opt" id="DELEGATE_DETAIL"> Delegate detail (type of delegate)<br>
                         <input type="checkbox" name="VISA" value="opt"> Requires visa<br>
+                        <input type="checkbox" name="NOTES" value="opt"> Notes (made by us)<br>
                     </div>
                     <div class="col-md-2"></div>
                 </div>
