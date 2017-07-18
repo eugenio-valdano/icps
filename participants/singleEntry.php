@@ -213,7 +213,7 @@ mysqli_set_charset($mysqli, 'utf8');
                         $linktoronco = "singleEntry.php?ID=" . $ronco['ID'] . '&IDC=' . $ronco['ID_CHECK'];
                         $col_roompref .= "  --- sleeping with <a href=\"" . $linktoronco . "\">" . $ronco['SURNAME'] . " (" . $ronco['ID'] . ")</a>";
                     }
-                    
+
                     ?>
                     <tr>
                         <td>ROOM</td>
@@ -326,6 +326,8 @@ mysqli_set_charset($mysqli, 'utf8');
 
 
     <br>
+    <?php $lonko = "registration.php?ID=" . $ID . '&IDC=' . $ID_CHECK; ?>
+    <a class="btn btn-success" href="<?php echo $lonko; ?>" >Go to registration page</a>
     <a class="btn btn-info" href="index.php" >New search</a>
     <a class="btn btn-info" href="search.php" >Full list</a>
     <!-- go back button -->
@@ -351,9 +353,9 @@ mysqli_set_charset($mysqli, 'utf8');
     $mysqli->close();
 
     // EDIT button
-    if ( checkp(0,$VID) ) {
-        echo '<a class="btn btn-danger" href="singleEntryEditable.php?ID=' . $ID . '&IDC=' . $ID_CHECK . '" >Make editable</a>';   
-    }
+    //if ( checkp(0,$VID) ) {
+    //echo '<a class="btn btn-danger" href="singleEntryEditable.php?ID=' . $ID . '&IDC=' . $ID_CHECK . '" >Make editable</a>';   
+    //}
     echo '<br><br>';
 
     //URL for ABSTRACTS
@@ -372,10 +374,12 @@ mysqli_set_charset($mysqli, 'utf8');
     $urlpa = str_replace(' ','%20',$urlpa);
 
     // echoes
+    /*
     echo 'edit abstract: <a id="urlab" href="' . $urlab . '" style="font-size:8pt;">' . $urlab . '</a><br>';
     echo 'pay by cc: <a id="urlpa" href="' . $urlpa . '" style="font-size:8pt;">' . $urlpa . '</a><br>';
     echo '<button class="btn btn-warning" onclick="copyToClipboard(\'#urlab\')">edit abstract: copy URL</button> ';
     echo '<button class="btn btn-warning" onclick="copyToClipboard(\'#urlpa\')">pay by cc: copy URL</button>';
+    */
 
     ?>
 

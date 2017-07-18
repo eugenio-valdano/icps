@@ -152,7 +152,7 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
                         $stronga = "SELECT `SURNAME`, `ID`, `ID_CHECK` FROM `" . $table . "` WHERE `ID`=" . $pairing;
                         $rosico = $mysqli->query($stronga);
                         $ronco = $rosico->fetch_array();
-                        $linktoronco = "singleEntry.php?ID=" . $ronco['ID'] . '&IDC=' . $ronco['ID_CHECK'];
+                        $linktoronco = "registration.php?ID=" . $ronco['ID'] . '&IDC=' . $ronco['ID_CHECK'];
                         $col_roompref .= "  --- sleeping with <a href=\"" . $linktoronco . "\">" . $ronco['SURNAME'] . " (" . $ronco['ID'] . ")</a>";
                     }
 
@@ -161,7 +161,7 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
                         <td>ROOM</td>
                         <td><?php echo $col_roompref;?></td>
                     </tr>
-                    
+
                     <!-- REGISTRATION -->
                     <tr>
                         <td class="<?php echo $reg_color[$row['REGISTRATION']];?>" style="text-align: center; vertical-align: center; font-weight:bold">
@@ -202,13 +202,13 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
                             </td>
                         </form>
                     </tr>
-                    
+
                     <!-- OPERATOR -->
                     <tr>
                         <td>LAST CHANGE MADE BY</td>
                         <td><?php echo (is_null($row['OPERATOR']) ? '<i>no changes made</i>' : $row['OPERATOR'] );?></td>
                     </tr>
-                    
+
 
 
 
@@ -218,28 +218,30 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
         </div>
         <div class="col-md-3"></div>
 
-        
+
         <br>
-    <a class="btn btn-info" href="index.php" >New search</a>
-    <a class="btn btn-info" href="search.php" >Full list</a>
-    <!-- go back button -->
-    <button onclick="goBack()" class="btn btn-info">Go Back</button>
+        <?php $lonko = "singleEntry.php?ID=" . $ID . '&IDC=' . $ID_CHECK; ?>
+        <a class="btn btn-success" href="<?php echo $lonko; ?>" >Go to personal page</a>
+        <a class="btn btn-info" href="index.php" >New search</a>
+        <a class="btn btn-info" href="search.php" >Full list</a>
+        <!-- go back button -->
+        <button onclick="goBack()" class="btn btn-info">Go Back</button>
 
-    <script>
-        function goBack() {
-            window.history.back();
-        }
+        <script>
+            function goBack() {
+                window.history.back();
+            }
 
-        function copyToClipboard(element) {
-            var $temp = $("<input>");
-            $("body").append($temp);
-            $temp.val($(element).text()).select();
-            document.execCommand("copy");
-            $temp.remove();
-        }
-    </script>
+            function copyToClipboard(element) {
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val($(element).text()).select();
+                document.execCommand("copy");
+                $temp.remove();
+            }
+        </script>
 
-        
+
 
     </body>
 

@@ -7,12 +7,12 @@ if (!isset($Lpassword)) {
                        'lorenzo'=>'091c55b129e7c784175492cc9bdae91c5ab68796',
                        'lucio'=>'091c55b129e7c784175492cc9bdae91c5ab68796',
                        'francesco'=>'89dac3db33f82d34599e0c6357363358c6637f3f',
-                       'oc_member'=>'89946a3a91f8713a489aefb96a436cec79fc6fc8',
-                       'iaps'=>'d33bf762e232b7ee44974d2a597434396bc6d8fd'
+                       'oc_member'=>'89946a3a91f8713a489aefb96a436cec79fc6fc8'#,
+                       #'iaps'=>'d33bf762e232b7ee44974d2a597434396bc6d8fd'
                       );
 
     //++ read VOL passwords
-    $dbinfo = explode("\n", file_get_contents('../loginDB.txt'))[0];
+    $dbinfo = explode("\n", file_get_contents($_SERVER['DOCUMENT_ROOT'] . 'dbicps/loginDB.txt'))[0];
     $dbinfo = explode(" ", $dbinfo);
     $user = $dbinfo[1];
     $password = $dbinfo[3];

@@ -116,6 +116,8 @@ mysqli_set_charset($mysqli, 'utf8');
                 <li class="active"><a href="index.php">New search</a></li>
                 <li class="active"><a href="search.php">Full list</a></li>
                 <li class="active"><a href="excursions_stat.php">Excursions</a></li>
+                <li class="active"><a href="roomView.php">Room view</a></li>
+                <li class="active"><a href="registrationStats.php">Registration stats</a></li>
             </ul>
         </nav>
 
@@ -221,20 +223,19 @@ mysqli_set_charset($mysqli, 'utf8');
                         while($row = $result->fetch_array())
                         {
                             if ($row['REGISTRATION']=='no') {
-                                $str_descr = 'not present';
+                                $str_descr = 'not arrived';
                                 $col_descr = 'warning';
                             } elseif ($row['REGISTRATION']=='yes') {
                                 $str_descr = 'present';
                                 $col_descr = 'success';
                             } else {
-                                $str_descr = 'gone';
+                                $str_descr = 'departed';
                                 $col_descr = 'info';
                             }
                             
                             // registration
                             $linkto = "registration.php?ID=" . $row['ID'] . "&IDC=" . $row['ID_CHECK'];
                             $col_reg = "<td><a href=\"".$linkto."\" class=\"btn btn-" . $col_descr . "\">". $str_descr ."</a></td>";
-                            
                             
                             
                             // link to single entry
@@ -278,7 +279,8 @@ mysqli_set_charset($mysqli, 'utf8');
                             if ( is_null($row['ROOM']) ) {
                                 $col_roompref = '<i>no room</i>';
                             } else {
-                                $col_roompref = '<b>' . substr($row['RESIDENCE'],0,1) . '</b> - ' . $row['ROOM'] ;
+                                $lonqo = 'roomView.php#' . $row['RESIDENCE'];
+                                $col_roompref = '<a href="' . $lonqo . '" style="font-weight:bold">' . substr($row['RESIDENCE'],0,1) . '</a> - ' . $row['ROOM'] ;
                             }
                             /*
                             if ($preference==0) {

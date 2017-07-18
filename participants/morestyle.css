@@ -1,9 +1,9 @@
 body { 
-  background: url(opinternet.png) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+    background: url(opinternet.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .titolo {
@@ -15,3 +15,4 @@ body {
 .auto {
     font-size: large;
 }
+
