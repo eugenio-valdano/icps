@@ -44,9 +44,14 @@ $ID_CHECK = $_GET['IDC'];
 if (isset($_GET['DEPOSIT'])) {
     $var = 'DEPOSIT';
     $newv = $_GET['DEPOSIT'];
-} else {
+} elseif (isset($_GET['REGISTRATION'])) {
     $var = 'REGISTRATION';
     $newv = $_GET['REGISTRATION'];
+} elseif (isset($_GET['SPORT'])) {
+    $var = 'SPORT';
+    $newv = $_GET['SPORT'];
+} else {
+    die('no get variable');
 }
 
 // CHECK FOR HACKING
@@ -59,7 +64,11 @@ if ($entries_check == 0) {
 }
 $result_check->free();
 
-$stringa = 'UPDATE ' . $table . ' SET `' . $var . '` = "' . $newv . '" WHERE ID = ' . $ID;
+if ($newv=='NULL') {
+    $stringa = 'UPDATE ' . $table . ' SET `' . $var . '` = ' . $newv . ' WHERE ID = ' . $ID; // no quotes around NULL
+} else {
+    $stringa = 'UPDATE ' . $table . ' SET `' . $var . '` = "' . $newv . '" WHERE ID = ' . $ID;
+}
 $result = $mysqli->query($stringa);
 
 $stringa = 'UPDATE ' . $table . ' SET `OPERATOR` = "' . $VID . '" WHERE ID = ' . $ID;

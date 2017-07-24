@@ -21,13 +21,13 @@ function checkp($x,$vid) { // $x is the highest number with clearance. if x=1, t
 
 // choose table
 function choose_table($ID) {
-    
+
     // connect to db
     $dbinfo = explode("\n", file_get_contents('loginDB.txt'))[0];
     $dbinfo = explode(" ", $dbinfo);
     $table = $dbinfo[11];
     $table_late = $dbinfo[19];
-    
+
     return ( (int)$ID > 500 ? $table_late : $table );
 }
 
@@ -147,15 +147,15 @@ function fcapping_tot($x) {
 
 // color coding early and late
 function coloring_earlylate($x,$short) { // give ID as argument x. short is bool 
-    
+
     $stello = ($x>500 ? 'font-weight:bold;color:#F26419' : 'font-weight:bold;color:#0990BA');
-    
+
     if ($short==True) {
         $round = ($x>500 ? 'L' : 'E');
     } else {
         $round = ($x>500 ? 'LATE' : 'EARLY BIRD');
     }
-    
+
     return array('string'=>$round, 'style'=>$stello);
 }
 
@@ -176,6 +176,12 @@ function double_room_available($x, $ID) {
         return true;
     }
 }
+
+
+$dsport_cap = array(
+    'pool'=>125,
+    'chess'=>50
+);
 
 
 ?>

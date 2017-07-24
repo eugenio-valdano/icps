@@ -41,6 +41,7 @@ mysqli_set_charset($mysqli, 'utf8');
 REGISTRATION = ('no', 'yes', 'out')
 DEPOSIT = ('not collected', 'collected', 'returned', 'withheld')
 OPERATOR -> null, or vid
+SPORT -> null, 'pool', 'chess'
 */
 $dep_color = array('not collected'=>'danger', 'collected'=>'success', 'returned'=>'info', 'withheld'=>'warning');
 $reg_color = array('no'=>'warning', 'yes'=>'success', 'out'=>'info');
@@ -101,9 +102,16 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
 
         $result->free();
 
-        // EXCURSION
-        $excursion = $row_ex['ASSIGNED'];
-        $excursion_autom = $row_ex['EXCURSIONS'][0];
+        // SPORT COUNTER
+        $sport_counter = array('pool'=>0, 'chess'=>0);
+        $stringa = 'SELECT `SPORT`,COUNT(`SPORT`) AS `a` FROM ' . $table . ' GROUP BY `SPORT`';
+        $respo = $mysqli->query($stringa);
+        while($row2 = $respo->fetch_array()) {
+            if ( !is_null($row2['SPORT']) ) {
+                $sport_counter[$row2['SPORT']] = (int) $row2['a'];
+            }
+        }
+        $respo->free();
 
         ?>
 
@@ -203,6 +211,33 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
                         </form>
                     </tr>
 
+                    <!-- SPORT -->
+                    <tr>
+                        <td style="text-align: center; vertical-align: center; font-weight:bold">
+                            <?php echo 'sport: ' . (is_null($row['SPORT']) ? 'n/a' : $row['SPORT']);?>
+                        </td>
+
+                        <form action="editCheckin.php" method="GET">
+                            <td>
+                                <select name="SPORT" style="float:left">
+                                    <option value="NULL" <?php echo (is_null($row['SPORT']) ? 'disabled' : ''); ?> >n/a</option>
+                                    <option value="pool" <?php echo ($row['SPORT']=='pool' ? 'disabled' : ''); ?> >pool</option>
+                                    <option value="chess" <?php echo ($row['SPORT']=='chess' ? 'disabled' : ''); ?> >chess</option>
+                                </select>
+                                <input type="hidden" name="ID" value=<?php echo '"' . $row['ID'] . '"' ?> />
+                                <input type="hidden" name="IDC" value=<?php echo '"' . $row['ID_CHECK'] . '"' ?> />
+                                <input type="submit" value="change"  style="float:left" />
+                                
+                                <!-- sport counters -->
+                                <br><br>
+                                pool: <?php echo $sport_counter['pool'] . '/' . $dsport_cap['pool'] . ' ' . ($sport_counter['pool']>$dsport_cap['pool'] ? '<span style="color:red; font-weight:bold">overbooked</span>' : ''); ?>
+                                <br>
+                                chess: <?php echo $sport_counter['chess'] . '/' . $dsport_cap['chess'] . ' ' . ($sport_counter['chess']>$dsport_cap['chess'] ? '<span style="color:red; font-weight:bold">overbooked</span>' : ''); ?>
+                                
+                            </td>
+                        </form>
+                    </tr>
+
                     <!-- OPERATOR -->
                     <tr>
                         <td>LAST CHANGE MADE BY</td>
@@ -238,10 +273,10 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
                 <div class="col-md-3"></div>
             </div>
             <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6"><input type="submit" value="Edit notes" class="btn btn-primary" onclick="return confirm('Do you wish to edit the note?')"/></div>
-            <div class="col-md-3"></div>
-        </div>
+                <div class="col-md-3"></div>
+                <div class="col-md-6"><input type="submit" value="Edit notes" class="btn btn-primary" onclick="return confirm('Do you wish to edit the note?')"/></div>
+                <div class="col-md-3"></div>
+            </div>
         </form>
 
 
@@ -268,7 +303,9 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
             }
         </script>
 
-
+        <?php
+        $mysqli->close();
+        ?>
 
     </body>
 
