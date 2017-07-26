@@ -138,6 +138,7 @@ mysqli_set_charset($mysqli, 'utf8');
                         <input type="checkbox" name="EMAIL" value=""> Email address<br>
                         <input type="checkbox" name="PASSPORT" value=""> Passport<br>
                         <input type="checkbox" name="LCNC" value=""> LC / NC / IM<br>
+                        <input type="checkbox" name="CONTRIBUTION" value=""> Contribution (no/post/talk/both)<br>
                         <input type="checkbox" name="ASSIGNED" value=""> Excursion <a href="../excursions_stat.php">(A-H)</a><br>
                         <input type="checkbox" name="CITYRALLY" value=""> City rally (1,2)<br>
                         <input type="checkbox" name="MAGO" value=""> Mago's group (0-9)<br>

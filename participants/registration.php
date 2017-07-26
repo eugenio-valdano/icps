@@ -140,11 +140,24 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
                     </tr>
                     <tr>
                         <td>NATIONALITY</td>
-                        <td><?php echo '<b>' . $row['NATIONALITY'] . '</b>';?></td>
+                        <td><?php echo $row['NATIONALITY'];?></td>
                     </tr>
                     <tr>
                         <td>PASSPORT</td>
-                        <td><?php echo '<b>' . $row['PASSPORT'] . '</b>';?></td>
+                        <td><?php echo $row['PASSPORT'];?></td>
+                    </tr>
+                    <tr>
+                        <td>DATE OF BIRTH</td>
+                        <td><?php echo $row['DOB'];?></td>
+                    </tr>
+                    <tr>
+                        <td>DELEGATE</td>
+                        <?php $spu = (is_null($row['DELEGATE']) ? 'no' : $row['DELEGATE_DETAIL']);?>
+                        <td><?php echo $spu;?></td>
+                    </tr>
+                    <tr>
+                        <td>EXPECTED CHECK-IN DATE</td>
+                        <td><?php echo $row['CHECKIN_DATE'];?></td>
                     </tr>
 
                     <!-- ROOM ASSIGNMENT -->
@@ -168,6 +181,10 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
                     <tr>
                         <td>ROOM</td>
                         <td><?php echo $col_roompref;?></td>
+                    </tr>
+                    <tr>
+                        <td>UNITO WIFI</td>
+                        <td><?php echo 'username: <b>' . $row['UNITO_WIFI_USERNAME'] . '</b><br>password: <b>' . $row['UNITO_WIFI_PASSWORD'] . '</b>';?></td>
                     </tr>
 
                     <!-- REGISTRATION -->
@@ -288,6 +305,9 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
         <a class="btn btn-info" href="search.php" >Full list</a>
         <!-- go back button -->
         <button onclick="goBack()" class="btn btn-info">Go Back</button>
+        <?php $lonko = "registration_pdf.php?ID=" . $ID . '&IDC=' . $ID_CHECK; ?>
+        <a class="btn btn-danger" href="<?php echo $lonko; ?>" target="_blank">Download as PDF</a>
+        <br><br>
 
         <script>
             function goBack() {
