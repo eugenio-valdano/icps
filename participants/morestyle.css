@@ -12,6 +12,12 @@ body {
     font-weight: 900;
 }
 
+.titolo2 {
+    color: #053C5E;
+    text-align: left;
+    font-weight: 900;
+}
+
 .auto {
     font-size: large;
 }

@@ -34,46 +34,62 @@ if ($mysqli->connect_errno) {
 mysqli_set_charset($mysqli, 'utf8');
 
 
-// *********** create query string here
+// check if string query is directly given
 
-// 1. read POST
-$selected = array();
-$optional = array();
-foreach ($_POST as $key => $val) {
+if ( isset($_POST['STRING_1']) and isset($_POST['STRING_2']) and isset($_POST['STRING_3']) ) {
 
-    // selected
-    if ($key != 'SORT') {
-        $selected[] = '`' . $key . '`';
-    }
+    $s1 = $_POST['STRING_1'];
+    $s2 = ( $_POST['STRING_2']=='' ? '' : ' WHERE '.$_POST['STRING_2'] . ' ' );
+    $s3 = ( $_POST['STRING_3']=='' ? '' : ' ORDER BY '.$_POST['STRING_3'] . ' ' );
 
-    // optional
-    if ($val == 'opt') {
-        $optional[] = $key;
-    }
-}
+    $stringa = 'SELECT ' . $s1 . ' FROM ' . $table . $s2 . $s3;
 
-// 2. check if there are optional variables, and if so, set conditions
-if (count($optional)==0) {
-    $conditions = '';
 } else {
-    $conditions = [];
-    foreach ($optional as $v) {
-        $conditions[] = ' ( `' . $v . '` IS NOT NULL AND `' . $v . '`!="" ) ';
+
+    // *********** create query string here
+
+    // 1. read POST
+    $selected = array();
+    $optional = array();
+    foreach ($_POST as $key => $val) {
+
+        // selected
+        if ($key != 'SORT') {
+            $selected[] = '`' . $key . '`';
+        }
+
+        // optional
+        if ($val == 'opt') {
+            $optional[] = $key;
+        }
     }
-    if (count($conditions)>1) {
-        $conditions = implode(" OR ", $conditions);
+
+    // 2. check if there are optional variables, and if so, set conditions
+    if (count($optional)==0) {
+        $conditions = '';
     } else {
-        $conditions = $conditions[0];
+        $conditions = [];
+        foreach ($optional as $v) {
+            $conditions[] = ' ( `' . $v . '` IS NOT NULL AND `' . $v . '`!="" ) ';
+        }
+        if (count($conditions)>1) {
+            $conditions = implode(" OR ", $conditions);
+        } else {
+            $conditions = $conditions[0];
+        }
+        $conditions = ' WHERE ' . $conditions;
     }
-    $conditions = ' WHERE ' . $conditions;
+
+    // 3. build query string
+    $selected = implode(",",$selected); // create comma-sep list of variables as a single string
+
+    $stringa = 'SELECT ' . $selected . ' FROM `' . $table_total . '` ' . $conditions . ' ORDER BY `' . $_POST['SORT'] . '`;'; 
+
+    // *********** end query string
 }
 
-// 3. build query string
-$selected = implode(",",$selected); // create comma-sep list of variables as a single string
 
-$stringa = 'SELECT ' . $selected . ' FROM `' . $table_total . '` ' . $conditions . ' ORDER BY `' . $_POST['SORT'] . '`;'; 
 
-// *********** end query string
 
 
 $result = $mysqli->query($stringa);

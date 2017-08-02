@@ -226,8 +226,60 @@ mysqli_set_charset($mysqli, 'utf8');
 
             </form>
 
+            <!--
             <br>
 
+            <div class="row" style="text-align:left">
+                <div class="col-md-2"></div>
+                <div class="col-md-8"><h2 class="titolo" style="text-align:left">Advanced: compose MySQL query</h2></div>
+                <div class="col-md-2"></div>
+            </div>
+
+            <br>
+
+            <form action="custom_list.php" method="POST">
+
+                <div class="row" style="text-align:left">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">SELECT</div>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row" style="text-align:left">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8"><input type="text" name="STRING_1"/></div>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row" style="text-align:left">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">WHERE</div>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row" style="text-align:left">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8"><input type="text" name="STRING_2"/></div>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row" style="text-align:left">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">ORDER BY</div>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row" style="text-align:left">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8"><input type="text" name="STRING_3"/></div>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row" style="text-align:left">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2"><input type="submit" value="Download CSV" class="btn btn-success" /></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4"></div>
+                </div>
+            </form>
+-->
+
+            <br>
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-9">
@@ -235,9 +287,6 @@ mysqli_set_charset($mysqli, 'utf8');
                 </div>
                 <div class="col-md-1"></div>
             </div>
-
-
-            <br>
 
         </div>
 

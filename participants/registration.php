@@ -21,6 +21,7 @@ $table = $dbinfo[11];
 #$table_excursions = $dbinfo[15];
 $table_late = $dbinfo[19];
 $table_total = $dbinfo[21];
+$table_questura = $dbinfo[25];
 
 //choose table
 $table = $table_total;
@@ -42,6 +43,7 @@ REGISTRATION = ('no', 'yes', 'out')
 DEPOSIT = ('not collected', 'collected', 'returned', 'withheld')
 OPERATOR -> null, or vid
 SPORT -> null, 'pool', 'chess'
+EDISU_DOCUMENTS -> null, 'yes'
 */
 $dep_color = array('not collected'=>'danger', 'collected'=>'success', 'returned'=>'info', 'withheld'=>'warning');
 $reg_color = array('no'=>'warning', 'yes'=>'success', 'out'=>'info');
@@ -59,6 +61,9 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
 
         <!-- jquery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
         <!-- CSS for overriding td class -->
         <link rel="stylesheet" href="tdStyle.css">
@@ -142,10 +147,12 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
                         <td>NATIONALITY</td>
                         <td><?php echo $row['NATIONALITY'];?></td>
                     </tr>
-                    <tr>
-                        <td>PASSPORT</td>
-                        <td><?php echo $row['PASSPORT'];?></td>
-                    </tr>
+                    <!--
+<tr>
+<td>PASSPORT</td>
+<td><?php echo $row['PASSPORT'];?></td>
+</tr>
+-->
                     <tr>
                         <td>DATE OF BIRTH</td>
                         <td><?php echo $row['DOB'];?></td>
@@ -183,9 +190,148 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
                         <td><?php echo $col_roompref;?></td>
                     </tr>
                     <tr>
+                        <td>T-SHIRT SIZE</td>
+                        <td><?php echo $row['TSHIRT_SIZE'];?></td>
+                    </tr>
+                    <tr>
                         <td>UNITO WIFI</td>
                         <td><?php echo 'username: <b>' . $row['UNITO_WIFI_USERNAME'] . '</b><br>password: <b>' . $row['UNITO_WIFI_PASSWORD'] . '</b>';?></td>
                     </tr>
+
+                </table>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+
+        <br>
+
+        <div class="row" style="font-weight:bold;text-align:center;font-size:18pt">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">CHECK-IN: <span id="checkin_stato"></span></div>
+            <div class="col-md-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <table class='table'>
+
+                    <!-- QUESTURA -->
+
+                    <?php
+                    // type: 'passport', 'id', 'other'
+
+                    $stringa_q = "SELECT * FROM " . $table_questura . " WHERE ID = ".$ID;
+                    $result_q = $mysqli->query($stringa_q);
+                    $entries_q = $result_q->num_rows;
+                    if ($entries_q==1) {
+                        $row_q = $result_q->fetch_array();
+                        $questura_type = $row_q['TYPE'];
+                        $questura_number = $row_q['NUMBER'];
+                        $questura_issue = $row_q['ISSUE'];
+                        $questura_expiry = $row_q['EXPIRY'];
+                        $questura_place = $row_q['PLACE'];
+                        if (is_null($questura_type) or is_null($questura_number) or is_null($questura_issue) or is_null($questura_expiry) or is_null($questura_place)) {
+                            $sfondo = 'warning';
+                        } else {
+                            $sfondo = 'success';   
+                        }
+                        $precompilato = '#000000';
+                    } elseif ($entries_q==0) {
+                        $questura_type = '';
+                        $questura_number = $row['PASSPORT'];
+                        $questura_issue = '';
+                        $questura_expiry = '';
+                        $questura_place = '';
+                        $sfondo = 'danger';
+                        $precompilato = '#696969';
+                    } else {
+                        die('multiple entries in questura!');
+                    }
+                    ?>
+
+                    <tr>
+                        <td class="<?php echo $sfondo; ?>" style="text-align: center; vertical-align: center">DOCUMENT DETAILS</td>
+                        <td>
+                            <form method="POST" action="questura.php">
+                                <input type="hidden" name="ID" value="<?php echo $ID; ?>"/>
+                                <input type="hidden" name="ID_CHECK" value="<?php echo $ID_CHECK; ?>"/>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <?php echo ( ( $questura_type=='' or is_null($questura_type) ) ? 'set type to ' : '<i>' . 'type: ' . $questura_type . '</i>, change to '); ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select name="TYPE" style="float:left">
+                                            <option value="">n/a</option>
+                                            <option value="passport">passport</option>
+                                            <option value="id">id card</option>
+                                            <option value="other">other (CAUTION)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        number
+                                    </div>
+                                    <div class="col-md-6">
+                                        <style>
+                                            #NUMBER {
+                                                color: <?php echo $precompilato;?>;
+                                            }
+                                        </style>
+                                        <textarea name="NUMBER" rows="1" cols="20" id="NUMBER"><?php echo $questura_number;?></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        place of issue
+                                    </div>
+                                    <div class="col-md-6">
+                                        <textarea name="PLACE" rows="1" cols="20"><?php echo $questura_place;?></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        issue
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" id="date_issue" name="ISSUE" value="<?php echo $questura_issue;?>"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        expiry
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" id="date_expiry" name="EXPIRY" value="<?php echo $questura_expiry;?>"/>
+                                    </div>
+                                </div>
+                                <script> // if input date is not supported, use datepicker from jQuery
+                                    $.datepicker.setDefaults({ dateFormat: 'yy-mm-dd' });
+                                    $('#date_issue').datepicker({
+                                        changeMonth: true,
+                                        changeYear: true
+                                    });
+                                    $('#date_expiry').datepicker({
+                                        changeMonth: true,
+                                        changeYear: true
+                                    });
+                                </script>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="submit" value="save data"  style="float:left" />
+                                    </div>
+                                    <div class="col-md-6">
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+
+
+
+
 
                     <!-- REGISTRATION -->
                     <tr>
@@ -228,6 +374,44 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
                         </form>
                     </tr>
 
+                    <!-- EDISU -->
+
+                    <tr>
+                        <?php $edicheck = ( is_null($row['EDISU_DOCUMENTS']) ? false : true); ?>
+                        <td class="<?php echo ($edicheck ? 'success' : 'danger') ?>" style="text-align: center; vertical-align: center">EDISU DOCUMENTS: SIGNED?</td>
+                        <td>
+                            <form action="editCheckin.php" method="GET">
+                                <input type="hidden" name="ID" value=<?php echo '"' . $row['ID'] . '"' ?> />
+                                <input type="hidden" name="IDC" value=<?php echo '"' . $row['ID_CHECK'] . '"' ?> />
+                                <div class="row">
+                                    <div class="col-md-12"><input type="radio" name="edisu" value="yes" <?php echo ($edicheck ? 'checked' : '');?>/> yes</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3"><input type="radio" name="edisu" value="NULL" <?php echo ($edicheck ? '' : 'checked');?>/> no</div>
+                                    <div class="col-md-9"><input type="submit" value="change"  style="float:left" /></div>
+                                </div>
+                            </form>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        
+        <br>
+        
+        <div class="row" style="font-weight:bold;text-align:center;font-size:18pt">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">Sport selection (leave blank for football and volleyball)</div>
+            <div class="col-md-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <table class='table'>
+
                     <!-- SPORT -->
                     <tr>
                         <td style="text-align: center; vertical-align: center; font-weight:bold">
@@ -244,13 +428,13 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
                                 <input type="hidden" name="ID" value=<?php echo '"' . $row['ID'] . '"' ?> />
                                 <input type="hidden" name="IDC" value=<?php echo '"' . $row['ID_CHECK'] . '"' ?> />
                                 <input type="submit" value="change"  style="float:left" />
-                                
+
                                 <!-- sport counters -->
                                 <br><br>
-                                pool: <?php echo $sport_counter['pool'] . '/' . $dsport_cap['pool'] . ' ' . ($sport_counter['pool']>$dsport_cap['pool'] ? '<span style="color:red; font-weight:bold">overbooked</span>' : ''); ?>
+                                pool counter: <?php echo $sport_counter['pool'] . '/' . $dsport_cap['pool'] . ' ' . ($sport_counter['pool']>$dsport_cap['pool'] ? '<span style="color:red; font-weight:bold">overbooked</span>' : ''); ?>
                                 <br>
-                                chess: <?php echo $sport_counter['chess'] . '/' . $dsport_cap['chess'] . ' ' . ($sport_counter['chess']>$dsport_cap['chess'] ? '<span style="color:red; font-weight:bold">overbooked</span>' : ''); ?>
-                                
+                                chess counter: <?php echo $sport_counter['chess'] . '/' . $dsport_cap['chess'] . ' ' . ($sport_counter['chess']>$dsport_cap['chess'] ? '<span style="color:red; font-weight:bold">overbooked</span>' : ''); ?>
+
                             </td>
                         </form>
                     </tr>
@@ -260,14 +444,22 @@ $reg_translate = array('no'=>'not arrived', 'yes'=>'checked in', 'out'=>'checked
                         <td>LAST CHANGE MADE BY</td>
                         <td><?php echo (is_null($row['OPERATOR']) ? '<i>no changes made</i>' : $row['OPERATOR'] );?></td>
                     </tr>
-
-
-
-
                 </table>
             </div>
             <div class="col-md-3"></div>
         </div>
+
+        <?php
+        $flago = ( $sfondo=='success' and $row['REGISTRATION']!='no' and $row['DEPOSIT']!='not collected' and !is_null($row['EDISU_DOCUMENTS']) );
+        $final_status = ( $flago ? 'COMPLETED' : 'INCOMPLETE');
+        $final_color = ( $flago ? 'green' : 'red');
+        ?>
+
+        <script>
+            //var str = $( "#checkin_stato" ).text();
+            $( "#checkin_stato" ).text( "<?php echo $final_status;?>" );
+            $( "#checkin_stato" ).css('color', '<?php echo $final_color;?>');
+        </script>
 
 
         <div class="row">

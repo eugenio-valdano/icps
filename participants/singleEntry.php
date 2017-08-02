@@ -332,6 +332,8 @@ mysqli_set_charset($mysqli, 'utf8');
     <a class="btn btn-info" href="search.php" >Full list</a>
     <!-- go back button -->
     <button onclick="goBack()" class="btn btn-info">Go Back</button>
+    <?php $lonko = "registration_pdf.php?ID=" . $ID . '&IDC=' . $ID_CHECK; ?>
+    <a class="btn btn-danger" href="<?php echo $lonko; ?>" target="_blank">Download as PDF</a>
 
     <script>
         function goBack() {

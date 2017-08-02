@@ -18,6 +18,13 @@
 
     </head>
     <body>
+        
+        <?php
+        
+        header('Location: ' . 'timetable.pdf');
+        exit;
+        
+        ?>
 
         <br>
 

@@ -179,8 +179,8 @@ function double_room_available($x, $ID) {
 
 
 $dsport_cap = array(
-    'pool'=>125,
-    'chess'=>50
+    'pool'=>125, // corretto: 125
+    'chess'=>80 // corretto: 80
 );
 
 
