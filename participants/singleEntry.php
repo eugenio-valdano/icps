@@ -234,14 +234,41 @@ mysqli_set_charset($mysqli, 'utf8');
                         <td>MAGO'S GROUP</td>
                         <td><?php echo $row['MAGO'];?></td>
                     </tr>
-
-
-
+        
                 </table>
             </div>
             <div class="col-md-3"></div>
         </div>
         <div class="col-md-3"></div>
+        
+        
+         <!-- VOTING -->
+
+        <div class="row">
+            <div class="col-md-3"><div class="tiny_skip"></div></div>
+            <div class="col-md-6"><div class="tiny_skip"></div></div>
+            <div class="col-md-3"><div class="tiny_skip"></div></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6"><h4>VOTING LINK</h4></div>
+            <div class="col-md-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <table class='table'>
+                    <tr>
+                        <td>VOTING LINK</td>
+                        <td><?php echo '<a href=https://www.ai-sf.it/dbicps/voting?ID=' . $row['ID'] . '&IDC=' . $row['ID_CHECK'] . '>www.ai-sf.it/dbicps/voting?ID=' . $row['ID'] . '&IDC=' . $row['ID_CHECK'] .'</a>';?></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+
 
         <!-- ADDRESS AND STUFF FOR VISA -->
 
